@@ -1,0 +1,43 @@
+name: Create Custom Branch on Issue Open
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write  # ✅ 이 설정이 없으면 GitHub Actions 봇이 push 권한을 가지지 못함
+
+jobs:
+  create-custom-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug issue body
+        run: |
+          echo "### ISSUE BODY START ###"
+          cat $GITHUB_EVENT_PATH | jq -r '.issue.body'
+          echo "### ISSUE BODY END ###"
+
+      - name: Extract branch name
+        id: branch-input
+        run: |
+          BRANCH_NAME=$(jq -r '.issue.body' $GITHUB_EVENT_PATH | awk '
+            /### 🌳 브랜치명 \(Branch\)/ { getline; getline; print }
+          ')
+
+          if [[ -z "$BRANCH_NAME" ]]; then
+            echo "브랜치명을 찾을 수 없습니다."
+            exit 1
+          fi
+
+          echo "Extracted branch name: $BRANCH_NAME"
+          echo "branch=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Create branch
+        run: |
+          git checkout -b "${{ steps.branch-input.outputs.branch }}"
+          git push origin "${{ steps.branch-input.outputs.branch }}"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # ✅ 기본 GitHub 제공 토큰 사용
