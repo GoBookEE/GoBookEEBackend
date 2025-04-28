@@ -30,4 +30,5 @@ bin/
 ### Mac OS ###
 .DS_Store
 
-/src/main/resources/*.properties
+/src/main/webapp/WEB-INF/*.properties
+/src/main/webapp/WEB-INF/sql/*.properties
