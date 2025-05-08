@@ -50,7 +50,7 @@
     <!--  프로젝트 빌드 관리하기  -->
     <build>
         <!--    패키징했을 때 프로젝트 이름 설정(contextPath)    -->
-        <finalName>gobookee</finalName>
+        <finalName>gobooke</finalName>
 
         <!--   build시 플러그인 설정하기     -->
         <!--   자바 버전 설정     -->
