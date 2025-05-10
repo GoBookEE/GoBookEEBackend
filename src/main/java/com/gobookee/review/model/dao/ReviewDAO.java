@@ -124,7 +124,21 @@ public class ReviewDAO {
 		return result;
 	}
 	
-	
+	public int deleteReview(Connection conn, Integer reviewSeq) {
+		int result=0;
+		try {
+			pstmt=conn.prepareStatement(sqlProp.getProperty("deleteReview"));
+			pstmt.setInt(1, reviewSeq);
+			result=pstmt.executeUpdate();
+			
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
 	
 	private ReviewDTO getReviewDTO(ResultSet rs) throws SQLException {
 		ReviewDTO dto = ReviewDTO.builder().reviewSeq(rs.getLong("REVIEW_SEQ")).reviewTitle(rs.getString("REVIEW_TITLE"))
