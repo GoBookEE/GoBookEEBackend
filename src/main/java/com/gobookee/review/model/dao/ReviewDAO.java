@@ -21,10 +21,10 @@ public class ReviewDAO {
 	private static ReviewDAO dao;
 
 	private ReviewDAO() {
-		String path=ReviewDAO.class.getResource("/sql/review_sql.properties").getPath();
-		try(FileReader fr=new FileReader(path)){
+		String path = ReviewDAO.class.getResource("/sql/review_sql.properties").getPath();
+		try (FileReader fr = new FileReader(path)) {
 			sqlProp.load(fr);
-		}catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -68,7 +68,7 @@ public class ReviewDAO {
 		}
 		return reviews;
 	}
-	
+
 	public ReviewDTO getReviewBySeq(Connection conn, Integer reviewSeq) {
 		ReviewDTO dto = new ReviewDTO();
 		try {
@@ -105,7 +105,7 @@ public class ReviewDAO {
 		}
 		return result;
 	}
-	
+
 	public int updateReview(Connection conn, ReviewDTO dto) {
 		int result = 0;
 		try {
@@ -123,28 +123,45 @@ public class ReviewDAO {
 		}
 		return result;
 	}
-	
+
 	public int deleteReview(Connection conn, Integer reviewSeq) {
-		int result=0;
+		int result = 0;
 		try {
-			pstmt=conn.prepareStatement(sqlProp.getProperty("deleteReview"));
+			pstmt = conn.prepareStatement(sqlProp.getProperty("deleteReview"));
 			pstmt.setInt(1, reviewSeq);
-			result=pstmt.executeUpdate();
-			
-		}catch(SQLException e) {
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
 			e.printStackTrace();
-		}finally {
+		} finally {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
 		return result;
 	}
-	
+
+	public int getRecommendCount(Connection conn, Integer reviewSeq) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("getRecommendCount"));
+			pstmt.setInt(1, reviewSeq);
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
 	private ReviewDTO getReviewDTO(ResultSet rs) throws SQLException {
-		ReviewDTO dto = ReviewDTO.builder().reviewSeq(rs.getLong("REVIEW_SEQ")).reviewTitle(rs.getString("REVIEW_TITLE"))
-				.reviewContents(rs.getString("REVIEW_CONTENTS")).reviewCreateTime(rs.getTimestamp("REVIEW_CREATE_TIME"))
-				.reviewRate(rs.getInt("REVIEW_RATE")).reviewEditTime(rs.getTimestamp("REVIEW_EDIT_TIME"))
-				.userSeq(rs.getLong("USER_SEQ")).bookSeq(rs.getLong("BOOK_SEQ")).build();
+		ReviewDTO dto = ReviewDTO.builder().reviewSeq(rs.getLong("REVIEW_SEQ"))
+				.reviewTitle(rs.getString("REVIEW_TITLE")).reviewContents(rs.getString("REVIEW_CONTENTS"))
+				.reviewCreateTime(rs.getTimestamp("REVIEW_CREATE_TIME")).reviewRate(rs.getInt("REVIEW_RATE"))
+				.reviewEditTime(rs.getTimestamp("REVIEW_EDIT_TIME")).userSeq(rs.getLong("USER_SEQ"))
+				.bookSeq(rs.getLong("BOOK_SEQ")).build();
 		return dto;
 	}
 }
