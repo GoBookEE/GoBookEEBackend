@@ -86,6 +86,28 @@ public class ReviewDAO {
 		return dto;
 	}
 
+	public int insertReview(Connection conn, ReviewDTO dto) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("insertReview"));
+			pstmt.setString(1, dto.getReviewTitle());
+			pstmt.setString(2, dto.getReviewContents());
+			pstmt.setInt(3, dto.getReviewRate());
+			pstmt.setLong(4, dto.getUserSeq());
+			pstmt.setLong(5, dto.getBookSeq());
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+	
+	
+	
 	private ReviewDTO getReviewDTO(ResultSet rs) throws SQLException {
 		ReviewDTO dto = ReviewDTO.builder().reviewSeq(rs.getLong("REVIEW_SEQ")).reviewTitle(rs.getString("REVIEW_TITLE"))
 				.reviewContents(rs.getString("REVIEW_CONTENTS")).reviewCreateTime(rs.getTimestamp("REVIEW_CREATE_TIME"))
