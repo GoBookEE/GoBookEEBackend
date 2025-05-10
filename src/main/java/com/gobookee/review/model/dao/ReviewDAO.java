@@ -106,6 +106,24 @@ public class ReviewDAO {
 		return result;
 	}
 	
+	public int updateReview(Connection conn, ReviewDTO dto) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("updateReview"));
+			pstmt.setString(1, dto.getReviewTitle());
+			pstmt.setString(2, dto.getReviewContents());
+			pstmt.setInt(3, dto.getReviewRate());
+			pstmt.setLong(4, dto.getReviewSeq());
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+	
 	
 	
 	private ReviewDTO getReviewDTO(ResultSet rs) throws SQLException {
