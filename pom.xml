@@ -45,6 +45,12 @@
             <version>2.3.3</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20240303</version>
+        </dependency>
+
     </dependencies>
 
     <!--  프로젝트 빌드 관리하기  -->
