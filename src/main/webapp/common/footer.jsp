@@ -1,0 +1,35 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: ddanggoos
+  Date: 2025. 5. 13.
+  Time: 18:17
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+</body>
+
+<footer class="py-2">
+    <div class="container d-flex justify-content-around text-center small">
+        <div class="col-2">
+            <div><i class="bi bi-chat-text-fill fs-1"></i></div>
+            <div>리뷰</div>
+        </div>
+        <div class="col-2">
+            <div><i class="bi bi-book-fill fs-1"></i></div>
+            <div>스터디</div>
+        </div>
+        <div class="col-2">
+            <div><i class="bi bi-house-door-fill fs-1"></i></div>
+            <div>홈</div>
+        </div>
+        <div class="col-2">
+            <div><i class="bi bi-cursor-fill fs-1"></i></div>
+            <div>채팅</div>
+        </div>
+        <div class="col-2">
+            <div><i class="bi bi-list fs-1"></i></div>
+            <div>카테고리</div>
+        </div>
+    </div>
+</footer>
+</html>
