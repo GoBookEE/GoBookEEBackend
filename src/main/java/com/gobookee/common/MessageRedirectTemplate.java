@@ -18,7 +18,7 @@ public class MessageRedirectTemplate {
     private String close;
     private ServletRequest request;
     private ServletResponse response;
-    private static final String PATH = "/WEB-INF/views/common/msg.jsp";
+    private static final String PATH = ViewPath.getPath("/common/msg");
 
     public void responseRequest() throws ServletException, IOException {
         request.setAttribute("msg", msg);

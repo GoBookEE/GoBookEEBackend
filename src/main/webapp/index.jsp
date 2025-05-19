@@ -1,8 +1,6 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head><title>Hello JSP</title></head>
-<body>
-<h2>Hello, GoBookEE!</h2>
-<%= "현재 시간: " + new java.util.Date() %>
-</body>
-</html>
+<%@ page pageEncoding="UTF-8" language="java" %>
+<%@include file="/WEB-INF/views/common/header.jsp" %>
+<section>
+    <h1>Hello, GoBookEE!</h1>
+</section>
+<%@include file="/WEB-INF/views/common/footer.jsp" %>
