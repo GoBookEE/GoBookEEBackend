@@ -9,6 +9,11 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import java.io.IOException;
 
+/**
+ * 리다이렉션 시 사용하는 템플릿
+ * 사용법 : 메시지 msg와 리다이렉션 대상 주소 loc, 해당 창 닫을지 여부 close를 넘겨주기
+ * msg.jsp를 통해 화면에 alert 창으로 msg를 띄워주고 loc 주소로 리다이렉션 시켜준다.
+ */
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

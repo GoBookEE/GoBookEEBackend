@@ -7,6 +7,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * MultipartRequest 객체 생성 시 필요한 FileRenamePolicy 템플릿
+ * 사용법 : 파일 객체 넘겨주면 규칙에 맞게 파일명을 rename해서 반환
+ */
 public class CustomFileRenamePolicy implements FileRenamePolicy {
     @Override
     public File rename(File file) {

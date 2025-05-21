@@ -6,6 +6,10 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+/**
+ * SHA512 방식과 필터를 적용해서 패스워드를 암호화해주는 템플릿
+ * 사용법 : 단방향 암호화이기 때문에 비교할 문자열도 암호화 진행 후 equals()로 비교할 것!!
+ */
 public class PasswordEncoder extends HttpServletRequestWrapper {
     public PasswordEncoder(HttpServletRequest request) {
         super(request);
