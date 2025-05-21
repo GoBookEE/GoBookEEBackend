@@ -16,9 +16,11 @@ public class StudyDTO {
     private String studyTitle;
     private Timestamp studyDate;
     private Integer studyMemberLimit;
-    private Timestamp studyCreateTime;
     private Timestamp studyEditTime;
+    private Timestamp studyCreateTime;
     private String studyPlace;
+    private String studyIsPublic;
+    private Timestamp studyDeleteTime;
     private Long userSeq;
-    private Long bookSeq;
+    private Long scSeq;
 }
