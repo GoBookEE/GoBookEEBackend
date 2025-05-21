@@ -50,6 +50,12 @@
             <artifactId>json</artifactId>
             <version>20240303</version>
         </dependency>
+        <!--    업로드 처리 라이브러리    -->
+        <dependency>
+            <groupId>com.servlets</groupId>
+            <artifactId>cos</artifactId>
+            <version>05Nov2002</version>
+        </dependency>
 
     </dependencies>
 

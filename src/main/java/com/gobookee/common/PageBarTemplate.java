@@ -5,6 +5,10 @@ import lombok.Getter;
 
 import javax.servlet.http.HttpServletRequest;
 
+/**
+ * 페이지 바 구현 템플릿
+ * 사용법 : 페이지 바 로직으로 HTML 태그를 문자열로 만들어서 반환
+ */
 @Getter
 public class PageBarTemplate {
     private int cPage;

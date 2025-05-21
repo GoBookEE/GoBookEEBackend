@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
+/**
+ * JDBC 사용 시 자주 사용되는 메소드들을 모아놓은 템플릿
+ * getConnection(), commit(), rollback(), close()
+ */
 public class JDBCTemplate {
     private static Properties driver = new Properties();
 
