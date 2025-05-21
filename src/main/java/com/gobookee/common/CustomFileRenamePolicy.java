@@ -18,7 +18,7 @@ public class CustomFileRenamePolicy implements FileRenamePolicy {
         File newFile = null;
         do {
             String prefix = "GOBOOKE_";
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmssSSS");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
             int rnd = (int) (Math.random() * 1000) + 1;
             String ext = oriName.substring(oriName.lastIndexOf("."));
             String rename = prefix + sdf.format(new Date()) + "_" + rnd + ext;
