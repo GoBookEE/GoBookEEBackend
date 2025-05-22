@@ -1,12 +1,13 @@
-*{
+* {
     font-family: "Noto Sans KR", serif;
 }
+
 body {
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    align-items: center;  /* 모든 자식을 중앙 정렬 */
+    align-items: center; /* 모든 자식을 중앙 정렬 */
     min-height: 100vh;
 }
 
@@ -19,6 +20,8 @@ header, main, footer {
 /* 메인 콘텐츠가 남은 공간 채우기 */
 main {
     flex: 1;
+    padding-top: 70px; /* 헤더 높이만큼 */
+    padding-bottom: 95px; /* 푸터 높이만큼 */
 }
 
 /* 고정 헤더 */
@@ -48,4 +51,8 @@ footer {
     background-color: white;
     box-shadow: rgba(0, 0, 0, 0.1) 0px -10px 15px;
     border-radius: 30px 30px 0 0;
+}
+
+.col-2 {
+    cursor: pointer;
 }
