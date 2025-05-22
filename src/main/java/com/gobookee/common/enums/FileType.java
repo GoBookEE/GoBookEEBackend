@@ -1,7 +1,6 @@
 package com.gobookee.common.enums;
 
 public enum FileType {
-    NOTICE,
     USER,
     PLACE,
     STUDY,
