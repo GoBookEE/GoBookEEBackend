@@ -11,9 +11,10 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Getter
-public class StudyDTO {
+public class Study {
     private Long studySeq;
     private String studyTitle;
+    private String studyContent;
     private Timestamp studyDate;
     private Integer studyMemberLimit;
     private Timestamp studyEditTime;
