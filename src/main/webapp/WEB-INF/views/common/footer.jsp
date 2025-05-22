@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: ddanggoos
-  Date: 2025. 5. 13.
-  Time: 18:17
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 </body>
 
@@ -18,7 +11,7 @@
             <div><i class="bi bi-book-fill fs-1"></i></div>
             <div>스터디</div>
         </div>
-        <div class="col-2">
+        <div class="col-2" onclick="location.assign('<%=request.getContextPath()%>')">
             <div><i class="bi bi-house-door-fill fs-1"></i></div>
             <div>홈</div>
         </div>
