@@ -2,6 +2,9 @@ package com.gobookee.common;
 
 import com.google.gson.Gson;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
 /**
  * Gson 라이브러리로 JSON <-> 객체 변환 템플릿
  */
@@ -27,7 +30,7 @@ public class JsonConvertTemplate {
      * @param obj
      * @return
      */
-    public static String toJson(Object obj) {
-        return gson.toJson(obj);
+    public static void toJson(Object obj, HttpServletResponse response) throws IOException {
+        gson.toJson(obj, response.getWriter());
     }
 }
