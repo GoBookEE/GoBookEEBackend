@@ -24,10 +24,6 @@ public class BookListServlet extends HttpServlet {
 
         int numPerpage = 5;
         List<Book> bookList = BookService.bookService().getAllBookList(cPage,numPerpage);
-        for (Book book : bookList) {
-            System.out.println(book.getBookPubdate());
-        }
-
         int totalData=BookService.bookService().getAllBookCount();
         int totalPage = (int)Math.ceil((double)totalData/numPerpage);
         request.setAttribute("totalPage", totalPage);
