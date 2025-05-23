@@ -19,7 +19,7 @@ import java.util.List;
 import static com.gobookee.book.external.AladinApiClient.aladinApiClient;
 import static com.gobookee.book.service.AladinService.aladinService;
 
-@WebServlet("/book/aladin/insertbook.do")
+@WebServlet("/books/aladin/insertbook")
 public class BookInsertFromAladinServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
