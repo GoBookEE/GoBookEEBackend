@@ -51,5 +51,18 @@ public class ReviewService {
 		return reviews;
 	}
 	
+	public Review getReviewBySeq(Long reviewSeq) {
+		Connection conn= getConnection();
+		Review review=dao.getReviewBySeq(conn, reviewSeq);
+		close(conn);
+		return review;
+	}
+	
+	public int getRecommendCount(Integer reviewSeq) {
+		Connection conn= getConnection();
+		int count=dao.getRecommendCount(conn, reviewSeq);
+		close(conn);
+		return count;
+	}
 	
 }
