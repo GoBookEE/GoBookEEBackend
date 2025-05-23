@@ -37,6 +37,12 @@ public class ReviewService {
 		return reviews;
 	}
 	
+	public int reviewCount() {
+		Connection conn= getConnection();
+		int totalData=dao.reviewCount(conn);
+		close(conn);
+		return totalData;
+	}
 	
 	
 }

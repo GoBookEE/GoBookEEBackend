@@ -74,7 +74,23 @@ public class ReviewDAO {
 		return reviews;
 	}
 	
-	
+	public int reviewCount(Connection conn) {
+		Statement stmt=null;
+		ResultSet rs=null;
+		int result=0;
+		try {
+			stmt=conn.createStatement();
+			rs=stmt.executeQuery(sqlProp.getProperty("reviewCount"));
+			if(rs.next()) result=rs.getInt(1); 
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(stmt);
+			
+		}
+		return result;
+	}
 	
 	
 
