@@ -55,6 +55,25 @@ public class ReviewDAO {
 		return reviews;
 	}
 	
+	public List<Review> getAllReviewsByRec(Connection conn, int cPage, int numPerpage) {
+		List<Review> reviews = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllReviewsByRec"));
+			pstmt.setInt(1, (cPage-1)*numPerpage+1);
+			pstmt.setInt(2, cPage*numPerpage);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+				reviews.add(getReviewDTO(rs));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return reviews;
+	}
+	
 	
 	
 	

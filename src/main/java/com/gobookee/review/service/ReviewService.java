@@ -30,6 +30,13 @@ public class ReviewService {
 		return reviews;
 	}
 	
+	public List<Review> getAllReviewsByRec(int cPage, int numPerpage){
+		Connection conn= getConnection();
+		List<Review> reviews=dao.getAllReviewsByRec(conn,cPage,numPerpage);
+		close(conn);
+		return reviews;
+	}
+	
 	
 	
 }
