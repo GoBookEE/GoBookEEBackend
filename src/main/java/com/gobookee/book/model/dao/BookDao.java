@@ -37,8 +37,8 @@ public class BookDao {
         List<Book> bookList = new ArrayList<Book>();
         try{
             pstmt = conn.prepareStatement(sql.getProperty("getBookListPaging"));
-            pstmt.setInt(1, cPage);
-            pstmt.setInt(2, numPage);
+            pstmt.setInt(1, (cPage-1)*numPage+1);
+            pstmt.setInt(2, cPage*numPage);
             rs=pstmt.executeQuery();
             while(rs.next()){
                 bookList.add(getBook(rs));
