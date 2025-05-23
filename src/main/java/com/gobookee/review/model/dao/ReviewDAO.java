@@ -92,7 +92,22 @@ public class ReviewDAO {
 		return result;
 	}
 	
-	
+	public List<Review> getBestReviews(Connection conn) {
+		List<Review> reviews = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("getBestReviews"));
+			rs = pstmt.executeQuery();
+			while (rs.next())
+				reviews.add(getReviewDTO(rs));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return reviews;
+	}
 
 	private Review getReviewDTO(ResultSet rs) throws SQLException {
 		Review dto = Review.builder().reviewSeq(rs.getLong("REVIEW_SEQ"))

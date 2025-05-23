@@ -44,5 +44,12 @@ public class ReviewService {
 		return totalData;
 	}
 	
+	public List<Review> getBestReviews(){
+		Connection conn= getConnection();
+		List<Review> reviews=dao.getBestReviews(conn);
+		close(conn);
+		return reviews;
+	}
+	
 	
 }
