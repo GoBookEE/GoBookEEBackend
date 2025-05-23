@@ -3,7 +3,7 @@
 
 <footer class="py-2">
     <div class="container d-flex justify-content-around text-center small">
-        <div class="col-2">
+        <div class="col-2" onclick="location.assign('<%=request.getContextPath()%>/review/listpage')">
             <div><i class="bi bi-chat-text-fill fs-1"></i></div>
             <div>리뷰</div>
         </div>
