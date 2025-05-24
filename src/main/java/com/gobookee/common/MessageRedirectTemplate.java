@@ -23,9 +23,9 @@ public class MessageRedirectTemplate {
     private String close;
     private ServletRequest request;
     private ServletResponse response;
-    private static final String PATH = CommonPathTemplate.getPath("/common/msg");
+    private static final String PATH = CommonPathTemplate.getViewPath("/common/msg");
 
-    public void responseRequest() throws ServletException, IOException {
+    public void forward() throws ServletException, IOException {
         request.setAttribute("msg", msg);
         request.setAttribute("loc", loc);
         request.getRequestDispatcher(PATH).forward(request, response);

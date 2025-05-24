@@ -9,38 +9,27 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.gobookee.review.service.ReviewService;
 
-/**
- * Servlet implementation class ReviewViewServlet
- */
 @WebServlet("/review/reviewseq")
 public class ReviewViewServlet extends HttpServlet {
-	private ReviewService service=ReviewService.reviewService();
+	private ReviewService service = ReviewService.reviewService();
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public ReviewViewServlet() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Long seq=Long.valueOf(request.getParameter("seq"));
+	public ReviewViewServlet() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		Long seq = Long.valueOf(request.getParameter("seq"));
 		System.out.println(service.getReviewBySeq(seq));
 		request.setAttribute("review", service.getReviewBySeq(seq));
-		
+
 		request.getRequestDispatcher("/WEB-INF/views/review/reviewView.jsp").forward(request, response);
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doGet(request, response);
 	}
 

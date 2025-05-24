@@ -167,78 +167,56 @@ public class ReviewDAO {
 	}
 
 	private Comments getCommentDTO(ResultSet rs) throws SQLException {
-		Comments dto = Comments.builder().commentsSeq(rs.getLong("COMMENTS_SEQ")).commentsContents(rs.getString("COMMENTS_CONTENTS"))
+		Comments dto = Comments.builder().commentsSeq(rs.getLong("COMMENTS_SEQ"))
+				.commentsContents(rs.getString("COMMENTS_CONTENTS"))
 				.commentsCreateTime(rs.getTimestamp("COMMENTS_CREATE_TIME"))
 				.commentsDeleteTime(rs.getTimestamp("COMMENTS_DELETE_TIME"))
 				.commentsEditTime(rs.getTimestamp("COMMENTS_EDIT_TIME"))
 				.commentsParentSeq(rs.getLong("COMMENTS_PARENT_SEQ"))
 				.commentsIsPublic(rs.getString("COMMENTS_IS_PUBLIC").charAt(0)).userSeq(rs.getLong("USER_SEQ"))
-				.reviewSeq(rs.getLong("REVIEW_SEQ"))
-				.build();
+				.reviewSeq(rs.getLong("REVIEW_SEQ")).build();
 		return dto;
 	}
-	
+
 	private CommentsViewResponse getCommentsViewResponse(ResultSet rs) throws SQLException {
 		CommentsViewResponse dto = CommentsViewResponse.builder().commentsContents(rs.getString("COMMENTS_CONTENTS"))
-				.commentLevel(rs.getInt("COMMENT_LEVEL"))
-				.commentsParentSeq(rs.getLong("COMMENTS_PARENT_SEQ"))
-				.commentsSeq(rs.getLong("COMMENTS_SEQ"))
-				.commentsCreateTime(rs.getTimestamp("COMMENTS_CREATE_TIME"))
-				.commentsEditTime(rs.getTimestamp("COMMENTS_EDIT_TIME"))
-				.userNickName(rs.getString("USER_NICKNAME"))
+				.commentLevel(rs.getInt("COMMENT_LEVEL")).commentsParentSeq(rs.getLong("COMMENTS_PARENT_SEQ"))
+				.commentsSeq(rs.getLong("COMMENTS_SEQ")).commentsCreateTime(rs.getTimestamp("COMMENTS_CREATE_TIME"))
+				.commentsEditTime(rs.getTimestamp("COMMENTS_EDIT_TIME")).userNickName(rs.getString("USER_NICKNAME"))
 				.build();
 		return dto;
 	}
 
 	private Review getReviewDTO(ResultSet rs) throws SQLException {
-		Review dto = Review.builder().reviewSeq(rs.getLong("REVIEW_SEQ"))
-				.reviewTitle(rs.getString("REVIEW_TITLE")).reviewContents(rs.getString("REVIEW_CONTENTS"))
-				.reviewCreateTime(rs.getTimestamp("REVIEW_CREATE_TIME")).reviewRate(rs.getInt("REVIEW_RATE"))
-				.reviewDeleteTime(rs.getTimestamp("REVIEW_DELETE_TIME"))
+		Review dto = Review.builder().reviewSeq(rs.getLong("REVIEW_SEQ")).reviewTitle(rs.getString("REVIEW_TITLE"))
+				.reviewContents(rs.getString("REVIEW_CONTENTS")).reviewCreateTime(rs.getTimestamp("REVIEW_CREATE_TIME"))
+				.reviewRate(rs.getInt("REVIEW_RATE")).reviewDeleteTime(rs.getTimestamp("REVIEW_DELETE_TIME"))
 				.reviewEditTime(rs.getTimestamp("REVIEW_EDIT_TIME")).userSeq(rs.getLong("USER_SEQ"))
-				.reviewIsPublic(rs.getString("REVIEW_IS_PUBLIC").charAt(0))
-				.build();
+				.reviewIsPublic(rs.getString("REVIEW_IS_PUBLIC").charAt(0)).build();
 		return dto;
 	}
-	
+
 	public ReviewListResponse getReviewListResponse(ResultSet rs) throws SQLException {
-	    return ReviewListResponse.builder()
-	    	.reviewSeq(rs.getLong("REVIEW_SEQ"))
-	        .reviewTitle(rs.getString("REVIEW_TITLE"))
-	        .reviewContents(rs.getString("REVIEW_CONTENTS"))
-	        .reviewCreateTime(rs.getTimestamp("REVIEW_CREATE_TIME"))
-	        .reviewRate(rs.getInt("REVIEW_RATE"))
-	        .reviewEditTime(rs.getTimestamp("REVIEW_EDIT_TIME"))
-	        .bookTitle(rs.getString("BOOK_TITLE"))
-	        .bookAuthor(rs.getString("BOOK_AUTHOR"))
-	        .bookPublisher(rs.getString("BOOK_PUBLISHER"))
-	        .bookCover(rs.getString("BOOK_COVER"))
-	        .bookReviewCount(rs.getInt("BOOK_REVIEW_COUNT"))
-	        .bookAvgRate(rs.getDouble("BOOK_AVG_RATE"))
-	        .recommendCount(rs.getInt("RECOMMEND_COUNT"))
-	        .commentsCount(rs.getInt("COMMENTS_COUNT"))
-	        .build();
+		return ReviewListResponse.builder().reviewSeq(rs.getLong("REVIEW_SEQ"))
+				.reviewTitle(rs.getString("REVIEW_TITLE")).reviewContents(rs.getString("REVIEW_CONTENTS"))
+				.reviewCreateTime(rs.getTimestamp("REVIEW_CREATE_TIME")).reviewRate(rs.getInt("REVIEW_RATE"))
+				.reviewEditTime(rs.getTimestamp("REVIEW_EDIT_TIME")).bookTitle(rs.getString("BOOK_TITLE"))
+				.bookAuthor(rs.getString("BOOK_AUTHOR")).bookPublisher(rs.getString("BOOK_PUBLISHER"))
+				.bookCover(rs.getString("BOOK_COVER")).bookReviewCount(rs.getInt("BOOK_REVIEW_COUNT"))
+				.bookAvgRate(rs.getDouble("BOOK_AVG_RATE")).recommendCount(rs.getInt("RECOMMEND_COUNT"))
+				.commentsCount(rs.getInt("COMMENTS_COUNT")).build();
 	}
 
 	public ReviewViewResponse getReviewViewResponse(ResultSet rs) throws SQLException {
-		return ReviewViewResponse.builder()
-				.reviewSeq(rs.getLong("REVIEW_SEQ"))
-		        .reviewTitle(rs.getString("REVIEW_TITLE"))
-		        .reviewContents(rs.getString("REVIEW_CONTENTS"))
-		        .reviewCreateTime(rs.getTimestamp("REVIEW_CREATE_TIME"))
-		        .reviewRate(rs.getInt("REVIEW_RATE"))
-		        .reviewEditTime(rs.getTimestamp("REVIEW_EDIT_TIME"))
-		        .comments(new ArrayList<>())
-		        .bookTitle(rs.getString("BOOK_TITLE"))
-		        .bookAuthor(rs.getString("BOOK_AUTHOR"))
-		        .bookPublisher(rs.getString("BOOK_PUBLISHER"))
-		        .bookCover(rs.getString("BOOK_COVER"))
-		        .bookReviewCount(rs.getInt("BOOK_REVIEW_COUNT"))
-		        .bookAvgRate(rs.getDouble("BOOK_AVG_RATE"))
-		        .recommendCount(rs.getInt("RECOMMEND_COUNT"))
-		        .nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT"))
-		        .build();
+		return ReviewViewResponse.builder().reviewSeq(rs.getLong("REVIEW_SEQ"))
+				.reviewTitle(rs.getString("REVIEW_TITLE")).reviewContents(rs.getString("REVIEW_CONTENTS"))
+				.reviewCreateTime(rs.getTimestamp("REVIEW_CREATE_TIME")).reviewRate(rs.getInt("REVIEW_RATE"))
+				.reviewEditTime(rs.getTimestamp("REVIEW_EDIT_TIME")).comments(new ArrayList<>())
+				.bookTitle(rs.getString("BOOK_TITLE")).bookAuthor(rs.getString("BOOK_AUTHOR"))
+				.bookPublisher(rs.getString("BOOK_PUBLISHER")).bookCover(rs.getString("BOOK_COVER"))
+				.bookReviewCount(rs.getInt("BOOK_REVIEW_COUNT")).bookAvgRate(rs.getDouble("BOOK_AVG_RATE"))
+				.recommendCount(rs.getInt("RECOMMEND_COUNT")).nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT"))
+				.build();
 	}
-	
-	
+
 }

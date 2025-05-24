@@ -92,7 +92,15 @@ List<CommentsViewResponse> comments = review.getComments();
         </div> -->
 			<div class="border-top pt-3">
 				<h6 class="fw-bold mb-3">댓글</h6>
-
+				<%-- 댓글 작성 폼 --%>
+				<form class="d-flex mt-3" method="post"
+					action="<%=request.getContextPath()%>/review/insertComment">
+					<input type="hidden" name="reviewSeq"
+						value="<%=review.getReviewSeq()%>"> <input type="text"
+						class="form-control me-2" name="commentContent"
+						placeholder="댓글을 입력하세요">
+					<button class="btn btn-outline-success">등록</button>
+				</form>
 				<%-- <%
 				if (comments != null && comments.size() > 0) {
 					for (CommentsViewResponse c : comments) {
@@ -148,8 +156,11 @@ List<CommentsViewResponse> comments = review.getComments();
 					<div class="mt-1"><%=c.getCommentsContents()%></div>
 
 					<!-- 대댓글 영역 (토글) -->
-					<div class="child-comments mt-2 d-none"
-						id="child-comments-<%=c.getCommentsSeq()%>">
+					<%-- <div class="child-comments mt-2 d-none"
+						id="child-comments-<%=c.getCommentsSeq()%>"> --%>
+						<!-- 댓글의 대댓글 영역 -->
+	<div class="child-comments mt-2" id="child-comments-<%= c.getCommentsSeq() %>" style="display: none;">
+						
 						<%
 						for (CommentsViewResponse child : comments) {
 							if (child.getCommentLevel() == 2 && child.getCommentsParentSeq() == c.getCommentsSeq()) {
@@ -167,6 +178,13 @@ List<CommentsViewResponse> comments = review.getComments();
 						}
 						}
 						%>
+						<%-- ✅ 대댓글 입력창 --%>
+            <form class="d-flex mt-2 ms-4" method="post" action="<%=request.getContextPath()%>/review/insertComment">
+                <input type="hidden" name="reviewSeq" value="<%= review.getReviewSeq() %>">
+                <input type="hidden" name="parentCommentSeq" value="<%= c.getCommentsSeq() %>">
+                <input type="text" class="form-control me-2" name="commentContent" placeholder="답글을 입력하세요">
+                <button class="btn btn-outline-secondary btn-sm">등록</button>
+            </form>
 					</div>
 				</div>
 				<%
@@ -182,19 +200,14 @@ List<CommentsViewResponse> comments = review.getComments();
 				%>
 
 
-				<%-- 댓글 작성 폼 --%>
-				<form class="d-flex mt-3" method="post"
-					action="<%=request.getContextPath()%>/review/insertComment">
-					<input type="hidden" name="reviewSeq"
-						value="<%=review.getReviewSeq()%>"> <input type="text"
-						class="form-control me-2" name="commentContent"
-						placeholder="댓글을 입력하세요">
-					<button class="btn btn-outline-success">등록</button>
-				</form>
+				
 			</div>
 
 		</div>
-<script>
+
+	</main>
+</section>
+<!-- <script>
 $(document).ready(function () {
     // 답글 보기 토글
     $(".btn-reply-toggle").on("click", function () {
@@ -206,8 +219,23 @@ $(document).ready(function () {
         btn.text(isShown ? "답글 닫기" : "답글");
     });
 });
+</script> -->
+<script>
+$(document).ready(function () {
+    $(".btn-reply-toggle").on("click", function () {
+        const id = $(this).data("comment-id");
+        const target = $("#child-comments-" + id);
+        
+        // 문제 디버깅용 로그
+        console.log("Toggle ID:", id);
+        console.log("Element found?", target.length);
+
+        target.slideToggle(200, function () {
+            const isShown = target.is(":visible");
+            $(`button[data-comment-id='${id}']`).text(isShown ? "답글 닫기" : "답글");
+        });
+    });
+});
 </script>
 
-	</main>
-</section>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

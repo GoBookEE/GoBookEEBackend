@@ -8,13 +8,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import static com.gobookee.common.JDBCTemplate.close;
-import static com.gobookee.common.JDBCTemplate.commit;
 
 public class BookDao {
     PreparedStatement pstmt = null;
+    ResultSet rs = null;
     Properties sql = new Properties();
 
     private static BookDao dao;
@@ -23,7 +25,7 @@ public class BookDao {
         return dao;
     }
     private BookDao() {
-        String path = BookDao.class.getResource("/sql/book-sql.properties").getPath();
+        String path = BookDao.class.getResource("/config/book-sql.properties").getPath();
         try(FileReader fr = new FileReader(path)){
             sql.load(fr);
         }catch(IOException e){
@@ -31,11 +33,36 @@ public class BookDao {
         }
     }
 
+    public List<Book> getAllBookList(Connection conn, int cPage, int numPage){
+        List<Book> bookList = new ArrayList<Book>();
+        try{
+            pstmt = conn.prepareStatement(sql.getProperty("getBookListPaging"));
+            pstmt.setInt(1, (cPage-1)*numPage+1);
+            pstmt.setInt(2, cPage*numPage);
+            rs=pstmt.executeQuery();
+            while(rs.next()){
+                bookList.add(getBook(rs));
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return bookList;
+    }
+    public int getAllBookCount(Connection conn){
+        int bookCount = 0;
+        try{
+            pstmt = conn.prepareStatement(sql.getProperty("getBookCount"));
+            rs=pstmt.executeQuery();
+            while(rs.next()) bookCount =rs.getInt(1);
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return bookCount;
+    }
+
     public int insertBook(Connection conn, Book b){
         int result = 0;
         try{
-            System.out.println(sql);
-            System.out.println(sql.getProperty("insertBook"));
             pstmt = conn.prepareStatement(sql.getProperty("insertBook"));
             pstmt.setLong(1,b.getBookID());//BOOK_ID
             pstmt.setString(2,b.getBookTitle());//BOOK_TITLE
@@ -71,4 +98,35 @@ public class BookDao {
         return result;
     }
 
+    public Book getBook(ResultSet rs) throws SQLException {
+        new Book();
+        return Book.builder()
+                .bookSeq(rs.getLong(2))
+                .bookID(rs.getLong(3))
+                .bookTitle(rs.getString(4))
+                .bookLink(rs.getString(5))
+                .bookAuthor(rs.getString(6))
+                .bookPubdate(rs.getDate(7))
+                .bookDescription(rs.getString(8))
+                .bookIsbn(rs.getString(9))
+                .bookIsbn13(rs.getString(10))
+                .bookPriceSales(rs.getInt(11))
+                .bookPriceStandard(rs.getInt(12))
+                .bookMallType(rs.getString(13))
+                .bookStockStatus(rs.getString(14))
+                .bookMileage(rs.getInt(15))
+                .bookCover(rs.getString(16))
+                .bookCategoryId(rs.getString(17))
+                .bookCategoryName(rs.getString(18))
+                .bookPublisher(rs.getString(19))
+                .bookSalesPoint(rs.getInt(20))
+                .bookAdult(rs.getString(21))
+                .bookFixedPrice(rs.getString(22))
+                .bookCustomerReviewRank(rs.getInt(23))
+                .bookSeriesId(rs.getString(24))
+                .bookSeriesLink(rs.getString(25))
+                .bookSeriesName(rs.getString(26))
+                .bookSubInfo(rs.getString(27))
+                .build();
+    }
 }

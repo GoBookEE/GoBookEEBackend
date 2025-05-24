@@ -11,7 +11,7 @@ import java.io.IOException;
 public class PlaceReservePageServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getRequestDispatcher(CommonPathTemplate.getPath("/place/placeReserve")).forward(request, response);
+        request.getRequestDispatcher(CommonPathTemplate.getViewPath("/place/placeReserve")).forward(request, response);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.gobookee.review.model.dao.ReviewDAO;
 import com.gobookee.review.model.dto.CommentsViewResponse;
 import com.gobookee.review.model.dto.ReviewListResponse;
 import com.gobookee.review.model.dto.ReviewViewResponse;
+import com.gobookee.review.model.dto.Review;
 
 import java.sql.Connection;
 import java.util.List;
@@ -56,9 +57,9 @@ public class ReviewService {
 	public ReviewViewResponse getReviewBySeq(Long reviewSeq) {
 		Connection conn = getConnection();
 		ReviewViewResponse review = dao.getReviewBySeq(conn, reviewSeq);
-		
+
 		List<CommentsViewResponse> comments = dao.getReviewComments(conn, reviewSeq);
-		if(comments!=null) {
+		if (comments != null) {
 			review.setComments(comments);
 		}
 		close(conn);
