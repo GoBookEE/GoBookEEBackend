@@ -13,21 +13,21 @@ import com.gobookee.review.service.ReviewService;
 
 @WebServlet("/review/listpage")
 public class ReviewListPageServlet extends HttpServlet {
-	private ReviewService service=ReviewService.reviewService();
+	private ReviewService service = ReviewService.reviewService();
 	private static final long serialVersionUID = 1L;
-       
-    public ReviewListPageServlet() {
-        super();
-    }
 
+	public ReviewListPageServlet() {
+		super();
+	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		request.setAttribute("list", service.getBestReviews());
 		request.getRequestDispatcher("/WEB-INF/views/review/reviewList.jsp").forward(request, response);
 	}
 
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 	}
 
