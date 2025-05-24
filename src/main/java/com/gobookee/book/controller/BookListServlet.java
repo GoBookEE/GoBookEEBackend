@@ -1,6 +1,7 @@
 package com.gobookee.book.controller;
 import com.gobookee.book.model.dto.Book;
 import com.gobookee.book.service.BookService;
+import com.gobookee.common.AjaxPageBarTemplate;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,6 +27,9 @@ public class BookListServlet extends HttpServlet {
         List<Book> bookList = BookService.bookService().getAllBookList(cPage,numPerpage);
         int totalData=BookService.bookService().getAllBookCount();
         int totalPage = (int)Math.ceil((double)totalData/numPerpage);
+        StringBuffer pageBar = new StringBuffer();
+        pageBar = AjaxPageBarTemplate.builder().cPage(cPage).numPerPage(numPerpage).totalData(totalData).build().makePageBar(request);
+        request.setAttribute("pageBar", pageBar);
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("bookList", bookList);
         request.setAttribute("cPage", cPage);

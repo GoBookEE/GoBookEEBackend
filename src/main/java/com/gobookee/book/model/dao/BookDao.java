@@ -106,7 +106,7 @@ public class BookDao {
                 .bookTitle(rs.getString(4))
                 .bookLink(rs.getString(5))
                 .bookAuthor(rs.getString(6))
-                .bookPubdate(rs.getDate(7)!=null?rs.getDate(7):null)
+                .bookPubdate(rs.getDate(7))
                 .bookDescription(rs.getString(8))
                 .bookIsbn(rs.getString(9))
                 .bookIsbn13(rs.getString(10))
