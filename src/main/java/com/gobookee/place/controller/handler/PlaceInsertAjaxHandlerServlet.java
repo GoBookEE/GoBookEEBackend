@@ -48,7 +48,7 @@ public class PlaceInsertAjaxHandlerServlet extends HttpServlet {
 
         Place place = Place.builder()
                 .placeTitle(placeTitle)
-                .placeContent(placeContent)
+                .placeContents(placeContent)
                 .placeAddress(placeAddress)
                 .placeLatitude(placeLatitude)
                 .placeLongitude(placeLongitude)
