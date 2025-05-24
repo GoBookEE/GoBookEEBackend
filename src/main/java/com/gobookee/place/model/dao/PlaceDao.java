@@ -2,6 +2,7 @@ package com.gobookee.place.model.dao;
 
 import com.gobookee.place.model.dto.Place;
 import com.gobookee.place.model.dto.PlaceListResponse;
+import com.gobookee.place.model.dto.PlaceViewResponse;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -35,32 +36,23 @@ public class PlaceDao {
         return placeDao;
     }
 
-
     public int insertPlaceAndReturnId(Connection conn, Place place) {
-        pstmt = null;
-        rs = null;
-        int result = 0;
-        int generatedId = -1;
+        int generatedId = getNextBoardSeq(conn);
+        if (generatedId == -1) {
+            // 시퀀스 실패 시 즉시 반환 (INSERT 시도 X)
+            return -1;
+        }
+        int result = insertPlace(conn, place, generatedId);
+        return result > 0 ? generatedId : -1;
+    }
+
+    private int getNextBoardSeq(Connection conn) {
+        int seq = -1;
         try {
             pstmt = conn.prepareStatement(sqlProp.getProperty("getNextBoardSeq"));
             rs = pstmt.executeQuery();
             if (rs.next()) {
-                generatedId = rs.getInt(1);
-            }
-
-            if (generatedId != -1) {
-                pstmt = conn.prepareStatement(sqlProp.getProperty("createPlace"));
-                pstmt.setInt(1, generatedId);
-                pstmt.setString(2, place.getPlaceTitle());
-                pstmt.setString(3, place.getPlaceContents());
-                pstmt.setString(4, place.getPlaceAddress());
-                pstmt.setDouble(5, place.getPlaceLatitude());
-                pstmt.setDouble(6, place.getPlaceLongitude());
-                pstmt.setLong(7, place.getUserSeq());
-                result = pstmt.executeUpdate();
-                if (result == 0) {
-                    return -1;
-                }
+                seq = rs.getInt(1);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -68,7 +60,27 @@ public class PlaceDao {
             close(rs);
             close(pstmt);
         }
-        return generatedId;
+        return seq;
+    }
+
+    private int insertPlace(Connection conn, Place place, int seq) {
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("createPlace"));
+            pstmt.setInt(1, seq);
+            pstmt.setString(2, place.getPlaceTitle());
+            pstmt.setString(3, place.getPlaceContents());
+            pstmt.setString(4, place.getPlaceAddress());
+            pstmt.setDouble(5, place.getPlaceLatitude());
+            pstmt.setDouble(6, place.getPlaceLongitude());
+            pstmt.setLong(7, place.getUserSeq());
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return result;
     }
 
     public int placeCount(Connection conn) {
@@ -102,7 +114,7 @@ public class PlaceDao {
             pstmt.setInt(2, cPage * numPerPage);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                placeList.add(getPlaceResponse(rs));
+                placeList.add(PlaceListResponse.from(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -125,7 +137,7 @@ public class PlaceDao {
             pstmt.setInt(2, cPage * numPerPage);
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                placeList.add(getPlaceResponse(rs));
+                placeList.add(PlaceListResponse.from(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -136,27 +148,23 @@ public class PlaceDao {
         return placeList;
     }
 
-    private Place getPlace(ResultSet rs) throws SQLException {
-        return Place.builder()
-                .placeSeq(rs.getLong("PLACE_SEQ"))
-                .placeTitle(rs.getString("PLACE_TITLE"))
-                .placeContents(rs.getString("PLACE_CONTENTS"))
-                .placeCreateTime(rs.getTimestamp("PLACE_CREATE_TIME"))
-                .placeAddress(rs.getString("PLACE_ADDRESS"))
-                .placeLatitude(rs.getDouble("PLACE_LATITUDE"))
-                .placeLongitude(rs.getDouble("PLACE_LONGITUDE"))
-                .placeIsPublic(rs.getString("PLACE_IS_PUBLIC").charAt(0))
-                .userSeq(rs.getLong("USER_SEQ"))
-                .build();
-    }
-
-    private PlaceListResponse getPlaceResponse(ResultSet rs) throws SQLException {
-        return PlaceListResponse.builder()
-                .placeTitle(rs.getString("PLACE_TITLE"))
-                .placeContents(rs.getString("PLACE_CONTENTS"))
-                .placeAddress(rs.getString("PLACE_ADDRESS"))
-                .userNickname(rs.getString("WRITER_NICKNAME"))
-                .recommendCount(rs.getLong("RECOMMEND_COUNT"))
-                .build();
+    public PlaceViewResponse getPlaceBySeq(Connection conn, Long placeSeq) {
+        pstmt = null;
+        rs = null;
+        PlaceViewResponse place = null;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("getPlaceBySeq"));
+            pstmt.setLong(1, placeSeq);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                place = PlaceViewResponse.from(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return place;
     }
 }
