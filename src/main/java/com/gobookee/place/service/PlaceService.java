@@ -4,8 +4,10 @@ import com.gobookee.photo.model.dao.PhotoDao;
 import com.gobookee.photo.model.dto.Photo;
 import com.gobookee.place.model.dao.PlaceDao;
 import com.gobookee.place.model.dto.Place;
+import com.gobookee.place.model.dto.PlaceListResponse;
 
 import java.sql.Connection;
+import java.util.HashMap;
 import java.util.List;
 
 import static com.gobookee.common.JDBCTemplate.*;
@@ -50,5 +52,26 @@ public class PlaceService {
             }
         }
         return false;
+    }
+
+    public int placeCount() {
+        conn = getConnection();
+        int totalData = placeDao.placeCount(conn);
+        close(conn);
+        return totalData;
+    }
+
+    public List<PlaceListResponse> getAllPlaceList(HashMap requestParam) {
+        conn = getConnection();
+        List<PlaceListResponse> placeList = placeDao.getAllPlaceList(conn, requestParam);
+        close(conn);
+        return placeList;
+    }
+
+    public List<PlaceListResponse> getAllPlaceListByRec(HashMap requestParam) {
+        conn = getConnection();
+        List<PlaceListResponse> placeList = placeDao.getAllPlaceListByRec(conn, requestParam);
+        close(conn);
+        return placeList;
     }
 }

@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 public class Place {
     private Long placeSeq;
     private String placeTitle;
-    private String placeContent;
+    private String placeContents;
     private Timestamp placeCreateTime;
     private Timestamp placeDeleteTime;
     private String placeAddress;

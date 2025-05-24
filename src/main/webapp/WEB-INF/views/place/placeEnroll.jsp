@@ -67,7 +67,6 @@
         }).open();
     }
 
-
     const saveImageFiles = () => {
         const formData = new FormData();
         const files = $('#placeImage')[0].files;
