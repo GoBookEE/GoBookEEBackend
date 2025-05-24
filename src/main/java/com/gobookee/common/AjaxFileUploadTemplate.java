@@ -12,7 +12,7 @@ import java.io.IOException;
  */
 public class AjaxFileUploadTemplate {
     public static MultipartRequest uploadFiles(HttpServletRequest request, FileType fileType, int fileSize) throws IOException {
-        String filePath = request.getServletContext().getRealPath(CommonPathTemplate.BASIC_UPLOAD_PATH + "/" + fileType);
+        String filePath = request.getServletContext().getRealPath(CommonPathTemplate.BASIC_UPLOAD_PATH + fileType);
         return new MultipartRequest(request, filePath, fileSize, "utf-8", new CustomFileRenamePolicy());
     }
 }

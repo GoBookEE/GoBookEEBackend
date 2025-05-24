@@ -5,6 +5,7 @@ import com.gobookee.photo.model.dto.Photo;
 import com.gobookee.place.model.dao.PlaceDao;
 import com.gobookee.place.model.dto.Place;
 import com.gobookee.place.model.dto.PlaceListResponse;
+import com.gobookee.place.model.dto.PlaceViewResponse;
 
 import java.sql.Connection;
 import java.util.HashMap;
@@ -29,29 +30,41 @@ public class PlaceService {
     }
 
     public boolean createPlace(Place place, List<String> fileList) {
-        //하나의 트랜잭션으로 사진 등록 및 매장 등록 처리
-        conn = getConnection();
-        long boardSeq = placeDao.insertPlaceAndReturnId(conn, place);
-        if (boardSeq != -1) {
-            int photoResult = 0;
-            for (String fileName : fileList) {
-                photoResult += photoDao.createPhoto(
-                        conn, Photo.builder()
-                                .photoRenamedName(fileName)
-                                .photoBoardSeq(boardSeq)
-                                .build()
-                );
+        Connection conn = getConnection();
+        boolean isSuccess = false;
+
+        //매장 등록 & 매장 시퀀스 반환
+        try {
+            long boardSeq = placeDao.insertPlaceAndReturnId(conn, place);
+            if (boardSeq == -1) {
+                rollback(conn);
+                return false;
             }
-            if (fileList.size() == photoResult) {
+
+            //사진 등록
+            int insertedPhotos = 0;
+            for (String fileName : fileList) {
+                Photo photo = Photo.builder()
+                        .photoRenamedName(fileName)
+                        .photoBoardSeq(boardSeq)
+                        .build();
+                insertedPhotos += photoDao.createPhoto(conn, photo);
+            }
+
+            //사진 등록 다 성공 시 트랜잭션 커밋처리 하나라도 실패 시 롤백처리
+            if (insertedPhotos == fileList.size()) {
                 commit(conn);
-                close(conn);
-                return true;
+                isSuccess = true;
             } else {
                 rollback(conn);
-                close(conn);
             }
+        } catch (Exception e) {
+            rollback(conn);
+            e.printStackTrace();
+        } finally {
+            close(conn);
         }
-        return false;
+        return isSuccess;
     }
 
     public int placeCount() {
@@ -73,5 +86,14 @@ public class PlaceService {
         List<PlaceListResponse> placeList = placeDao.getAllPlaceListByRec(conn, requestParam);
         close(conn);
         return placeList;
+    }
+
+    public PlaceViewResponse getPlaceBySeq(Long placeSeq) {
+        conn = getConnection();
+        PlaceViewResponse place = placeDao.getPlaceBySeq(conn, placeSeq);
+        List<String> photoList = photoDao.getPhotoListByBoardSeq(conn, placeSeq);
+        place.setPhotoNames(photoList);
+        close(conn);
+        return place;
     }
 }
