@@ -36,11 +36,16 @@ public class BookInsertFromAladinServlet extends HttpServlet {
                     JSONObject item = items.getJSONObject(i);
 
                     String pubDateStr = item.optString("pubDate");
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                     Date pubDate = null;
+
                     try {
-                        pubDate = (Date) new SimpleDateFormat("yyyy-MM-dd").parse(pubDateStr);
+                        java.util.Date utilDate = sdf.parse(pubDateStr); // java.util.Date
+                        pubDate = new java.sql.Date(utilDate.getTime()); // java.sql.Date로 변환
+
                     } catch (Exception e) {
                         // 무시
+                        e.printStackTrace();
                     }
 
                     Book book = Book.builder()
