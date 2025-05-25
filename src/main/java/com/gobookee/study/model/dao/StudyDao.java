@@ -114,24 +114,6 @@ public class StudyDao {
         return studyList;
     }
 
-    public int getStudyCountByPlaceSeqAndDate(Connection conn, Long placeSeq, Date date) {
-        pstmt = null;
-        rs = null;
-        int count = 0;
-        try {
-            pstmt = conn.prepareStatement(sql.getProperty("getStudyCountByPlaceSeqAndDate"));
-            pstmt.setLong(1, placeSeq);
-            pstmt.setDate(2, date);
-            rs = pstmt.executeQuery();
-            if (rs.next()) {
-                count = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return count;
-    }
-
     private StudyList getStudyList(ResultSet rs) throws SQLException {
         return StudyList.builder()
                 .studySeq(rs.getLong("study_seq"))

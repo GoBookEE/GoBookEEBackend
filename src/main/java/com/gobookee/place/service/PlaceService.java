@@ -96,4 +96,76 @@ public class PlaceService {
         close(conn);
         return place;
     }
+
+    public boolean deletePlace(Long placeSeq) {
+        conn = getConnection();
+        boolean isSuccess = false;
+        try {
+            int result = placeDao.deletePlace(conn, placeSeq);
+            if (result == 0) {
+                rollback(conn);
+                return false;
+            }
+
+            if (!photoDao.deletePhotoByPlaceSeq(conn, placeSeq)) {
+                rollback(conn);
+                return false;
+            }
+
+            isSuccess = true;
+            commit(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rollback(conn);
+        } finally {
+            close(conn);
+        }
+        return isSuccess;
+    }
+
+    public boolean updatePlace(Place updatePlace, List<String> fileList) {
+        Connection conn = getConnection();
+        boolean isSuccess = false;
+        try {
+            //매장 정보 수정
+            int updateData = placeDao.updatePlace(conn, updatePlace);
+            if (updateData == 0) {
+                rollback(conn);
+                return false;
+            }
+
+            //기존 사진 삭제
+            if (!photoDao.deletePhotoByPlaceSeq(conn, updatePlace.getPlaceSeq())) {
+                rollback(conn);
+                return false;
+            }
+
+            //새 사진 등록
+            if (!insertPhotos(conn, updatePlace.getPlaceSeq(), fileList)) {
+                rollback(conn);
+                return false;
+            }
+            //모든 작업 성공 시 커밋
+            commit(conn);
+            isSuccess = true;
+        } catch (Exception e) {
+            rollback(conn);
+            e.printStackTrace();
+        } finally {
+            close(conn);
+        }
+        return isSuccess;
+    }
+
+    private boolean insertPhotos(Connection conn, Long placeSeq, List<String> fileList) {
+        int insertedPhotos = 0;
+        for (String fileName : fileList) {
+            Photo photo = Photo.builder()
+                    .photoRenamedName(fileName)
+                    .photoBoardSeq(placeSeq)
+                    .build();
+            insertedPhotos += photoDao.createPhoto(conn, photo);
+        }
+        return insertedPhotos == fileList.size();
+    }
 }

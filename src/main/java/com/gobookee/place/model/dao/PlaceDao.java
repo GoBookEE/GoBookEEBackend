@@ -167,4 +167,39 @@ public class PlaceDao {
         }
         return place;
     }
+
+    public int deletePlace(Connection conn, Long placeSeq) {
+        pstmt = null;
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("deletePlace"));
+            pstmt.setLong(1, placeSeq);
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
+
+    public int updatePlace(Connection conn, Place updatePlace) {
+        pstmt = null;
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("updatePlace"));
+            pstmt.setString(1, updatePlace.getPlaceTitle());
+            pstmt.setString(2, updatePlace.getPlaceContents());
+            pstmt.setString(3, updatePlace.getPlaceAddress());
+            pstmt.setDouble(4, updatePlace.getPlaceLatitude());
+            pstmt.setDouble(5, updatePlace.getPlaceLongitude());
+            pstmt.setLong(6, updatePlace.getPlaceSeq());
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
 }

@@ -6,7 +6,6 @@ import com.gobookee.study.model.dto.SearchStudyResponse;
 import com.gobookee.study.model.dto.StudyList;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.util.List;
 
 import static com.gobookee.common.JDBCTemplate.close;
@@ -49,12 +48,5 @@ public class StudyService {
         List<SearchStudyResponse> studyList = dao.getStudyListByHostUserSeq(conn, userSeq);
         close(conn);
         return studyList;
-    }
-
-    public int getStudyCountByPlaceSeqAndDate(Long placeSeq, Date date) {
-        conn = getConnection();
-        int count = dao.getStudyCountByPlaceSeqAndDate(conn, placeSeq, date);
-        close(conn);
-        return count;
     }
 }
