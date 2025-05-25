@@ -148,7 +148,6 @@ public class ReviewDAO {
 		return result;
 	}
 
-
 	private Review getReviewDTO(ResultSet rs) throws SQLException {
 		Review dto = Review.builder().reviewSeq(rs.getLong("REVIEW_SEQ")).reviewTitle(rs.getString("REVIEW_TITLE"))
 				.reviewContents(rs.getString("REVIEW_CONTENTS")).reviewCreateTime(rs.getTimestamp("REVIEW_CREATE_TIME"))

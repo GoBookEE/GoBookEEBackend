@@ -9,14 +9,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
 @Setter
 public class ReviewViewResponse {
-	
+
 	private Long reviewSeq;
 	private String reviewTitle;
 	private String reviewContents;
