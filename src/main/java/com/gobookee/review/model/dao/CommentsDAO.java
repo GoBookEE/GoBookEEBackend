@@ -37,7 +37,7 @@ public class CommentsDAO {
 		}
 		return dao;
 	}
-	
+
 	public List<CommentsViewResponse> getReviewComments(Connection conn, Long seq) {
 		List<CommentsViewResponse> comments = new ArrayList<>();
 		try {
@@ -55,6 +55,25 @@ public class CommentsDAO {
 		}
 		return comments;
 	}
+	
+	public int insertComment(Connection conn, Comments dto) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("insertComment"));
+			pstmt.setString(1, dto.getCommentsContents());
+	        pstmt.setLong(2, dto.getCommentsParentSeq());
+	        pstmt.setLong(3, dto.getUserSeq());
+	        pstmt.setLong(4, dto.getReviewSeq());
+	        result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+	
+	
 
 	private Comments getCommentDTO(ResultSet rs) throws SQLException {
 		Comments dto = Comments.builder().commentsSeq(rs.getLong("COMMENTS_SEQ"))
