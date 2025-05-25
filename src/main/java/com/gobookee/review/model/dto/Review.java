@@ -25,5 +25,5 @@ public class Review {
 	private char reviewIsPublic;
 	private Long userSeq;
 	private Long bookSeq;
-	
+
 }

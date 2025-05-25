@@ -37,7 +37,7 @@ public class CommentsDAO {
 		}
 		return dao;
 	}
-	
+
 	public List<CommentsViewResponse> getReviewComments(Connection conn, Long seq) {
 		List<CommentsViewResponse> comments = new ArrayList<>();
 		try {
@@ -54,6 +54,54 @@ public class CommentsDAO {
 			JDBCTemplate.close(pstmt);
 		}
 		return comments;
+	}
+
+	public int insertComment(Connection conn, Comments dto) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("insertComment"));
+			pstmt.setString(1, dto.getCommentsContents());
+			pstmt.setLong(2, dto.getCommentsParentSeq());
+			pstmt.setLong(3, dto.getUserSeq());
+			pstmt.setLong(4, dto.getReviewSeq());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int updateComment(Connection conn, long commentSeq, long userSeq, String newContent) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("updateComment"));
+			pstmt.setString(1, newContent);
+			pstmt.setLong(2, commentSeq);
+			pstmt.setLong(3, userSeq);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int deleteComment(Connection conn, long commentSeq, long userSeq) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("deleteComment"));
+			pstmt.setLong(1, commentSeq);
+			pstmt.setLong(2, userSeq);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
 	}
 
 	private Comments getCommentDTO(ResultSet rs) throws SQLException {

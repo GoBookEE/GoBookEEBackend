@@ -15,7 +15,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ReviewListResponse {
-	
+
 	private Long reviewSeq;
 	private String reviewTitle;
 	private String reviewContents;

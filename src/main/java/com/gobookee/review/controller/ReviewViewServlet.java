@@ -16,7 +16,6 @@ public class ReviewViewServlet extends HttpServlet {
 
 	public ReviewViewServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

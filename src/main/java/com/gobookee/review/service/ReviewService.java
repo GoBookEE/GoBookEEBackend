@@ -18,7 +18,7 @@ import static com.gobookee.review.model.dao.CommentsDAO.commentsDao;
 public class ReviewService {
 
 	private static final ReviewService SERVICE = new ReviewService();
-	
+
 	private ReviewDAO dao = reviewDao();
 	private CommentsDAO cdao = commentsDao();
 

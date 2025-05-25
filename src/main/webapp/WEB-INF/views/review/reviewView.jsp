@@ -85,7 +85,7 @@ List<CommentsViewResponse> comments = review.getComments();
 				<h6 class="fw-bold mb-3">댓글</h6>
 				<%-- 댓글 작성 폼 --%>
 				<form class="d-flex mt-3" method="post"
-					action="<%=request.getContextPath()%>/review/insertComment">
+					action="<%=request.getContextPath()%>/review/insertcomment">
 					<input type="hidden" name="reviewSeq"
 						value="<%=review.getReviewSeq()%>"> <input type="text"
 						class="form-control me-2" name="commentContent"
@@ -111,16 +111,51 @@ List<CommentsViewResponse> comments = review.getComments();
 							<button class="btn btn-sm btn-outline-secondary btn-reply-toggle"
 								data-comment-id="<%=c.getCommentsSeq()%>">답글</button>
 						</div>
+						<%-- <%
+						if (c.getUserNickName().equals(loginUser.getUserNickName())) {
+						%> --%>
+						<div class="dropdown">
+							<button class="btn btn-sm btn-outline-secondary dropdown-toggle"
+								type="button" id="commentDropdown<%=c.getCommentsSeq()%>"
+								data-bs-toggle="dropdown" aria-expanded="false">
+								<i class="bi bi-three-dots-vertical"></i>
+							</button>
+							<ul class="dropdown-menu dropdown-menu-end"
+								aria-labelledby="commentDropdown<%=c.getCommentsSeq()%>">
+								<li>
+									<form
+										action="<%=request.getContextPath()%>/review/updatecomment"
+										method="post" class="px-2 py-1">
+										<input type="hidden" name="commentSeq"
+											value="<%=c.getCommentsSeq()%>"> <input type="hidden"
+											name="reviewSeq" value="<%=review.getReviewSeq()%>">
+										<input type="text" name="newContent"
+											class="form-control form-control-sm mb-1"
+											value="<%=c.getCommentsContents()%>" required>
+										<button type="submit" class="btn btn-sm btn-success w-100">수정</button>
+									</form>
+								</li>
+								<li>
+									<form
+										action="<%=request.getContextPath()%>/review/deletecomment"
+										method="post" class="px-2 py-1"
+										onsubmit="return confirm('정말 삭제하시겠습니까?');">
+										<input type="hidden" name="commentSeq"
+											value="<%=c.getCommentsSeq()%>">
+										<button type="submit" class="btn btn-sm btn-danger w-100">삭제</button>
+									</form>
+								</li>
+							</ul>
+						</div>
+						<%-- <%
+						}
+						%> --%>
 					</div>
 					<div class="mt-1"><%=c.getCommentsContents()%></div>
 
-					<!-- 대댓글 영역 (토글) -->
-					<%-- <div class="child-comments mt-2 d-none"
-						id="child-comments-<%=c.getCommentsSeq()%>"> --%>
 					<!-- 댓글의 대댓글 영역 -->
 					<div class="child-comments mt-2"
-						id="child-comments-<%=c.getCommentsSeq()%>"
-						style="display: none;">
+						id="child-comments-<%=c.getCommentsSeq()%>" style="display: none;">
 
 						<%
 						for (CommentsViewResponse child : comments) {
@@ -132,6 +167,48 @@ List<CommentsViewResponse> comments = review.getComments();
 									<strong><%=child.getUserNickName()%></strong> <small
 										class="text-muted ms-2"><%=DateTimeFormatUtil.format(child.getCommentsCreateTime())%></small>
 								</div>
+								<%-- <%
+								if (child.getUserNickName().equals(loginUser.getUserNickName())) {
+								%> --%>
+								<div class="dropdown">
+									<button
+										class="btn btn-sm btn-outline-secondary dropdown-toggle"
+										type="button" id="replyDropdown<%=child.getCommentsSeq()%>"
+										data-bs-toggle="dropdown" aria-expanded="false">
+										<i class="bi bi-three-dots-vertical"></i>
+									</button>
+									<ul class="dropdown-menu dropdown-menu-end"
+										aria-labelledby="replyDropdown<%=child.getCommentsSeq()%>">
+										<li>
+											<form
+												action="<%=request.getContextPath()%>/review/updatecomment"
+												method="post" class="px-2 py-1">
+												<input type="hidden" name="commentSeq"
+													value="<%=child.getCommentsSeq()%>"> <input
+													type="hidden" name="reviewSeq"
+													value="<%=review.getReviewSeq()%>"> <input
+													type="text" name="newContent"
+													class="form-control form-control-sm mb-1"
+													value="<%=child.getCommentsContents()%>" required>
+												<button type="submit" class="btn btn-sm btn-success w-100">수정</button>
+											</form>
+										</li>
+										<li>
+											<form
+												action="<%=request.getContextPath()%>/review/deletecomment"
+												method="post" class="px-2 py-1"
+												onsubmit="return confirm('정말 삭제하시겠습니까?');">
+												<input type="hidden" name="commentSeq"
+													value="<%=child.getCommentsSeq()%>">
+												<button type="submit" class="btn btn-sm btn-danger w-100">삭제</button>
+											</form>
+										</li>
+									</ul>
+								</div>
+								<%-- <%
+								}
+								%> --%>
+
 							</div>
 							<div class="mt-1"><%=child.getCommentsContents()%></div>
 						</div>
@@ -141,13 +218,12 @@ List<CommentsViewResponse> comments = review.getComments();
 						%>
 						<%-- ✅ 대댓글 입력창 --%>
 						<form class="d-flex mt-2 ms-4" method="post"
-							action="<%=request.getContextPath()%>/review/insertComment">
+							action="<%=request.getContextPath()%>/review/insertcomment">
 							<input type="hidden" name="reviewSeq"
-								value="<%=review.getReviewSeq()%>"> <input
-								type="hidden" name="parentCommentSeq"
-								value="<%=c.getCommentsSeq()%>"> <input type="text"
-								class="form-control me-2" name="commentContent"
-								placeholder="답글을 입력하세요">
+								value="<%=review.getReviewSeq()%>"> <input type="hidden"
+								name="parentCommentSeq" value="<%=c.getCommentsSeq()%>">
+							<input type="text" class="form-control me-2"
+								name="commentContent" placeholder="답글을 입력하세요">
 							<button class="btn btn-outline-secondary btn-sm">등록</button>
 						</form>
 					</div>
