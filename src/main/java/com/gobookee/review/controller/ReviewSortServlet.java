@@ -1,20 +1,19 @@
 package com.gobookee.review.controller;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.gobookee.common.AjaxPageBarTemplate;
+import com.gobookee.review.model.dto.ReviewListResponse;
+import com.gobookee.review.service.ReviewService;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.gobookee.common.AjaxPageBarTemplate;
-import com.gobookee.review.model.dto.ReviewListResponse;
-import com.gobookee.review.service.ReviewService;
-import com.google.gson.Gson;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet("/review/sortlist")
 public class ReviewSortServlet extends HttpServlet {
@@ -41,10 +40,8 @@ public class ReviewSortServlet extends HttpServlet {
 		List<ReviewListResponse> list;
 		if ("recommend".equals(sort)) {
 			list = service.getAllReviewsByRec(cPage, numPerPage);
-			System.out.println(list.get(0).getReviewTitle());
 		} else {
 			list = service.getAllReviews(cPage, numPerPage);
-			System.out.println(list.get(0).getReviewTitle());
 		}
 
 		Gson gson = new Gson();

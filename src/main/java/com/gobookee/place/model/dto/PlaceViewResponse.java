@@ -11,6 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PlaceViewResponse {
+    Long placeSeq;
     String userNickname;
     Long userSpeed;
     List<String> photoNames;
@@ -24,6 +25,7 @@ public class PlaceViewResponse {
 
     public static PlaceViewResponse from(ResultSet rs) throws SQLException {
         return PlaceViewResponse.builder()
+                .placeSeq(rs.getLong("PLACE_SEQ"))
                 .userNickname(rs.getString("USER_NICKNAME"))
                 .userSpeed(rs.getLong("USER_SPEED"))
                 .placeAddress(rs.getString("PLACE_ADDRESS"))
