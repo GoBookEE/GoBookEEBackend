@@ -51,4 +51,22 @@ public class ScheduleDao {
         }
         return result;
     }
+
+    public int getStudyCountByPlaceSeqAndDate(Connection conn, Long placeSeq, Date date) {
+        pstmt = null;
+        rs = null;
+        int count = 0;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("getStudyCountByPlaceSeqAndDate"));
+            pstmt.setLong(1, placeSeq);
+            pstmt.setDate(2, date);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return count;
+    }
 }
