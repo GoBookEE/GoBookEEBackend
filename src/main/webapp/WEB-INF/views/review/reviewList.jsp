@@ -54,24 +54,24 @@ body {
 					</div>
 				</div>
 			</div>
-		
-		<%}
+
+			<%}
 			}else{ %>
-		<div>
-			<p>조회된 데이터가 없습니다.</p>
 			<div>
-				<%} %>
-			</div>
+				<p>조회된 데이터가 없습니다.</p>
+				<div>
+					<%} %>
+				</div>
 
-			<select id="sortSelect">
-				<option value="latest">최신순</option>
-				<option value="recommend">추천순</option>
-			</select>
-			<div id="reviewContainer" class="list-group"></div>
+				<select id="sortSelect">
+					<option value="latest">최신순</option>
+					<option value="recommend">추천순</option>
+				</select>
+				<div id="reviewContainer" class="list-group"></div>
 
-			<div id="pageBar"></div>
+				<div id="pageBar"></div>
 
-			<script>
+				<script>
 const test = `${b.reviewTitle}`;
 console.log("test:", test);
 let currentSort = "latest"; // 현재 정렬 기준 기억
@@ -88,7 +88,7 @@ $(document).ready(function () {
 });
 
 //페이지바 클릭 이벤트
-$(document).on("click", "#pageBar a.page-link", function (e) {
+$(document).on("click", "#pageBar a.go-page-link", function (e) {
  e.preventDefault();
  const page = $(this).data("page");
  if (page) {
@@ -147,7 +147,7 @@ function loadReviews(sortType,cPage = 1) {
     });
 }
 </script>
-		</div>
+			</div>
 </main>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

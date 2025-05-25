@@ -132,24 +132,6 @@ public class ReviewDAO {
 		return dto;
 	}
 
-	public List<CommentsViewResponse> getReviewComments(Connection conn, Long seq) {
-		List<CommentsViewResponse> comments = new ArrayList<>();
-		try {
-			pstmt = conn.prepareStatement(sqlProp.getProperty("getReviewComments"));
-			pstmt.setLong(1, seq);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				comments.add(getCommentsViewResponse(rs));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(rs);
-			JDBCTemplate.close(pstmt);
-		}
-		return comments;
-	}
-
 	public int getRecommendCount(Connection conn, Integer reviewSeq) {
 		int result = 0;
 		try {
@@ -166,26 +148,6 @@ public class ReviewDAO {
 		return result;
 	}
 
-	private Comments getCommentDTO(ResultSet rs) throws SQLException {
-		Comments dto = Comments.builder().commentsSeq(rs.getLong("COMMENTS_SEQ"))
-				.commentsContents(rs.getString("COMMENTS_CONTENTS"))
-				.commentsCreateTime(rs.getTimestamp("COMMENTS_CREATE_TIME"))
-				.commentsDeleteTime(rs.getTimestamp("COMMENTS_DELETE_TIME"))
-				.commentsEditTime(rs.getTimestamp("COMMENTS_EDIT_TIME"))
-				.commentsParentSeq(rs.getLong("COMMENTS_PARENT_SEQ"))
-				.commentsIsPublic(rs.getString("COMMENTS_IS_PUBLIC").charAt(0)).userSeq(rs.getLong("USER_SEQ"))
-				.reviewSeq(rs.getLong("REVIEW_SEQ")).build();
-		return dto;
-	}
-
-	private CommentsViewResponse getCommentsViewResponse(ResultSet rs) throws SQLException {
-		CommentsViewResponse dto = CommentsViewResponse.builder().commentsContents(rs.getString("COMMENTS_CONTENTS"))
-				.commentLevel(rs.getInt("COMMENT_LEVEL")).commentsParentSeq(rs.getLong("COMMENTS_PARENT_SEQ"))
-				.commentsSeq(rs.getLong("COMMENTS_SEQ")).commentsCreateTime(rs.getTimestamp("COMMENTS_CREATE_TIME"))
-				.commentsEditTime(rs.getTimestamp("COMMENTS_EDIT_TIME")).userNickName(rs.getString("USER_NICKNAME"))
-				.build();
-		return dto;
-	}
 
 	private Review getReviewDTO(ResultSet rs) throws SQLException {
 		Review dto = Review.builder().reviewSeq(rs.getLong("REVIEW_SEQ")).reviewTitle(rs.getString("REVIEW_TITLE"))

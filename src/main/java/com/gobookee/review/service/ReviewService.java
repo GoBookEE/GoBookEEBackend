@@ -1,6 +1,7 @@
 package com.gobookee.review.service;
 
 import com.gobookee.review.model.dao.ReviewDAO;
+import com.gobookee.review.model.dao.CommentsDAO;
 import com.gobookee.review.model.dto.CommentsViewResponse;
 import com.gobookee.review.model.dto.ReviewListResponse;
 import com.gobookee.review.model.dto.ReviewViewResponse;
@@ -12,12 +13,14 @@ import java.util.List;
 import static com.gobookee.common.JDBCTemplate.close;
 import static com.gobookee.common.JDBCTemplate.getConnection;
 import static com.gobookee.review.model.dao.ReviewDAO.reviewDao;
+import static com.gobookee.review.model.dao.CommentsDAO.commentsDao;
 
 public class ReviewService {
 
 	private static final ReviewService SERVICE = new ReviewService();
-
+	
 	private ReviewDAO dao = reviewDao();
+	private CommentsDAO cdao = commentsDao();
 
 	private ReviewService() {
 	}
@@ -58,7 +61,7 @@ public class ReviewService {
 		Connection conn = getConnection();
 		ReviewViewResponse review = dao.getReviewBySeq(conn, reviewSeq);
 
-		List<CommentsViewResponse> comments = dao.getReviewComments(conn, reviewSeq);
+		List<CommentsViewResponse> comments = cdao.getReviewComments(conn, reviewSeq);
 		if (comments != null) {
 			review.setComments(comments);
 		}

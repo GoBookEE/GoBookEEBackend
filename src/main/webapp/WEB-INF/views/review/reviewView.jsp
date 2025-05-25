@@ -81,15 +81,6 @@ List<CommentsViewResponse> comments = review.getComments();
 				</div>
 			</div>
 
-			<!-- 댓글 영역 -->
-			<!-- <div class="border-top pt-3">
-            <h6 class="fw-bold">댓글</h6>
-            <p class="text-muted small">등록된 댓글이 없습니다.</p>
-            <form class="d-flex mt-2">
-                <input type="text" class="form-control me-2" placeholder="댓글을 입력하세요">
-                <button class="btn btn-outline-success">등록</button>
-            </form>
-        </div> -->
 			<div class="border-top pt-3">
 				<h6 class="fw-bold mb-3">댓글</h6>
 				<%-- 댓글 작성 폼 --%>
@@ -101,38 +92,6 @@ List<CommentsViewResponse> comments = review.getComments();
 						placeholder="댓글을 입력하세요">
 					<button class="btn btn-outline-success">등록</button>
 				</form>
-				<%-- <%
-				if (comments != null && comments.size() > 0) {
-					for (CommentsViewResponse c : comments) {
-						boolean isReply = (c.getCommentLevel() != 1);
-				%>
-				<div
-					class="border rounded p-2 mb-2 <%=isReply ? "ms-4 bg-light" : ""%>">
-					<div class="d-flex justify-content-between">
-						<div>
-							<strong><%=c.getUserNickName()%></strong> <small
-								class="text-muted ms-2"> <%=DateTimeFormatUtil.format(c.getCommentsCreateTime())%>
-							</small>
-						</div>
-						<%
-						if (!isReply) {
-						%>
-						<button class="btn btn-sm btn-outline-secondary btn-insert2"
-							value="<%=c.getCommentsSeq()%>">답글</button>
-						<%
-						}
-						%>
-					</div>
-					<div class="mt-1"><%=c.getCommentsContents()%></div>
-				</div>
-				<%
-				}
-				} else {
-				%>
-				<p class="text-muted small">등록된 댓글이 없습니다.</p>
-				<%
-				}
-				%> --%>
 				<%
 				if (comments != null && comments.size() > 0) {
 					for (CommentsViewResponse c : comments) {
@@ -158,9 +117,11 @@ List<CommentsViewResponse> comments = review.getComments();
 					<!-- 대댓글 영역 (토글) -->
 					<%-- <div class="child-comments mt-2 d-none"
 						id="child-comments-<%=c.getCommentsSeq()%>"> --%>
-						<!-- 댓글의 대댓글 영역 -->
-	<div class="child-comments mt-2" id="child-comments-<%= c.getCommentsSeq() %>" style="display: none;">
-						
+					<!-- 댓글의 대댓글 영역 -->
+					<div class="child-comments mt-2"
+						id="child-comments-<%=c.getCommentsSeq()%>"
+						style="display: none;">
+
 						<%
 						for (CommentsViewResponse child : comments) {
 							if (child.getCommentLevel() == 2 && child.getCommentsParentSeq() == c.getCommentsSeq()) {
@@ -179,12 +140,16 @@ List<CommentsViewResponse> comments = review.getComments();
 						}
 						%>
 						<%-- ✅ 대댓글 입력창 --%>
-            <form class="d-flex mt-2 ms-4" method="post" action="<%=request.getContextPath()%>/review/insertComment">
-                <input type="hidden" name="reviewSeq" value="<%= review.getReviewSeq() %>">
-                <input type="hidden" name="parentCommentSeq" value="<%= c.getCommentsSeq() %>">
-                <input type="text" class="form-control me-2" name="commentContent" placeholder="답글을 입력하세요">
-                <button class="btn btn-outline-secondary btn-sm">등록</button>
-            </form>
+						<form class="d-flex mt-2 ms-4" method="post"
+							action="<%=request.getContextPath()%>/review/insertComment">
+							<input type="hidden" name="reviewSeq"
+								value="<%=review.getReviewSeq()%>"> <input
+								type="hidden" name="parentCommentSeq"
+								value="<%=c.getCommentsSeq()%>"> <input type="text"
+								class="form-control me-2" name="commentContent"
+								placeholder="답글을 입력하세요">
+							<button class="btn btn-outline-secondary btn-sm">등록</button>
+						</form>
 					</div>
 				</div>
 				<%
@@ -200,42 +165,34 @@ List<CommentsViewResponse> comments = review.getComments();
 				%>
 
 
-				
+
 			</div>
 
 		</div>
 
 	</main>
 </section>
-<!-- <script>
-$(document).ready(function () {
-    // 답글 보기 토글
-    $(".btn-reply-toggle").on("click", function () {
-        const id = $(this).data("comment-id");
-        $("#child-comments-" + id).slideToggle(200);
 
-        const btn = $(this);
-        const isShown = $("#child-comments-" + id).is(":visible");
-        btn.text(isShown ? "답글 닫기" : "답글");
-    });
-});
-</script> -->
 <script>
-$(document).ready(function () {
-    $(".btn-reply-toggle").on("click", function () {
-        const id = $(this).data("comment-id");
-        const target = $("#child-comments-" + id);
-        
-        // 문제 디버깅용 로그
-        console.log("Toggle ID:", id);
-        console.log("Element found?", target.length);
+	$(document).ready(
+			function() {
+				$(".btn-reply-toggle").on(
+						"click",
+						function() {
+							const id = $(this).data("comment-id");
+							const target = $("#child-comments-" + id);
 
-        target.slideToggle(200, function () {
-            const isShown = target.is(":visible");
-            $(`button[data-comment-id='${id}']`).text(isShown ? "답글 닫기" : "답글");
-        });
-    });
-});
+							// 문제 디버깅용 로그
+							console.log("Toggle ID:", id);
+							console.log("Element found?", target.length);
+
+							target.slideToggle(200, function() {
+								const isShown = target.is(":visible");
+								$(`button[data-comment-id='${id}']`).text(
+										isShown ? "답글 닫기" : "답글");
+							});
+						});
+			});
 </script>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
