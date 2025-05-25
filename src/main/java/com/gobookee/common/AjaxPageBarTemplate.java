@@ -31,22 +31,22 @@ public class AjaxPageBarTemplate {
 
         if (pageNo == 1) {
             pageBar.append("<li class='go-page-item disabled'>")
-                   .append("<a class='go-page-link' href='?cPage="+(pageNo-1)+"'><i class='bi bi-arrow-left-short'></i></a>")
+                   .append("<a class='go-page-link' href='#'><i class='bi bi-arrow-left-short'></i></a>")
                    .append("</li>");
         } else {
             pageBar.append("<li class='go-page-item'>")
-                   .append("<a class='go-page-link' href='?cPage="+(pageNo-1)+"' data-page='" + (pageNo - 1) + "'><i class='bi bi-arrow-left-short'></i></a>")
+                   .append("<a class='go-page-link' href='#' data-page='" + (pageNo - 1) + "'><i class='bi bi-arrow-left-short'></i></a>")
                    .append("</li>");
         }
 
         while (!(pageNo > pageEnd || pageNo > totalPage)) {
             if (pageNo == cPage) {
                 pageBar.append("<li class='go-page-item active'>")
-                       .append("<a class='go-page-link' href='?cPage="+pageNo+"' data-page='" + pageNo + "'>" + pageNo + "</a>")
+                       .append("<a class='go-page-link' href='#' data-page='" + pageNo + "'>" + pageNo + "</a>")
                        .append("</li>");
             } else {
                 pageBar.append("<li class='go-page-item'>")
-                       .append("<a class='go-page-link' href='?cPage="+pageNo+"' data-page='" + pageNo + "'>" + pageNo + "</a>")
+                       .append("<a class='go-page-link' href='#' data-page='" + pageNo + "'>" + pageNo + "</a>")
                        .append("</li>");
             }
             pageNo++;
@@ -54,11 +54,11 @@ public class AjaxPageBarTemplate {
 
         if (pageNo > totalPage) {
             pageBar.append("<li class='go-page-item disabled'>")
-                   .append("<a class='go-page-link' href='?cPage="+pageNo+"'><i class='bi bi-arrow-left-short'></i></a>")
+                   .append("<a class='go-page-link' href='#'><i class='bi bi-arrow-left-short'></i></a>")
                    .append("</li>");
         } else {
             pageBar.append("<li class='go-page-item'>")
-                   .append("<a class='go-page-link' href='?cPage="+pageNo+"' data-page='" + pageNo + "'><i class='bi bi-arrow-right-short'></i></a>")
+                   .append("<a class='go-page-link' href='#' data-page='" + pageNo + "'><i class='bi bi-arrow-right-short'></i></a>")
                    .append("</li>");
         }
 

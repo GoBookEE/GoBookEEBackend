@@ -1,6 +1,10 @@
 package com.gobookee.review.service;
 
 import com.gobookee.review.model.dao.ReviewDAO;
+import com.gobookee.review.model.dao.CommentsDAO;
+import com.gobookee.review.model.dto.CommentsViewResponse;
+import com.gobookee.review.model.dto.ReviewListResponse;
+import com.gobookee.review.model.dto.ReviewViewResponse;
 import com.gobookee.review.model.dto.Review;
 
 import java.sql.Connection;
@@ -9,60 +13,67 @@ import java.util.List;
 import static com.gobookee.common.JDBCTemplate.close;
 import static com.gobookee.common.JDBCTemplate.getConnection;
 import static com.gobookee.review.model.dao.ReviewDAO.reviewDao;
+import static com.gobookee.review.model.dao.CommentsDAO.commentsDao;
 
 public class ReviewService {
 
-    private static final ReviewService SERVICE = new ReviewService();
+	private static final ReviewService SERVICE = new ReviewService();
+	
+	private ReviewDAO dao = reviewDao();
+	private CommentsDAO cdao = commentsDao();
 
-    private ReviewDAO dao = reviewDao();
+	private ReviewService() {
+	}
 
-    private ReviewService() {
-    }
+	public static ReviewService reviewService() {
+		return SERVICE;
+	}
 
-    public static ReviewService reviewService() {
-        return SERVICE;
-    }
+	public List<ReviewListResponse> getAllReviews(int cPage, int numPerPage) {
+		Connection conn = getConnection();
+		List<ReviewListResponse> reviews = dao.getAllReviewsByDate(conn, cPage, numPerPage);
+		close(conn);
+		return reviews;
+	}
 
-    public List<Review> getAllReviews(int cPage, int numPerpage) {
-        Connection conn = getConnection();
-        List<Review> reviews = dao.getAllReviewsByDate(conn, cPage, numPerpage);
-        close(conn);
-        return reviews;
-    }
+	public List<ReviewListResponse> getAllReviewsByRec(int cPage, int numPerPage) {
+		Connection conn = getConnection();
+		List<ReviewListResponse> reviews = dao.getAllReviewsByRec(conn, cPage, numPerPage);
+		close(conn);
+		return reviews;
+	}
 
-    public List<Review> getAllReviewsByRec(int cPage, int numPerpage) {
-        Connection conn = getConnection();
-        List<Review> reviews = dao.getAllReviewsByRec(conn, cPage, numPerpage);
-        close(conn);
-        return reviews;
-    }
+	public int reviewCount() {
+		Connection conn = getConnection();
+		int totalData = dao.reviewCount(conn);
+		close(conn);
+		return totalData;
+	}
 
-    public int reviewCount() {
-        Connection conn = getConnection();
-        int totalData = dao.reviewCount(conn);
-        close(conn);
-        return totalData;
-    }
+	public List<ReviewListResponse> getBestReviews() {
+		Connection conn = getConnection();
+		List<ReviewListResponse> reviews = dao.getBestReviews(conn);
+		close(conn);
+		return reviews;
+	}
 
-    public List<Review> getBestReviews() {
-        Connection conn = getConnection();
-        List<Review> reviews = dao.getBestReviews(conn);
-        close(conn);
-        return reviews;
-    }
+	public ReviewViewResponse getReviewBySeq(Long reviewSeq) {
+		Connection conn = getConnection();
+		ReviewViewResponse review = dao.getReviewBySeq(conn, reviewSeq);
 
-    public Review getReviewBySeq(Long reviewSeq) {
-        Connection conn = getConnection();
-        Review review = dao.getReviewBySeq(conn, reviewSeq);
-        close(conn);
-        return review;
-    }
+		List<CommentsViewResponse> comments = cdao.getReviewComments(conn, reviewSeq);
+		if (comments != null) {
+			review.setComments(comments);
+		}
+		close(conn);
+		return review;
+	}
 
-    public int getRecommendCount(Integer reviewSeq) {
-        Connection conn = getConnection();
-        int count = dao.getRecommendCount(conn, reviewSeq);
-        close(conn);
-        return count;
-    }
+	public int getRecommendCount(Integer reviewSeq) {
+		Connection conn = getConnection();
+		int count = dao.getRecommendCount(conn, reviewSeq);
+		close(conn);
+		return count;
+	}
 
 }
