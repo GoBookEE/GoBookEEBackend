@@ -73,6 +73,23 @@ public class CommentsDAO {
 		return result;
 	}
 	
+	public int updateComment(Connection conn, long commentSeq, long userSeq, String newContent) {
+	    int result = 0;
+	    try {
+	        pstmt = conn.prepareStatement(sqlProp.getProperty("updateComment"));
+	        pstmt.setString(1, newContent);
+	        pstmt.setLong(2, commentSeq);
+	        pstmt.setLong(3, userSeq);
+	        result = pstmt.executeUpdate();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    } finally {
+	        JDBCTemplate.close(pstmt);
+	    }
+	    return result;
+	}
+	
+	
 	
 
 	private Comments getCommentDTO(ResultSet rs) throws SQLException {

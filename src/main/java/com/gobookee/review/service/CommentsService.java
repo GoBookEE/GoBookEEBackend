@@ -30,8 +30,24 @@ public class CommentsService {
 		if(result>0) {
 			commit(conn);
 		}
-		else rollback(conn);
+		else {
+			rollback(conn);
+		}
 		close(conn);
 		return result;
 	}
+	
+	public int updateComment(long commentSeq, long userSeq, String newContent) {
+        Connection conn = getConnection();
+        int result = cdao.updateComment(conn, commentSeq, userSeq, newContent);
+        if (result > 0) {
+        	commit(conn);
+        }
+        else {
+        	rollback(conn);
+        }
+        close(conn);
+        return result;
+    }
+
 }
