@@ -99,15 +99,28 @@ public class PlaceService {
 
     public boolean deletePlace(Long placeSeq) {
         conn = getConnection();
-        int result = placeDao.deletePlace(conn, placeSeq);
-        if (result > 0) {
+        boolean isSuccess = false;
+        try {
+            int result = placeDao.deletePlace(conn, placeSeq);
+            if (result == 0) {
+                rollback(conn);
+                return false;
+            }
+
+            if (!photoDao.deletePhotoByPlaceSeq(conn, placeSeq)) {
+                rollback(conn);
+                return false;
+            }
+
+            isSuccess = true;
             commit(conn);
+        } catch (Exception e) {
+            e.printStackTrace();
+            rollback(conn);
+        } finally {
             close(conn);
-            return true;
         }
-        rollback(conn);
-        close(conn);
-        return false;
+        return isSuccess;
     }
 
     public boolean updatePlace(Place updatePlace, List<String> fileList) {
