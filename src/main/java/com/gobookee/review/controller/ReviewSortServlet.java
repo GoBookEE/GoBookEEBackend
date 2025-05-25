@@ -41,10 +41,8 @@ public class ReviewSortServlet extends HttpServlet {
 		List<ReviewListResponse> list;
 		if ("recommend".equals(sort)) {
 			list = service.getAllReviewsByRec(cPage, numPerPage);
-			System.out.println(list.get(0).getReviewTitle());
 		} else {
 			list = service.getAllReviews(cPage, numPerPage);
-			System.out.println(list.get(0).getReviewTitle());
 		}
 
 		Gson gson = new Gson();

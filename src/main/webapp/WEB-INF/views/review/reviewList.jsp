@@ -44,10 +44,10 @@ body {
 			<div class="col">
 				<div class="card h-100 review-card"
 					onclick="location.assign('<%=request.getContextPath()%>/review/reviewseq?seq=<%=b.getReviewSeq() %>')">
-					<img src="images/book1.jpg" class="card-img-top" alt="book1">
+					<img src="<%=b.getBookCover() %>" class="card-img-top" alt="book1">
 					<div class="card-body">
 						<h6 class="card-title"><%=b.getReviewTitle() %></h6>
-						<p class="card-text small">자바를 처음 배우는 분들에게 강력 추천합니다.</p>
+						<!-- <p class="card-text small">자바를 처음 배우는 분들에게 강력 추천합니다.</p> -->
 					</div>
 					<div class="card-footer bg-white border-top-0">
 						<small class="review-meta">★ <%=b.getReviewRate() %> | ♥ <%=b.getRecommendCount() %></small>
@@ -70,6 +70,75 @@ body {
 				<div id="reviewContainer" class="list-group"></div>
 
 				<div id="pageBar"></div>
+<!-- 📌 Floating Action Button -->
+<div class="fab-container">
+	<button class="fab-main" id="fabToggle">
+		<i class="bi bi-plus-lg"></i>
+	</button>
+	<div class="fab-menu" id="fabMenu">
+		<a href="<%=request.getContextPath()%>/review/insertpage" class="fab-item">
+			<i class="bi bi-pencil"></i> 리뷰 쓰기
+		</a>
+		<a href="<%=request.getContextPath()%>/book/insert" class="fab-item">
+			<i class="bi bi-book"></i> 책 등록하기
+		</a>
+	</div>
+</div>
+
+
+<style>
+.fab-container {
+	position: fixed;
+	bottom: 80px; /* ✅ 푸터 위로 띄우기 */
+	right: 24px;
+	z-index: 999;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.fab-main {
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	background-color: #198754;
+	color: white;
+	border: none;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+	font-size: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	transition: transform 0.3s ease;
+}
+
+.fab-menu {
+	display: none;
+	flex-direction: column;
+	margin-bottom: 10px;
+}
+
+.fab-item {
+	background-color: #198754;
+	color: white;
+	text-decoration: none;
+	padding: 8px 16px;
+	border-radius: 16px;
+	margin-bottom: 10px;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+	font-size: 14px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.fab-item:hover {
+	background-color: #157347;
+}
+
+</style>
+
+
 
 				<script>
 const test = `${b.reviewTitle}`;
@@ -124,7 +193,7 @@ function loadReviews(sortType,cPage = 1) {
                     const itemHtml = `
                     <div class="list-group-item list-group-item-action d-flex gap-3 py-4" 
                     onclick="location.assign('<%=request.getContextPath()%>/review/reviewseq?seq=\${b.reviewSeq}')">
-                    	<img src='https://image.aladin.co.kr/product/36319/21/coversum/k442038541_1.jpg' 
+                    	<img src='\${b.bookCover}' 
                     	alt='latest1' width='100' height='120' class='rounded'>
                         <div class="d-flex flex-column">
                         	
@@ -147,6 +216,22 @@ function loadReviews(sortType,cPage = 1) {
     });
 }
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	const fabToggle = document.getElementById("fabToggle");
+	const fabMenu = document.getElementById("fabMenu");
+	let isOpen = false;
+
+	fabToggle.addEventListener("click", function () {
+		isOpen = !isOpen;
+		fabMenu.style.display = isOpen ? "flex" : "none";
+		fabToggle.innerHTML = isOpen ? '<i class="bi bi-x-lg"></i>' : '<i class="bi bi-plus-lg"></i>';
+	});
+});
+</script>
+
+
+
 			</div>
 </main>
 

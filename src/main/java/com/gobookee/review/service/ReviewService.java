@@ -1,19 +1,24 @@
 package com.gobookee.review.service;
 
-import com.gobookee.review.model.dao.ReviewDAO;
-import com.gobookee.review.model.dao.CommentsDAO;
-import com.gobookee.review.model.dto.CommentsViewResponse;
-import com.gobookee.review.model.dto.ReviewListResponse;
-import com.gobookee.review.model.dto.ReviewViewResponse;
-import com.gobookee.review.model.dto.Review;
+import static com.gobookee.common.JDBCTemplate.close;
+import static com.gobookee.common.JDBCTemplate.commit;
+import static com.gobookee.common.JDBCTemplate.getConnection;
+import static com.gobookee.common.JDBCTemplate.rollback;
+
+import static com.gobookee.review.model.dao.CommentsDAO.commentsDao;
+import static com.gobookee.review.model.dao.ReviewDAO.reviewDao;
 
 import java.sql.Connection;
 import java.util.List;
 
-import static com.gobookee.common.JDBCTemplate.close;
-import static com.gobookee.common.JDBCTemplate.getConnection;
-import static com.gobookee.review.model.dao.ReviewDAO.reviewDao;
-import static com.gobookee.review.model.dao.CommentsDAO.commentsDao;
+import com.gobookee.book.model.dto.BookReviewResponse;
+import com.gobookee.common.JDBCTemplate;
+import com.gobookee.review.model.dao.CommentsDAO;
+import com.gobookee.review.model.dao.ReviewDAO;
+import com.gobookee.review.model.dto.CommentsViewResponse;
+import com.gobookee.review.model.dto.Review;
+import com.gobookee.review.model.dto.ReviewListResponse;
+import com.gobookee.review.model.dto.ReviewViewResponse;
 
 public class ReviewService {
 
@@ -69,11 +74,23 @@ public class ReviewService {
 		return review;
 	}
 
-	public int getRecommendCount(Integer reviewSeq) {
+	public int insertReview(Review review) {
 		Connection conn = getConnection();
-		int count = dao.getRecommendCount(conn, reviewSeq);
+		int result = dao.insertReview(conn, review);
+		if (result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
 		close(conn);
-		return count;
+		return result;
+	}
+
+	public List<BookReviewResponse> searchBooks(String keyword) {
+		Connection conn = getConnection();
+		List<BookReviewResponse> result = dao.searchBooks(conn, keyword);
+		JDBCTemplate.close(conn);
+		return result;
 	}
 
 }
