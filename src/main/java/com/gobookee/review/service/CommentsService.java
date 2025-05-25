@@ -19,35 +19,45 @@ public class CommentsService {
 
 	private CommentsService() {
 	}
-	
+
 	public static CommentsService commentsService() {
 		return SERVICE;
 	}
-	
+
 	public int insertComment(Comments dto) {
-		Connection conn= getConnection();
-		int result=cdao.insertComment(conn, dto);
-		if(result>0) {
+		Connection conn = getConnection();
+		int result = cdao.insertComment(conn, dto);
+		if (result > 0) {
 			commit(conn);
-		}
-		else {
+		} else {
 			rollback(conn);
 		}
 		close(conn);
 		return result;
 	}
-	
+
 	public int updateComment(long commentSeq, long userSeq, String newContent) {
-        Connection conn = getConnection();
-        int result = cdao.updateComment(conn, commentSeq, userSeq, newContent);
-        if (result > 0) {
-        	commit(conn);
-        }
-        else {
-        	rollback(conn);
-        }
-        close(conn);
-        return result;
-    }
+		Connection conn = getConnection();
+		int result = cdao.updateComment(conn, commentSeq, userSeq, newContent);
+		if (result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+
+	public int deleteComment(long commentSeq, long userSeq) {
+		Connection conn = getConnection();
+		int result = cdao.deleteComment(conn, commentSeq, userSeq);
+		if (result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
 
 }

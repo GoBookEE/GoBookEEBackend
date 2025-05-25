@@ -16,7 +16,7 @@ public class CommentsViewResponse {
 	private Long commentsSeq;
 	private String commentsContents;
 	private Timestamp commentsCreateTime;
-	private Timestamp commentsEditTime;	
+	private Timestamp commentsEditTime;
 	private String userNickName;
 	private Long commentsParentSeq;
 }
