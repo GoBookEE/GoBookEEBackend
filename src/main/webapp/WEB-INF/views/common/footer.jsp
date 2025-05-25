@@ -7,7 +7,7 @@
             <div><i class="bi bi-chat-text-fill fs-1"></i></div>
             <div>리뷰</div>
         </div>
-        <div class="col-2">
+        <div class="col-2" onclick="location.assign('<%=request.getContextPath()%>/study/listpage')">
             <div><i class="bi bi-book-fill fs-1"></i></div>
             <div>스터디</div>
         </div>
