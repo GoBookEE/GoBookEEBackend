@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 public class Comments {
-	
+
 	private Long commentsSeq;
 	private String commentsContents;
 	private Timestamp commentsCreateTime;
