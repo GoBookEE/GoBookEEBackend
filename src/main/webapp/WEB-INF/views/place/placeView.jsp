@@ -16,77 +16,84 @@
 %>
 
 <main class="container my-4">
-    <h2><%= place.getPlaceTitle() %> 예약</h2>
-    <div class="mb-3">
-        <div>주소: <%=place.getPlaceAddress()%>
-        </div>
-        <div>제목: <%=place.getPlaceTitle()%>
-        </div>
-        <div>내용: <%=place.getPlaceContents()%>
-        </div>
-        <div>위도: <%=place.getPlaceLatitude()%>
-        </div>
-        <div>경도: <%=place.getPlaceLongitude()%>
-        </div>
-        <div id="map" style="width:50%; height:400px;"></div>
-        <div>유저 닉네임: <%=place.getUserNickname()%>
-        </div>
-        <div>유저 속도: <%=place.getUserSpeed()%>
-        </div>
-        <div>추천: <%=place.getPlaceRecCount()%> / 비추천: <%=place.getPlaceNonRecCount()%>
-        </div>
-        <% if (place.getPhotoNames() != null && !place.getPhotoNames().isEmpty()) {
-            for (String photoName : place.getPhotoNames()) { %>
-        <div><img src="<%=CommonPathTemplate.getUploadPath(request, FileType.PLACE, photoName)%>" alt=""/></div>
-        <% }
-        } %>
-    </div>
-    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reservationModal">예약하기</button>
+    <h2 class="fw-bold mb-4 text-center"><%= place.getPlaceTitle() %> 예약</h2>
 
-    <!-- 예약 모달 -->
+    <!-- 지도 및 정보 -->
+    <div class="row mb-5">
+        <div class="col-md-6">
+            <div id="map" style="width:100%; height:400px; border-radius: 10px;"></div>
+        </div>
+        <div class="col-md-6">
+            <p><strong>주소:</strong> <%=place.getPlaceAddress()%>
+            </p>
+            <p><strong>내용:</strong> <%=place.getPlaceContents()%>
+            </p>
+            <p><strong>위도/경도:</strong> <%=place.getPlaceLatitude()%> / <%=place.getPlaceLongitude()%>
+            </p>
+            <p><strong>작성자:</strong> <%=place.getUserNickname()%> (속도: <%=place.getUserSpeed()%>)</p>
+            <p><strong>추천/비추천:</strong> <%=place.getPlaceRecCount()%> / <%=place.getPlaceNonRecCount()%>
+            </p>
+            <% if (place.getPhotoNames() != null && !place.getPhotoNames().isEmpty()) {
+                for (String photoName : place.getPhotoNames()) { %>
+            <img src="<%=CommonPathTemplate.getUploadPath(request, FileType.PLACE, photoName)%>" alt=""
+                 class="img-fluid rounded mb-2"/>
+            <% }
+            } %>
+        </div>
+    </div>
+
+    <!-- 예약 버튼 -->
+    <div class="text-center">
+        <button class="btn btn-dark px-5 py-2" data-bs-toggle="modal" data-bs-target="#reservationModal">예약하기</button>
+    </div>
+
+    <!-- 예약 모달 (세로 크기 조절: modal-xl → modal-lg, 높이 줄이기) -->
     <div class="modal fade" id="reservationModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">예약 정보</h5>
+            <div class="modal-content p-4">
+                <div class="modal-header border-0 pb-0">
+                    <h4 class="modal-title fw-bold">장소 예약</h4>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body pt-0">
                     <% if (isOwner) { %>
-                    <!-- 사장용 -->
-                    <div id="ownerCalendar"></div>
-                    <h6 class="mt-3" id="selectedDateTitle">예약 현황</h6>
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th>스터디명</th>
-                            <th>인원</th>
-                            <th>전화번호</th>
-                            <th>확정</th>
-                        </tr>
-                        </thead>
-                        <tbody id="reservationTableBody"></tbody>
-                    </table>
+                    <!-- 사장용 캘린더 & 예약 리스트 -->
+                    <div id="ownerCalendar" class="mb-4"></div>
+                    <h5 class="mb-3" id="selectedDateTitle">예약 현황</h5>
+                    <div class="table-responsive">
+                        <table class="table table-bordered text-center">
+                            <thead class="table-light">
+                            <tr>
+                                <th>스터디명</th>
+                                <th>인원</th>
+                                <th>전화번호</th>
+                                <th>확정</th>
+                            </tr>
+                            </thead>
+                            <tbody id="reservationTableBody"></tbody>
+                        </table>
+                    </div>
                     <% } else { %>
-                    <!-- 일반 유저용 -->
+                    <!-- 일반 유저: 그룹 선택 → 날짜 → 예약 확인 -->
                     <div id="step-group">
-                        <h6>스터디 그룹 선택</h6>
+                        <h6 class="mb-3 fw-bold">스터디 그룹 선택</h6>
                         <ul id="groupList" class="list-group"></ul>
                     </div>
                     <div id="step-calendar" style="display:none">
-                        <h6>예약 날짜 선택</h6>
-                        <div id="userCalendar"></div>
-                        <button class="btn btn-link" onclick="goBackToGroup()">이전</button>
+                        <h6 class="fw-bold mb-3">예약 날짜 선택</h6>
+                        <div id="userCalendar" class="mb-3"></div>
+                        <button class="btn btn-secondary" onclick="goBackToGroup()">이전</button>
                     </div>
                     <div id="step-confirm" style="display:none">
+                        <h6 class="fw-bold mb-3">예약 확인</h6>
                         <form method="post" action="<%=request.getContextPath()%>/schedule/insert">
                             <input type="hidden" name="placeSeq" value="<%=place.getPlaceSeq()%>">
                             <input type="hidden" id="formStudySeq" name="studySeq">
                             <input type="hidden" id="formDate" name="date">
-                            <div id="confirmInfo" class="my-2"></div>
-                            <button type="submit" class="btn btn-primary">예약하기</button>
+                            <div id="confirmInfo" class="border rounded p-3 mb-3 bg-light"></div>
+                            <button type="submit" class="btn btn-success w-100">예약하기</button>
                         </form>
-                        <button class="btn btn-link" onclick="goBackToDate()">이전</button>
+                        <button class="btn btn-outline-dark mt-2 w-100" onclick="goBackToDate()">날짜 선택으로 돌아가기</button>
                     </div>
                     <% } %>
                 </div>
@@ -190,18 +197,29 @@
             for (let i = 0; i < list.length; i++) {
                 const resv = list[i];
                 console.log(resv);
-                const confirmBtn = resv.requestConfirm === 'Y' ? 'O'
-                    : resv.requestConfirm === 'N' ? 'X'
-                        : `<button class="btn btn-sm btn-success">O</button> <button class="btn btn-sm btn-danger">X</button>`;
+
+                let confirmBtn = '';
+                if (resv.requestConfirm === 'Y') {
+                    confirmBtn = '<span class="badge bg-success">O</span>';
+                } else if (resv.requestConfirm === 'N') {
+                    confirmBtn = `
+                    <div class="d-flex justify-content-center gap-1">
+                        <button type="button" class="btn btn-outline-success btn-sm px-3 py-1 fw-bold">O</button>
+                        <button type="button" class="btn btn-outline-danger btn-sm px-3 py-1 fw-bold">X</button>
+                    </div>
+                `;
+                } else if (resv.requestConfirm === 'R') {
+                    confirmBtn = '<span class="badge bg-danger">X</span>';
+                }
 
                 $tbody.append(`
-                <tr>
-                    <td>\${resv.studyTitle}</td>
-                    <td>\${resv.studyCurrCount}/\${resv.studyMemberLimit}</td>
-                    <td>\${resv.studyContact || '-'}</td>
-                    <td>\${confirmBtn}</td>
-                </tr>
-            `);
+                    <tr>
+                        <td>\${resv.studyTitle}</td>
+                        <td>\${resv.studyCurrCount}/\${resv.studyMemberLimit}</td>
+                        <td>\${resv.studyContact || '-'}</td>
+                        <td>\${confirmBtn}</td>
+                    </tr>
+                `);
             }
         });
     }
