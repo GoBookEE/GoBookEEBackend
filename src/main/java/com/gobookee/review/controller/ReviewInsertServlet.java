@@ -16,33 +16,32 @@ import com.gobookee.review.service.ReviewService;
 public class ReviewInsertServlet extends HttpServlet {
 	private ReviewService service = ReviewService.reviewService();
 	private static final long serialVersionUID = 1L;
-       
-    public ReviewInsertServlet() {
-        super();
-    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public ReviewInsertServlet() {
+		super();
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		long bookSeq = Long.parseLong(request.getParameter("bookSeq"));
-        String title = request.getParameter("reviewTitle");
-        String contents = request.getParameter("reviewContents");
-        int rate = Integer.parseInt(request.getParameter("reviewRate"));
-        //Long userSeq = ((User) request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자
-        
-        Review review = Review.builder()
-                .bookSeq(bookSeq)
-                //.userSeq(userSeq)
-                .reviewTitle(title)
-                .reviewContents(contents)
-                .reviewRate(rate)
-                .build();
-        
-        int result = service.insertReview(review);
-        String msg, loc;
+		String title = request.getParameter("reviewTitle");
+		String contents = request.getParameter("reviewContents");
+		int rate = Integer.parseInt(request.getParameter("reviewRate"));
+		// Long userSeq = ((User)
+		// request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자
+
+		Review review = Review.builder().bookSeq(bookSeq)
+				// .userSeq(userSeq)
+				.reviewTitle(title).reviewContents(contents).reviewRate(rate).build();
+
+		int result = service.insertReview(review);
+		String msg, loc;
 		if (result > 0) {
 			msg = "리뷰 등록 성공";
 			loc = "/review/listpage";
@@ -55,7 +54,6 @@ public class ReviewInsertServlet extends HttpServlet {
 
 		request.getRequestDispatcher(CommonPathTemplate.getViewPath("/common/msg")).forward(request, response);
 
-        
 	}
 
 }

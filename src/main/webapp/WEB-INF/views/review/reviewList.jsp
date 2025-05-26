@@ -70,23 +70,22 @@ body {
 				<div id="reviewContainer" class="list-group"></div>
 
 				<div id="pageBar"></div>
-<!-- 📌 Floating Action Button -->
-<div class="fab-container">
-	<button class="fab-main" id="fabToggle">
-		<i class="bi bi-plus-lg"></i>
-	</button>
-	<div class="fab-menu" id="fabMenu">
-		<a href="<%=request.getContextPath()%>/review/insertpage" class="fab-item">
-			<i class="bi bi-pencil"></i> 리뷰 쓰기
-		</a>
-		<a href="<%=request.getContextPath()%>/book/insert" class="fab-item">
-			<i class="bi bi-book"></i> 책 등록하기
-		</a>
-	</div>
-</div>
+				<!-- 📌 Floating Action Button -->
+				<div class="fab-container">
+					<button class="fab-main" id="fabToggle">
+						<i class="bi bi-plus-lg"></i>
+					</button>
+					<div class="fab-menu" id="fabMenu">
+						<a href="<%=request.getContextPath()%>/review/insertpage"
+							class="fab-item"> <i class="bi bi-pencil"></i> 리뷰 쓰기
+						</a> <a href="<%=request.getContextPath()%>/book/insert"
+							class="fab-item"> <i class="bi bi-book"></i> 책 등록하기
+						</a>
+					</div>
+				</div>
 
 
-<style>
+				<style>
 .fab-container {
 	position: fixed;
 	bottom: 80px; /* ✅ 푸터 위로 띄우기 */
@@ -135,7 +134,6 @@ body {
 .fab-item:hover {
 	background-color: #157347;
 }
-
 </style>
 
 
@@ -216,7 +214,7 @@ function loadReviews(sortType,cPage = 1) {
     });
 }
 </script>
-<script>
+				<script>
 document.addEventListener("DOMContentLoaded", function () {
 	const fabToggle = document.getElementById("fabToggle");
 	const fabMenu = document.getElementById("fabMenu");

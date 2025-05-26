@@ -1,26 +1,28 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <style>
 header, footer {
-    display: none !important;
+	display: none !important;
 }
 </style>
 
-<div class="py-4 px-3" style="width: 40%; max-width: none; margin: 0; ">
+<div class="py-4 px-3" style="width: 40%; max-width: none; margin: 0;">
 
 
 	<div class="d-flex justify-content-between align-items-center mb-3">
-	<button class="btn btn-link text-decoration-none text-dark fs-4" onclick="history.back()">
-		<i class="bi bi-x-lg"></i>
-	</button>
-</div>
-	
+		<button class="btn btn-link text-decoration-none text-dark fs-4"
+			onclick="history.back()">
+			<i class="bi bi-x-lg"></i>
+		</button>
+	</div>
+
 	<h5 class="fw-bold mb-4">리뷰 쓰기</h5>
 
 	<!-- ✅ 선택된 도서 카드 (기본 숨김) -->
 	<div id="selectedBookCard" class="card mb-4 d-none">
-		<div class="card-body d-flex justify-content-between align-items-center">
+		<div
+			class="card-body d-flex justify-content-between align-items-center">
 			<div class="d-flex align-items-center">
 				<img id="selectedBookImg" src="" alt="book" width="70" class="me-3">
 				<div>
@@ -29,7 +31,8 @@ header, footer {
 					<small id="selectedBookPublisher" class="text-muted"></small>
 				</div>
 			</div>
-			<button type="button" class="btn btn-sm btn-outline-danger" onclick="clearSelectedBook()">X</button>
+			<button type="button" class="btn btn-sm btn-outline-danger"
+				onclick="clearSelectedBook()">X</button>
 		</div>
 	</div>
 
@@ -37,34 +40,36 @@ header, footer {
 	<div class="mb-3">
 		<label class="form-label fw-semibold">리뷰를 쓰고 싶은 책을 검색해 보세요</label>
 		<div class="input-group">
-			<input type="text" id="searchInput" class="form-control" placeholder="도서명이나 저자명으로 찾아보세요" readonly
-			       onclick="openBookModal()">
+			<input type="text" id="searchInput" class="form-control"
+				placeholder="도서명이나 저자명으로 찾아보세요" readonly onclick="openBookModal()">
 			<span class="input-group-text"><i class="bi bi-search"></i></span>
 		</div>
 	</div>
 
 	<!-- ✅ 리뷰 입력 폼 -->
-	<form action="<%=request.getContextPath()%>/review/insert" method="post">
+	<form action="<%=request.getContextPath()%>/review/insert"
+		method="post">
 		<input type="hidden" name="bookSeq" id="bookSeq">
 
 		<div class="mb-3">
-			<label class="form-label">제목을 입력해 주세요 (20자 이내)</label>
-			<input type="text" class="form-control" name="reviewTitle" maxlength="20" required>
+			<label class="form-label">제목을 입력해 주세요 (20자 이내)</label> <input
+				type="text" class="form-control" name="reviewTitle" maxlength="20"
+				required>
 		</div>
 
 		<div class="mb-3">
-			<textarea class="form-control" name="reviewContents" rows="6" placeholder="내용을 입력해 주세요" required></textarea>
+			<textarea class="form-control" name="reviewContents" rows="6"
+				placeholder="내용을 입력해 주세요" required></textarea>
 		</div>
 
 		<div class="mb-3">
 			<label class="form-label">이 책 어떠셨나요?</label><br>
 			<div id="starRating" class="text-success fs-4">
 				<!-- JS로 별점 설정 -->
-				<i class="bi bi-star" data-value="1"></i>
-				<i class="bi bi-star" data-value="2"></i>
-				<i class="bi bi-star" data-value="3"></i>
-				<i class="bi bi-star" data-value="4"></i>
-				<i class="bi bi-star" data-value="5"></i>
+				<i class="bi bi-star" data-value="1"></i> <i class="bi bi-star"
+					data-value="2"></i> <i class="bi bi-star" data-value="3"></i> <i
+					class="bi bi-star" data-value="4"></i> <i class="bi bi-star"
+					data-value="5"></i>
 			</div>
 			<input type="hidden" name="reviewRate" id="reviewRate" value="0">
 		</div>
@@ -96,6 +101,7 @@ function searchBooks() {
 		url: '<%=request.getContextPath()%>/book/search',
 		data: { keyword },
 		success: function (books) {
+			resultArea.innerHTML='';
 			if (!books || books.length === 0) {
 				resultArea.innerHTML = `
 				  <div class="text-center py-5">
@@ -157,6 +163,6 @@ stars.forEach(star => {
 	});
 });
 </script>
-<%@ include file="/WEB-INF/views/review/bookSearchModal.jsp" %>
+<%@ include file="/WEB-INF/views/review/bookSearchModal.jsp"%>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

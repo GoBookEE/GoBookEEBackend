@@ -130,7 +130,7 @@ public class ReviewDAO {
 		}
 		return dto;
 	}
-	
+
 	public int insertReview(Connection conn, Review dto) {
 		int result = 0;
 		try {
@@ -140,6 +140,25 @@ public class ReviewDAO {
 			pstmt.setInt(3, dto.getReviewRate());
 			pstmt.setLong(4, dto.getUserSeq());
 			pstmt.setLong(5, dto.getBookSeq());
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int updateReview(Connection conn, Review dto) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("updateReview"));
+			pstmt.setString(1, dto.getReviewTitle());
+			pstmt.setString(2, dto.getReviewContents());
+			pstmt.setInt(3, dto.getReviewRate());
+			pstmt.setLong(4, dto.getReviewSeq());
+			pstmt.setLong(5, dto.getUserSeq());
 			result = pstmt.executeUpdate();
 
 		} catch (SQLException e) {

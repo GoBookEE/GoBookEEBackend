@@ -17,22 +17,24 @@ import com.google.gson.Gson;
 public class BookSearchServlet extends HttpServlet {
 	private ReviewService service = ReviewService.reviewService();
 	private static final long serialVersionUID = 1L;
-       
-    public BookSearchServlet() {
-        super();
-    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public BookSearchServlet() {
+		super();
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		String keyword = request.getParameter("keyword");
 
-        List<BookReviewResponse> books = service.searchBooks(keyword);
-        response.setContentType("application/json;charset=UTF-8");
+		List<BookReviewResponse> books = service.searchBooks(keyword);
+		response.setContentType("application/json;charset=UTF-8");
 
-        Gson gson = new Gson();
-        response.getWriter().write(gson.toJson(books));	
-    }
+		Gson gson = new Gson();
+		response.getWriter().write(gson.toJson(books));
+	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 	}
 

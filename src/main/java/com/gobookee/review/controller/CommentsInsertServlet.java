@@ -52,9 +52,8 @@ public class CommentsInsertServlet extends HttpServlet {
 		}
 		request.setAttribute("msg", msg);
 		request.setAttribute("loc", loc);
-		
-		//request.getRequestDispatcher(CommonPathTemplate.getViewPath("/common/msg")).forward(request, response);
-		//request.getRequestDispatcher(CommonPathTemplate.getViewPath(PATH)).forward(request, response);
+
+		request.getRequestDispatcher(CommonPathTemplate.getViewPath("/common/msg")).forward(request, response);
 	}
 
 }
