@@ -98,6 +98,18 @@ public class ReviewService {
 		return result;
 	}
 
+	public int deleteReview(Long reviewSeq, Long userSeq) {
+		Connection conn = getConnection();
+		int result = dao.deleteReview(conn, reviewSeq, userSeq);
+		if (result > 0) {
+			commit(conn);
+		} else {
+			rollback(conn);
+		}
+		close(conn);
+		return result;
+	}
+
 	public List<BookReviewResponse> searchBooks(String keyword) {
 		Connection conn = getConnection();
 		List<BookReviewResponse> result = dao.searchBooks(conn, keyword);

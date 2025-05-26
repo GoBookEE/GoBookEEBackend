@@ -23,6 +23,7 @@ public class ReviewViewResponse {
 	private Integer reviewRate;
 	private Timestamp reviewEditTime;
 	private List<CommentsViewResponse> comments;
+	private Long userSeq;
 
 	private String bookTitle;
 	private String bookAuthor;
@@ -37,5 +38,6 @@ public class ReviewViewResponse {
 
 	private String userNickName;
 	private String userProfile;
+	
 
 }

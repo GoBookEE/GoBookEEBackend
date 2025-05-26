@@ -170,6 +170,22 @@ public class ReviewDAO {
 		return result;
 	}
 
+	public int deleteReview(Connection conn, Long reviewSeq, Long userSeq) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("deleteReview"));
+			pstmt.setLong(1, reviewSeq);
+			pstmt.setLong(2, userSeq);
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
 	public List<BookReviewResponse> searchBooks(Connection conn, String keyword) {
 		List<BookReviewResponse> list = new ArrayList<>();
 
@@ -226,7 +242,8 @@ public class ReviewDAO {
 				.bookReviewCount(rs.getInt("BOOK_REVIEW_COUNT")).bookAvgRate(rs.getDouble("BOOK_AVG_RATE"))
 				.recommendCount(rs.getInt("RECOMMEND_COUNT")).nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT"))
 				.userNickName(rs.getString("USER_NICKNAME")).userProfile(rs.getString("USER_PROFILE"))
-				.bookDescription(rs.getString("BOOK_DESCRIPTION")).build();
+				.bookDescription(rs.getString("BOOK_DESCRIPTION"))
+				.userSeq(rs.getLong("USER_SEQ")).build();
 	}
 
 }

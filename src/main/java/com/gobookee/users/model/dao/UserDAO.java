@@ -20,7 +20,7 @@ public class UserDAO {
 	private static final UserDAO userDao=new UserDAO();
 	
 	private UserDAO() {
-		String path=UserDAO.class.getResource("/config/user_sql.properties").getPath();
+		String path=UserDAO.class.getResource("/config/users-sql.properties").getPath();
 		try(FileReader fr=new FileReader(path)) {
 			sqlProp.load(fr);
 		}catch(IOException e) {

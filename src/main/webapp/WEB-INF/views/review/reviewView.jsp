@@ -1,9 +1,11 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page
-	import="java.sql.Timestamp,java.util.List,com.gobookee.review.model.dto.*,com.gobookee.common.DateTimeFormatUtil"%>
+	import="java.sql.Timestamp,java.util.List,com.gobookee.review.model.dto.*,com.gobookee.common.DateTimeFormatUtil,
+	com.gobookee.users.model.dto.*"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
+User loginUser = (User)session.getAttribute("loginUser");
 ReviewViewResponse review = (ReviewViewResponse) request.getAttribute("review");
 List<CommentsViewResponse> comments = review.getComments();
 %>
@@ -17,11 +19,13 @@ List<CommentsViewResponse> comments = review.getComments();
 					onclick="history.back()">
 					<i class="bi bi-arrow-left"></i> 뒤로
 				</button>
+				<%if(loginUser!=null&&loginUser.getUserSeq().equals(review.getUserSeq())){ %>
 				<div class="dropdown">
 					<button class="btn btn-link text-dark" id="moreMenu"
 						data-bs-toggle="dropdown" aria-expanded="false">
 						<i class="bi bi-three-dots-vertical"></i>
 					</button>
+					
 					<ul class="dropdown-menu dropdown-menu-end"
 						aria-labelledby="moreMenu">
 						<li><a class="dropdown-item"
@@ -32,6 +36,7 @@ List<CommentsViewResponse> comments = review.getComments();
 								삭제</a></li>
 					</ul>
 				</div>
+				<%} %>
 			</div>
 
 			<!-- 상단 태그 -->
