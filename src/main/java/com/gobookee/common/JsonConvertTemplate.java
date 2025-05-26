@@ -1,5 +1,6 @@
 package com.gobookee.common;
 
+import com.gobookee.common.enums.ContentType;
 import com.google.gson.Gson;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +32,7 @@ public class JsonConvertTemplate {
      * @return
      */
     public static void toJson(Object obj, HttpServletResponse response) throws IOException {
+        response.setContentType(ContentType.JSON.toString());
         gson.toJson(obj, response.getWriter());
     }
 }

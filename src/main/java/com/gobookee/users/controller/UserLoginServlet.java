@@ -1,16 +1,12 @@
 package com.gobookee.users.controller;
 
-import java.io.IOException;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import com.gobookee.users.model.dto.User;
 import com.gobookee.users.service.UserService;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
 
 /**
  * Servlet implementation class UserLoginServlet
@@ -34,9 +30,8 @@ public class UserLoginServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userId = request.getParameter("userId");
 		String userPwd = request.getParameter("userPwd");
-		
 		String saveId = request.getParameter("saveId");
-		
+
 		if(saveId!=null) {
 			Cookie c = new Cookie("saveId",userId);
 			c.setMaxAge(60*60*24*7);
@@ -48,9 +43,9 @@ public class UserLoginServlet extends HttpServlet {
 			c.setPath("/");
 			response.addCookie(c);
 		}
-		
+
 		User u = UserService.userService().searchUserById(userId);
-		
+
 		if(u!=null && u.getUserPwd().equals(userPwd)) {
 			HttpSession session = request.getSession();
 			session.setAttribute("loginUser", u);
