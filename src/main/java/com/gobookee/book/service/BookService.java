@@ -17,12 +17,19 @@ public class BookService {
     public static BookService bookService() { return SERVICE; }
     private BookDao dao = bookDao();
 
-    public List<Book> getAllBookList (int cPage, int numPage) {
+    public List<Book> getAllBookList (int cPage, int numPage, int userSeq) {
         Connection conn = getConnection();
         List<Book> books = new ArrayList<Book>();
-        books = dao.getAllBookList(conn,cPage, numPage);
+        books = dao.getAllBookList(conn,cPage, numPage, userSeq);
         close(conn);
         return books;
+    }
+
+    public Book getBookDetailBySeq (int bookSeq) {
+        Connection conn = getConnection();
+        Book book = dao.getBookDetailBySeq(conn, bookSeq);
+        close(conn);
+        return book;
     }
 
     public int getAllBookCount () {
