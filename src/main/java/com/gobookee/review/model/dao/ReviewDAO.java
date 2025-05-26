@@ -11,9 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import com.gobookee.book.model.dto.BookReviewResponse;
 import com.gobookee.common.JDBCTemplate;
-import com.gobookee.review.model.dto.Comments;
-import com.gobookee.review.model.dto.CommentsViewResponse;
 import com.gobookee.review.model.dto.Review;
 import com.gobookee.review.model.dto.ReviewListResponse;
 import com.gobookee.review.model.dto.ReviewViewResponse;
@@ -132,20 +131,68 @@ public class ReviewDAO {
 		return dto;
 	}
 
-	public int getRecommendCount(Connection conn, Integer reviewSeq) {
+	public int insertReview(Connection conn, Review dto) {
 		int result = 0;
 		try {
-			pstmt = conn.prepareStatement(sqlProp.getProperty("getRecommendCount"));
-			pstmt.setInt(1, reviewSeq);
+			pstmt = conn.prepareStatement(sqlProp.getProperty("insertReview"));
+			pstmt.setString(1, dto.getReviewTitle());
+			pstmt.setString(2, dto.getReviewContents());
+			pstmt.setInt(3, dto.getReviewRate());
+			pstmt.setLong(4, dto.getUserSeq());
+			pstmt.setLong(5, dto.getBookSeq());
 			result = pstmt.executeUpdate();
 
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int updateReview(Connection conn, Review dto) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("updateReview"));
+			pstmt.setString(1, dto.getReviewTitle());
+			pstmt.setString(2, dto.getReviewContents());
+			pstmt.setInt(3, dto.getReviewRate());
+			pstmt.setLong(4, dto.getReviewSeq());
+			pstmt.setLong(5, dto.getUserSeq());
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public List<BookReviewResponse> searchBooks(Connection conn, String keyword) {
+		List<BookReviewResponse> list = new ArrayList<>();
+
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("searchBooks"));
+			String search = "%" + keyword + "%";
+			pstmt.setString(1, search);
+			pstmt.setString(2, search);
+
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				BookReviewResponse book = BookReviewResponse.builder().bookSeq(rs.getLong("BOOK_SEQ"))
+						.bookTitle(rs.getString("BOOK_TITLE")).bookAuthor(rs.getString("BOOK_AUTHOR"))
+						.bookPublisher(rs.getString("BOOK_PUBLISHER")).bookPubDate(rs.getString("BOOK_PUBDATE"))
+						.bookCover(rs.getString("BOOK_COVER")).build();
+				list.add(book);
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			JDBCTemplate.close(rs);
 			JDBCTemplate.close(pstmt);
 		}
-		return result;
+		return list;
 	}
 
 	private Review getReviewDTO(ResultSet rs) throws SQLException {
