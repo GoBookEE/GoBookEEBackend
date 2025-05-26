@@ -1,11 +1,14 @@
 package com.gobookee.schedule.model.dao;
 
+import com.gobookee.schedule.model.dto.ScheduleReserve;
 import com.gobookee.study.model.dao.StudyDao;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Properties;
 
 import static com.gobookee.common.JDBCTemplate.close;
@@ -52,21 +55,21 @@ public class ScheduleDao {
         return result;
     }
 
-    public int getStudyCountByPlaceSeqAndDate(Connection conn, Long placeSeq, Date date) {
+    public List<ScheduleReserve> getStudyListPlaceSeqAndDate(Connection conn, Long placeSeq, Date date) {
         pstmt = null;
         rs = null;
-        int count = 0;
+        List<ScheduleReserve> scheduleList = new ArrayList<>();
         try {
-            pstmt = conn.prepareStatement(sqlProp.getProperty("getStudyCountByPlaceSeqAndDate"));
+            pstmt = conn.prepareStatement(sqlProp.getProperty("getStudyListByPlaceSeqAndDate"));
             pstmt.setLong(1, placeSeq);
             pstmt.setDate(2, date);
             rs = pstmt.executeQuery();
-            if (rs.next()) {
-                count = rs.getInt(1);
+            while (rs.next()) {
+                scheduleList.add(ScheduleReserve.from(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return count;
+        return scheduleList;
     }
 }

@@ -52,12 +52,12 @@ public class PlaceService {
             }
 
             //사진 등록 다 성공 시 트랜잭션 커밋처리 하나라도 실패 시 롤백처리
-            if (insertedPhotos == fileList.size()) {
-                commit(conn);
-                isSuccess = true;
-            } else {
+            if (insertedPhotos != fileList.size()) {
                 rollback(conn);
+                return false;
             }
+            isSuccess = true;
+            commit(conn);
         } catch (Exception e) {
             rollback(conn);
             e.printStackTrace();
