@@ -32,7 +32,7 @@
                         <%}%>
                     </div>
                     <div><%=b.getBookPublisher()%> | <%=b.getBookPubdate()%></div>
-                    <div class="book-card-review">리뷰 <span>10개</span> <i class="bi bi-star-fill"> </i>4.0</div>
+                    <div class="book-card-review">리뷰 <span><%=b.getReviewCount()%>개</span> <i class="bi bi-star-fill"> </i><%=Math.ceil(b.getReviewRateAvg()*100)/100%></div>
                 </div>
             </div>
         </div>
