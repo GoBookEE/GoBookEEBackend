@@ -29,10 +29,11 @@ public class ReviewInsertServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
-		long bookSeq = Long.parseLong(request.getParameter("bookSeq"));
+		Long bookSeq = Long.parseLong(request.getParameter("bookSeq"));
 		String title = request.getParameter("reviewTitle");
 		String contents = request.getParameter("reviewContents");
 		int rate = Integer.parseInt(request.getParameter("reviewRate"));
+		System.out.println(bookSeq+ title+ contents +rate);
 		// Long userSeq = ((User)
 		// request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자
 
