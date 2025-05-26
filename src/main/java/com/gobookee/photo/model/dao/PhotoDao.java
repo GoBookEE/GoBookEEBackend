@@ -77,4 +77,43 @@ public class PhotoDao {
         }
         return photoList;
     }
+
+    public boolean deletePhotoByPlaceSeq(Connection conn, Long placeSeq) {
+        int result = getPhotoCountByPlaceSeq(conn, placeSeq);
+        pstmt = null;
+        int deleteData = 0;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("deletePhotosByPlaceSeq"));
+            pstmt.setLong(1, placeSeq);
+            deleteData = pstmt.executeUpdate();
+            if (deleteData == result) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return false;
+    }
+
+    private int getPhotoCountByPlaceSeq(Connection conn, Long placeSeq) {
+        pstmt = null;
+        rs = null;
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("getPhotoCountByPlaceSeq"));
+            pstmt.setLong(1, placeSeq);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                result = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+    }
 }
