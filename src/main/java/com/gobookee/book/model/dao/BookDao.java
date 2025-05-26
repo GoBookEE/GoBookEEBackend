@@ -33,21 +33,27 @@ public class BookDao {
         }
     }
 
-    public List<Book> getAllBookList(Connection conn, int cPage, int numPage){
+    public List<Book> getAllBookList(Connection conn, int cPage, int numPage, int userSeq){
         List<Book> bookList = new ArrayList<Book>();
         try{
             pstmt = conn.prepareStatement(sql.getProperty("getBookListPaging"));
-            pstmt.setInt(1, (cPage-1)*numPage+1);
-            pstmt.setInt(2, cPage*numPage);
+            pstmt.setInt(1, userSeq);
+            pstmt.setInt(2, (cPage-1)*numPage+1);
+            pstmt.setInt(3, cPage*numPage);
             rs=pstmt.executeQuery();
             while(rs.next()){
-                bookList.add(getBook(rs));
+                Book book = getBook(rs);
+                book.setReviewCount(rs.getInt("REVIEW_COUNT"));
+                book.setReviewRateAvg(rs.getDouble("REVIEW_RATE_AVG"));
+                book.setWishCount(rs.getInt("WISH_CHECK"));
+                bookList.add(book);
             }
         }catch (SQLException e){
             e.printStackTrace();
         }
         return bookList;
     }
+
     public int getAllBookCount(Connection conn){
         int bookCount = 0;
         try{
@@ -59,7 +65,20 @@ public class BookDao {
         }
         return bookCount;
     }
-
+    public Book getBookDetailBySeq(Connection conn, int bookSeq){
+        Book book = null;
+        try{
+            pstmt = conn.prepareStatement(sql.getProperty("getBookDetailBySeq"));
+            pstmt.setInt(1, bookSeq);
+            rs=pstmt.executeQuery();
+            while(rs.next()){
+                book = getBook(rs);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return book;
+    }
     public int insertBook(Connection conn, Book b){
         int result = 0;
         try{
@@ -101,32 +120,32 @@ public class BookDao {
     public Book getBook(ResultSet rs) throws SQLException {
         new Book();
         return Book.builder()
-                .bookSeq(rs.getLong(2))
-                .bookID(rs.getLong(3))
-                .bookTitle(rs.getString(4))
-                .bookLink(rs.getString(5))
-                .bookAuthor(rs.getString(6))
-                .bookPubdate(rs.getDate(7))
-                .bookDescription(rs.getString(8))
-                .bookIsbn(rs.getString(9))
-                .bookIsbn13(rs.getString(10))
-                .bookPriceSales(rs.getInt(11))
-                .bookPriceStandard(rs.getInt(12))
-                .bookMallType(rs.getString(13))
-                .bookStockStatus(rs.getString(14))
-                .bookMileage(rs.getInt(15))
-                .bookCover(rs.getString(16))
-                .bookCategoryId(rs.getString(17))
-                .bookCategoryName(rs.getString(18))
-                .bookPublisher(rs.getString(19))
-                .bookSalesPoint(rs.getInt(20))
-                .bookAdult(rs.getString(21))
-                .bookFixedPrice(rs.getString(22))
-                .bookCustomerReviewRank(rs.getInt(23))
-                .bookSeriesId(rs.getString(24))
-                .bookSeriesLink(rs.getString(25))
-                .bookSeriesName(rs.getString(26))
-                .bookSubInfo(rs.getString(27))
+                .bookSeq(rs.getLong("BOOK_SEQ"))
+                .bookID(rs.getLong("BOOK_ID"))
+                .bookTitle(rs.getString("BOOK_TITLE"))
+                .bookLink(rs.getString("BOOK_LINK"))
+                .bookAuthor(rs.getString("BOOK_AUTHOR"))
+                .bookPubdate(rs.getDate("BOOK_PUBDATE"))
+                .bookDescription(rs.getString("BOOK_DESCRIPTION"))
+                .bookIsbn(rs.getString("BOOK_ISBN"))
+                .bookIsbn13(rs.getString("BOOK_ISBN13"))
+                .bookPriceSales(rs.getInt("BOOK_PRICESALES"))
+                .bookPriceStandard(rs.getInt("BOOK_PRICESTANDARD"))
+                .bookMallType(rs.getString("BOOK_MALLTYPE"))
+                .bookStockStatus(rs.getString("BOOK_STOCKSTATUS"))
+                .bookMileage(rs.getInt("BOOK_MILEAGE"))
+                .bookCover(rs.getString("BOOK_COVER"))
+                .bookCategoryId(rs.getString("BOOK_CATEGORYID"))
+                .bookCategoryName(rs.getString("BOOK_CATEGORYNAME"))
+                .bookPublisher(rs.getString("BOOK_PUBLISHER"))
+                .bookSalesPoint(rs.getInt("BOOK_SALESPOINT"))
+                .bookAdult(rs.getString("BOOK_ADULT"))
+                .bookFixedPrice(rs.getString("BOOK_FIXEDPRICE"))
+                .bookCustomerReviewRank(rs.getInt("BOOK_CUSTOMERREVIEWRANK"))
+                .bookSeriesId(rs.getString("BOOK_SERIESID"))
+                .bookSeriesLink(rs.getString("BOOK_SERIESLINK"))
+                .bookSeriesName(rs.getString("BOOK_SERIESNAME"))
+                .bookSubInfo(rs.getString("BOOK_SUBINFO"))
                 .build();
     }
 }

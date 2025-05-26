@@ -1,5 +1,4 @@
 .form-container{
-    padding-top: 70px;
 }
 .form-container a{
     text-decoration: none;
@@ -79,4 +78,53 @@
 }
 .book-card-review i{
     color: #50A65D;
+}
+
+.book-detail-img{
+    display: flex;
+    justify-content: center;
+    padding: 60px 0;
+}
+.book-detail-img>img{
+    max-height: 440px;
+    box-shadow: rgba(0, 0, 0, 0.5) 10px 10px 20px;
+}
+.book-detail-content{
+    padding: 30px 30px;
+}
+.book-detail-row hr{
+    height: 8px;
+    border:0;
+    background-color: #F9F9F9;
+    opacity: 100%;
+    margin: 0;
+}
+.book-detail-title{
+    font-size: clamp(18px, 2vw, 20px);
+    font-weight: bold;
+    line-height: 30px;
+}
+.book-detail-info{
+    font-size: clamp(12px, 2vw, 14px);
+    color:#AFAFAF;
+    margin-bottom: 23px;
+}
+.book-detail-info .author{
+    color: black;
+}
+.book-detail-icon div{
+    width: 25px;
+    margin-left: 22px;
+}
+.book-detail-icon div i{
+    font-size: 25px;
+    color: #50A65D;
+}
+.book-detail-sub-content{
+    font-size: 20px;
+    padding: 20px 30px;
+}
+
+.book-detail-sub-content>div{
+    margin-bottom: 20px;
 }
