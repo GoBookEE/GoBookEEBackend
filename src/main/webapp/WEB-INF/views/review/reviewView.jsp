@@ -24,45 +24,50 @@ List<CommentsViewResponse> comments = review.getComments();
 					</button>
 					<ul class="dropdown-menu dropdown-menu-end"
 						aria-labelledby="moreMenu">
-						<li><a class="dropdown-item" href="<%=request.getContextPath() %>/review/updatepage?reviewSeq=<%=review.getReviewSeq()%>">게시물 수정</a></li>
-						<li><a class="dropdown-item" href="/review/delete?reviewSeq=<%=review.getReviewSeq()%>">게시물 삭제</a></li>
+						<li><a class="dropdown-item"
+							href="<%=request.getContextPath()%>/review/updatepage?reviewSeq=<%=review.getReviewSeq()%>">게시물
+								수정</a></li>
+						<li><a class="dropdown-item"
+							href="/review/delete?reviewSeq=<%=review.getReviewSeq()%>">게시물
+								삭제</a></li>
 					</ul>
 				</div>
 			</div>
 
 			<!-- 상단 태그 -->
-			<div class="mb-2 text-muted small">IT/개발</div>
+			<!-- <div class="mb-2 text-muted small">IT/개발</div> -->
 
 			<!-- 제목 -->
-			<h5 class="fw-bold mb-2">예시가 깔끔한 스프링 데이터 입문자 가이드 추천</h5>
+			<h5 class="fw-bold mb-2"><%=review.getReviewTitle()%></h5>
 
 			<!-- 유저 정보 -->
 			<div class="d-flex align-items-center mb-3">
 				<img src="https://via.placeholder.com/40"
 					class="rounded-circle me-2" alt="user" width="40" height="40">
 				<div>
-					<div class="fw-semibold">on.the.milkyway</div>
-					<small class="text-muted">2025.5.3</small>
+					<div class="fw-semibold"><%=review.getUserNickName()%></div>
+					<small class="text-muted"><%=review.getReviewCreateTime()%></small>
 				</div>
 			</div>
 
 			<!-- 책 정보 카드 -->
-			<div
-				class="d-flex border rounded p-3 mb-3 align-items-center bg-light">
-				<img
-					src="https://image.aladin.co.kr/product/36319/21/coversum/k442038541_1.jpg"
-					alt="book-cover" width="90" height="120" class="me-3 rounded">
-				<div>
-					<h6 class="mb-1"><%=review.getBookTitle()%></h6>
-					<p class="mb-1 text-muted small">초보자를 위한 프로젝트로 배우는 프로젝트 예제 중심의
-						스프링 데이터 실습서</p>
-					<div class="text-muted small">황재호 저 | 맹구출판 | 2015년 8월</div>
-					<div class="review-meta mt-2">
-						리뷰 <strong><%=review.getRecommendCount()%></strong>개 | 평점 <strong
-							class="text-success">★ 4.0</strong>
+			<div id="selectedBookCard" class="p-3 book-card mb-2">
+				<div class="row book-card-row align-items-center">
+					<div class="book-card-img col-5">
+						<img id="selectedBookImg" src="<%=review.getBookCover()%>"
+							alt="book" width="40"> <i class="bi bi-bookmark-fill"></i>
+					</div>
+					<div class="book-card-content col-7">
+						<div id="selectedBookTitle" class="book-card-title fw-bold"><%=review.getBookTitle()%></div>
+						<div id="selectedBookTitle" class="book-card-desc"><%=review.getBookDescription()%></div>
+						<div id="selectedBookAuthor" class="mb-1 text-muted"><%=review.getBookAuthor()%></div>
+						<div id="selectedBookPublisher" class="mb-1 text-muted"><%=review.getBookPublisher()%></div>
+						<!-- <button type="button" class="btn btn-sm btn-outline-danger mt-2"
+							onclick="clearSelectedBook()">X</button> -->
 					</div>
 				</div>
 			</div>
+			<br>
 
 			<!-- 본문 내용 -->
 			<p class="mb-3">정리로운 내용을 알기 쉽게 구성으로 입문자에게 뛰어난 느낌을 지울 수 없습니다. 저자의
@@ -76,9 +81,9 @@ List<CommentsViewResponse> comments = review.getComments();
 				<div class="text-muted d-flex align-items-center">
 					<i class="bi bi-chat-left-text me-1"></i> 2
 				</div>
-				<div class="text-muted ms-auto">
+				<!-- <div class="text-muted ms-auto">
 					<i class="bi bi-share-fill"></i>
-				</div>
+				</div> -->
 			</div>
 
 			<div class="border-top pt-3">
@@ -257,10 +262,6 @@ List<CommentsViewResponse> comments = review.getComments();
 						function() {
 							const id = $(this).data("comment-id");
 							const target = $("#child-comments-" + id);
-
-							// 문제 디버깅용 로그
-							console.log("Toggle ID:", id);
-							console.log("Element found?", target.length);
 
 							target.slideToggle(200, function() {
 								const isShown = target.is(":visible");

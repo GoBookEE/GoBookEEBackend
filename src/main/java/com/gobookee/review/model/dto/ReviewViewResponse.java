@@ -28,10 +28,14 @@ public class ReviewViewResponse {
 	private String bookAuthor;
 	private String bookPublisher;
 	private String bookCover;
+	private String bookDescription;
 
 	private Integer recommendCount;
 	private Integer bookReviewCount;
 	private Double bookAvgRate;
 	private Integer nonRecommendCount;
+
+	private String userNickName;
+	private String userProfile;
 
 }

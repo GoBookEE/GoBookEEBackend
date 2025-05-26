@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.gobookee.review.model.dto.ReviewViewResponse" %>
+<%@ page import="com.gobookee.review.model.dto.ReviewViewResponse"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
 ReviewViewResponse review = (ReviewViewResponse) request.getAttribute("review");
@@ -25,59 +25,29 @@ header, footer {
 
 	<h5 class="fw-bold mb-4"><%= isUpdate ? "수정하기" : "리뷰 쓰기" %></h5>
 
-	<!-- ✅ 선택된 도서 카드 (기본 숨김) -->
-	<!-- <div id="selectedBookCard" class="card mb-4 d-none">
-		<div
-			class="card-body d-flex justify-content-between align-items-center">
-			<div class="d-flex align-items-center">
-				<img id="selectedBookImg" src="" alt="book" width="70" class="me-3">
-				<div>
-					<div id="selectedBookTitle" class="fw-semibold"></div>
-					<small id="selectedBookAuthor" class="text-muted"></small><br>
-					<small id="selectedBookPublisher" class="text-muted"></small>
-				</div>
-			</div>
-			<button type="button" class="btn btn-sm btn-outline-danger"
-				onclick="clearSelectedBook()">X</button>
-		</div>
-	</div> -->
-	
 	<!-- ✅ 선택된 도서 카드 -->
-<!-- <div id="selectedBookCard" class="p-3 book-card mb-2 d-none">
-	<div class="row book-card-row align-items-center">
-		<div class="book-card-img col-5">
-			<img id="selectedBookImg" src="" alt="book" width="40">
-			<i class="bi bi-bookmark-fill"></i>
-		</div>
-		<div class="book-card-content col-7">
-			<div id="selectedBookTitle" class="book-card-title fw-bold"></div>
-			<div id="selectedBookAuthor" class="mb-1 text-muted"></div>
-			<div id="selectedBookPublisher" class="mb-1 text-muted"></div>
-			<button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="clearSelectedBook()">X</button>
+	<div id="selectedBookCard"
+		class="p-3 book-card mb-2 <%= isUpdate ? "" : "d-none" %>">
+		<div class="row book-card-row align-items-center">
+			<div class="book-card-img col-5">
+				<img id="selectedBookImg"
+					src="<%= isUpdate ? review.getBookCover() : "" %>" alt="book"
+					width="40"> <i class="bi bi-bookmark-fill"></i>
+			</div>
+			<div class="book-card-content col-7">
+				<div id="selectedBookTitle" class="book-card-title fw-bold"><%= isUpdate ? review.getBookTitle() : "" %></div>
+				<div id="selectedBookAuthor" class="mb-1 text-muted"><%= isUpdate ? review.getBookAuthor() : "" %></div>
+				<div id="selectedBookPublisher" class="mb-1 text-muted"><%= isUpdate ? review.getBookPublisher() : "" %></div>
+				<button type="button" class="btn btn-sm btn-outline-danger mt-2"
+					onclick="clearSelectedBook()">X</button>
+			</div>
 		</div>
 	</div>
-</div> -->
 
-<!-- ✅ 선택된 도서 카드 -->
-<div id="selectedBookCard" class="p-3 book-card mb-2 <%= isUpdate ? "" : "d-none" %>">
-	<div class="row book-card-row align-items-center">
-		<div class="book-card-img col-5">
-			<img id="selectedBookImg" src="<%= isUpdate ? review.getBookCover() : "" %>" alt="book" width="40">
-			<i class="bi bi-bookmark-fill"></i>
-		</div>
-		<div class="book-card-content col-7">
-			<div id="selectedBookTitle" class="book-card-title fw-bold"><%= isUpdate ? review.getBookTitle() : "" %></div>
-			<div id="selectedBookAuthor" class="mb-1 text-muted"><%= isUpdate ? review.getBookAuthor() : "" %></div>
-			<div id="selectedBookPublisher" class="mb-1 text-muted"><%= isUpdate ? review.getBookPublisher() : "" %></div>
-			<button type="button" class="btn btn-sm btn-outline-danger mt-2" onclick="clearSelectedBook()">X</button>
-		</div>
-	</div>
-</div>
-	
 	<!-- ✅ 도서 검색 입력 필드 -->
 	<div class="mb-3">
-	<br>
-		<label class="form-label fw-semibold">리뷰를 쓰고 싶은 책을 검색해 보세요</label>
+		<br> <label class="form-label fw-semibold">리뷰를 쓰고 싶은 책을
+			검색해 보세요</label>
 		<div class="input-group">
 			<input type="text" id="searchInput" class="form-control"
 				placeholder="도서명이나 저자명으로 찾아보세요" readonly onclick="openBookModal()">
@@ -86,11 +56,13 @@ header, footer {
 	</div>
 
 	<!-- ✅ 리뷰 입력 폼 -->
-	<form action="<%= isUpdate ? request.getContextPath() + "/review/update" : request.getContextPath() + "/review/insert" %>"
+	<form
+		action="<%= isUpdate ? request.getContextPath() + "/review/update" : request.getContextPath() + "/review/insert" %>"
 		method="post">
 		<% if (isUpdate) { %>
-        <input type="hidden" name="reviewSeq" value="<%= review.getReviewSeq() %>">
-    	<% } %>
+		<input type="hidden" name="reviewSeq"
+			value="<%= review.getReviewSeq() %>">
+		<% } %>
 		<input type="hidden" name="bookSeq" id="bookSeq">
 
 		<div class="mb-3">
@@ -117,7 +89,8 @@ header, footer {
 		</div>
 
 		<button type="submit" class="btn btn-dark w-100">
-			<i class="bi bi-pencil-fill me-1"></i> <%= isUpdate ? "수정 완료" : "등록" %>
+			<i class="bi bi-pencil-fill me-1"></i>
+			<%= isUpdate ? "수정 완료" : "등록" %>
 		</button>
 	</form>
 </div>
@@ -153,32 +126,6 @@ function searchBooks() {
 					<a href="<%=request.getContextPath()%>/book/insert" class="btn btn-dark">책 등록하기</a>
 				  </div>`;
 			} else {
-				/* books.forEach(book => {
-					const item = document.createElement('a');
-					item.href = '#';
-					item.className = 'list-group-item list-group-item-action';
-					item.innerHTML = `
-						<div class="d-flex">
-							<img src="\${book.bookCover}" alt="book" width="60" class="me-3">
-							<div>
-								<div class="fw-bold">${book.bookTitle}</div>
-								<small>\${book.bookAuthor} | \${book.bookPublisher} | \${book.publishDate}</small>
-							</div>
-						</div>`;
-					item.onclick = function () {
-						document.getElementById('bookSeq').value = book.bookSeq;
-						document.getElementById('searchInput').value = book.bookTitle;
-						document.getElementById('selectedBookCard').classList.remove('d-none');
-						document.getElementById('selectedBookTitle').innerText = book.bookTitle;
-						document.getElementById('selectedBookAuthor').innerText = book.bookAuthor;
-						document.getElementById('selectedBookPublisher').innerText = book.bookPublisher;
-						document.getElementById('selectedBookImg').src = book.bookCover || 'images/default-cover.png';
-
-						const modalInstance = bootstrap.Modal.getInstance(document.getElementById('bookSearchModal'));
-						if (modalInstance) modalInstance.hide();
-					};
-					resultArea.appendChild(item);
-				}); */
 				books.forEach(book => {
 					const item = document.createElement('div');
 					item.className = 'book-card p-3 mb-2 ';
@@ -266,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const reviewRateInput = document.getElementById("reviewRate");
 
     // ⭐ 기본 별점 설정 (수정 모드)
-    const initialRate = <%= isUpdate ? review.getReviewRate() : 0 %>;
+    const initialRate = <%=isUpdate ? review.getReviewRate() : 0%>;
     highlightStars(initialRate);
     reviewRateInput.value = initialRate;
 

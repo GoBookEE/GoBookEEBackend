@@ -16,23 +16,25 @@ import com.gobookee.review.service.ReviewService;
 public class ReviewUpdatePageServlet extends HttpServlet {
 	private ReviewService service = ReviewService.reviewService();
 	private static final long serialVersionUID = 1L;
-       
-    public ReviewUpdatePageServlet() {
-        super();
-    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public ReviewUpdatePageServlet() {
+		super();
+	}
 
-		Long reviewSeq=Long.parseLong(request.getParameter("reviewSeq"));
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		Long reviewSeq = Long.parseLong(request.getParameter("reviewSeq"));
 		ReviewViewResponse review = service.getReviewBySeq(reviewSeq);
-		
+
 		request.setAttribute("review", review);
-        request.setAttribute("mode", "update");
+		request.setAttribute("mode", "update");
 
 		request.getRequestDispatcher(CommonPathTemplate.getViewPath("/review/reviewInsert")).forward(request, response);
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 	}
 

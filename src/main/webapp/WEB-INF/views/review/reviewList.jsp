@@ -27,15 +27,6 @@ body {
 </style>
 <main>
 	<div class="container py-4">
-		<!-- Category Tabs -->
-		<ul class="nav nav-tabs mb-4">
-			<li class="nav-item"><a class="nav-link" href="#">초등</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">중등</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">고등</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">수험서/자격증</a></li>
-			<li class="nav-item"><a class="nav-link active" href="#">IT/개발</a>
-			</li>
-		</ul>
 
 		<h5 class="mb-3 fw-bold">이번 달 베스트 리뷰</h5>
 		<div class="row row-cols-1 row-cols-md-4 g-4 mb-5">

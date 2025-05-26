@@ -225,7 +225,8 @@ public class ReviewDAO {
 				.bookPublisher(rs.getString("BOOK_PUBLISHER")).bookCover(rs.getString("BOOK_COVER"))
 				.bookReviewCount(rs.getInt("BOOK_REVIEW_COUNT")).bookAvgRate(rs.getDouble("BOOK_AVG_RATE"))
 				.recommendCount(rs.getInt("RECOMMEND_COUNT")).nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT"))
-				.build();
+				.userNickName(rs.getString("USER_NICKNAME")).userProfile(rs.getString("USER_PROFILE"))
+				.bookDescription(rs.getString("BOOK_DESCRIPTION")).build();
 	}
 
 }
