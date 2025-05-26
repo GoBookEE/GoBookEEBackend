@@ -4,37 +4,13 @@
 	List<StudyList> studies=(List<StudyList>)request.getAttribute("studylist");
 %>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-<br><br><br><br>
-	<h2>스터디 목록</h2>
-
+<br><br><br>
 	<style>
 		.studylistcontainer{
 			display: flex;
 			margin-bottom: 5px;
 		}
 	</style>
-<%-- 	<%if(studies!=null&&!studies.isEmpty()){
-		for(StudyList s : studies){%>
-		<div class="studylistcontainer">
-			<div class="studyimg">
-				<%=s.getPhotoRenamedName() %>
-			</div>
-			<div class="studylist">
-				<%=s.getStudyTitle() %>
-				<%=s.getStudyDate() %>
-				<div class="membercount">
-				<%=s.getConfirmedCount() %>
-				<%=s.getStudyMemberLimit() %>
-				</div>
-				<%=s.getStudyPlace() %>
-				
-			</div>
-		</div>
-	<%	}
-	}else{%>
-	
-	
-	<%} %>	 --%>
 	<div>
 		<select id="studysortby">
 			<option value="latest">최신순</option>
