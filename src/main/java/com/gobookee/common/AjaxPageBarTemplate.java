@@ -54,7 +54,7 @@ public class AjaxPageBarTemplate {
 
         if (pageNo > totalPage) {
             pageBar.append("<li class='go-page-item disabled'>")
-                   .append("<a class='go-page-link' href='?cPage="+pageNo+"'><i class='bi bi-arrow-left-short'></i></a>")
+                   .append("<a class='go-page-link' href='?cPage="+pageNo+"'><i class='bi bi-arrow-right-short'></i></a>")
                    .append("</li>");
         } else {
             pageBar.append("<li class='go-page-item'>")
