@@ -157,8 +157,9 @@ public class ReviewDAO {
 			pstmt.setString(1, dto.getReviewTitle());
 			pstmt.setString(2, dto.getReviewContents());
 			pstmt.setInt(3, dto.getReviewRate());
-			pstmt.setLong(4, dto.getReviewSeq());
-			pstmt.setLong(5, dto.getUserSeq());
+			pstmt.setLong(4, dto.getBookSeq());
+			pstmt.setLong(5, dto.getReviewSeq());
+			pstmt.setLong(6, dto.getUserSeq());
 			result = pstmt.executeUpdate();
 
 		} catch (SQLException e) {

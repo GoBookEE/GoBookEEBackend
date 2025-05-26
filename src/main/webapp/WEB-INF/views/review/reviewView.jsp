@@ -24,8 +24,8 @@ List<CommentsViewResponse> comments = review.getComments();
 					</button>
 					<ul class="dropdown-menu dropdown-menu-end"
 						aria-labelledby="moreMenu">
-						<li><a class="dropdown-item" href="/review/update">게시물 수정</a></li>
-						<li><a class="dropdown-item" href="/review/delete">게시물 삭제</a></li>
+						<li><a class="dropdown-item" href="<%=request.getContextPath() %>/review/updatepage?reviewSeq=<%=review.getReviewSeq()%>">게시물 수정</a></li>
+						<li><a class="dropdown-item" href="/review/delete?reviewSeq=<%=review.getReviewSeq()%>">게시물 삭제</a></li>
 					</ul>
 				</div>
 			</div>
