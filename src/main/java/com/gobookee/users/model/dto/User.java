@@ -31,6 +31,10 @@ public class User {
     private UserType UserType;
 
     private String UserEmail;
+    
+    private String UserAddress;
+    
+    private String UserAddressDetail;
 
     private Timestamp UserCreateTime;
 
