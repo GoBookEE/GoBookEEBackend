@@ -27,7 +27,7 @@ public class ScheduleReserve {
                 .studyMemberLimit(rs.getLong("STUDY_MEMBER_LIMIT"))
                 .studyCurrCount(rs.getLong("STUDY_CURR_COUNT"))
                 .studyContact(rs.getString("USER_PHONE"))
-                .requestConfirm(rs.getString("REQUEST_CONFIRM").charAt(0))
+                .requestConfirm(rs.getString("SCHEDULE_IS_CONFIRM").charAt(0))
                 .build();
     }
 }
