@@ -1,10 +1,12 @@
 package com.gobookee.schedule.service;
 
 import com.gobookee.schedule.model.dao.ScheduleDao;
+import com.gobookee.schedule.model.dto.ScheduleReserve;
 
 import java.sql.Connection;
 import java.sql.Date;
 import java.util.HashMap;
+import java.util.List;
 
 import static com.gobookee.common.JDBCTemplate.*;
 
@@ -37,11 +39,11 @@ public class ScheduleService {
         return false;
     }
 
-    public int getStudyCountByPlaceSeqAndDate(Long placeSeq, Date date) {
+    public List<ScheduleReserve> getStudyListPlaceSeqAndDate(Long placeSeq, Date date) {
         conn = getConnection();
-        int count = scheduleDao.getStudyCountByPlaceSeqAndDate(conn, placeSeq, date);
+        List<ScheduleReserve> scheduleList = scheduleDao.getStudyListPlaceSeqAndDate(conn, placeSeq, date);
         close(conn);
-        return count;
+        return scheduleList;
     }
 
 }
