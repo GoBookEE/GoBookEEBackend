@@ -1,7 +1,7 @@
 package com.gobookee.place.controller.handler;
 
 import com.gobookee.common.AjaxFileUploadTemplate;
-import com.gobookee.common.MessageRedirectTemplate;
+import com.gobookee.common.JsonConvertTemplate;
 import com.gobookee.common.enums.FileType;
 import com.gobookee.place.model.dto.Place;
 import com.gobookee.place.service.PlaceService;
@@ -56,20 +56,6 @@ public class PlaceUpdateHandlerServlet extends HttpServlet {
                 .build();
 
         boolean result = placeService.updatePlace(updatePlace, fileList);
-        if (result) {
-            MessageRedirectTemplate.builder()
-                    .msg("매장 정보 수정에 성공했습니다.")
-                    .loc("/place/view?placeSeq=" + placeSeq)
-                    .response(response)
-                    .request(request)
-                    .build().forward();
-        } else {
-            MessageRedirectTemplate.builder()
-                    .msg("매장 정보 수정에 실패했습니다.")
-                    .loc("/place/view?placeSeq=" + placeSeq)
-                    .response(response)
-                    .request(request)
-                    .build().forward();
-        }
+        JsonConvertTemplate.toJson(result, response);
     }
 }
