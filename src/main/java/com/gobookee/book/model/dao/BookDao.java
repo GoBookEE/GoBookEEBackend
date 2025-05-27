@@ -1,6 +1,8 @@
 package com.gobookee.book.model.dao;
 
 import com.gobookee.book.model.dto.Book;
+import com.gobookee.common.JDBCTemplate;
+import com.gobookee.review.model.dto.ReviewBookSeqResponse;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -18,6 +20,7 @@ public class BookDao {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
     Properties sql = new Properties();
+    Properties sqlProp = new Properties();
 
     private static BookDao dao;
     public static BookDao bookDao() {
@@ -31,7 +34,16 @@ public class BookDao {
         }catch(IOException e){
             e.printStackTrace();
         }
+
+        String path2 = BookDao.class.getResource("/config/review-sql.properties").getPath();
+        try(FileReader fr = new FileReader(path2)){
+            sqlProp.load(fr);
+        }catch(IOException e){
+            e.printStackTrace();
+        }
     }
+
+
 
     public List<Book> getAllBookList(Connection conn, int cPage, int numPage, int userSeq){
         List<Book> bookList = new ArrayList<Book>();
@@ -65,14 +77,17 @@ public class BookDao {
         }
         return bookCount;
     }
-    public Book getBookDetailBySeq(Connection conn, int bookSeq){
+    public Book getBookDetailBySeq(Connection conn, int bookSeq, int userSeq){
         Book book = null;
         try{
             pstmt = conn.prepareStatement(sql.getProperty("getBookDetailBySeq"));
-            pstmt.setInt(1, bookSeq);
+            pstmt.setInt(1, userSeq);
+            pstmt.setInt(2, bookSeq);
             rs=pstmt.executeQuery();
             while(rs.next()){
                 book = getBook(rs);
+                book.setReviewCount(rs.getInt("REVIEW_COUNT"));
+                book.setReviewRateAvg(rs.getDouble("REVIEW_RATE_AVG"));
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -116,6 +131,60 @@ public class BookDao {
         }
         return result;
     }
+
+    public List<ReviewBookSeqResponse> getReviewByBookSeq(Connection conn,int userSeq, Long bookSeq, String orderBy,int cPage, int numPerPage) {
+        List<ReviewBookSeqResponse> reviewList = new ArrayList<>();
+        try {
+            String sql = sqlProp.getProperty("getReviewByBookSeq");
+            sql= sql.replace("${orderColumn}", orderBy);
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setInt(1, userSeq);
+            pstmt.setLong(2, bookSeq);
+            pstmt.setInt(3, (cPage - 1) * numPerPage + 1);
+            pstmt.setInt(4, cPage * numPerPage);
+            rs = pstmt.executeQuery();
+            while (rs.next()) reviewList.add(getReviewBookSeqResponse(rs));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTemplate.close(rs);
+            JDBCTemplate.close(pstmt);
+        }
+        return reviewList;
+    }
+
+    public int getReviewByBookSeqCount(Connection conn,int bookSeq) {
+        int listCount = 0;
+        try {
+            String sql = sqlProp.getProperty("getReviewByBookSeqCount");
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, bookSeq);
+            rs = pstmt.executeQuery();
+            while (rs.next()) listCount = rs.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTemplate.close(rs);
+            JDBCTemplate.close(pstmt);
+        }
+        return listCount;
+    }
+
+    public ReviewBookSeqResponse getReviewBookSeqResponse(ResultSet rs) throws SQLException {
+
+        return ReviewBookSeqResponse.builder()
+                .reviewSeq(rs.getLong("REVIEW_SEQ"))
+                .reviewTitle(rs.getString("REVIEW_TITLE"))
+                .reviewContents(rs.getString("REVIEW_CONTENTS"))
+                .reviewCreateTime(rs.getTimestamp("REVIEW_CREATE_TIME"))
+                .recommendCount(rs.getInt("RECOMMEND_COUNT"))
+                .nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT"))
+                .recommendType(rs.getInt("REC_TYPE"))
+                .userProfile(rs.getString("USER_PROFILE"))
+                .userNickname(rs.getString("USER_NICKNAME"))
+                .build();
+    }
+
 
     public Book getBook(ResultSet rs) throws SQLException {
         new Book();
