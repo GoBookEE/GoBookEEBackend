@@ -16,7 +16,8 @@ public class BookDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int bookSeq = Integer.parseInt(request.getParameter("bookSeq"));
-        Book book = BookService.bookService().getBookDetailBySeq(bookSeq);
+        int userSeq = 0;
+        Book book = BookService.bookService().getBookDetailBySeq(bookSeq,userSeq);
         request.setAttribute("book", book);
         request.getRequestDispatcher(CommonPathTemplate.getViewPath("/book/bookDetail")).forward(request, response);
     }
