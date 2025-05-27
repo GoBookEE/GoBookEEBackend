@@ -2,6 +2,7 @@ package com.gobookee.book.service;
 
 import com.gobookee.book.model.dao.BookDao;
 import com.gobookee.book.model.dto.Book;
+import com.gobookee.review.model.dto.ReviewBookSeqResponse;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -25,9 +26,9 @@ public class BookService {
         return books;
     }
 
-    public Book getBookDetailBySeq (int bookSeq) {
+    public Book getBookDetailBySeq (int bookSeq,int userSeq) {
         Connection conn = getConnection();
-        Book book = dao.getBookDetailBySeq(conn, bookSeq);
+        Book book = dao.getBookDetailBySeq(conn, bookSeq, userSeq);
         close(conn);
         return book;
     }
@@ -38,4 +39,20 @@ public class BookService {
         close(conn);
         return bookCount;
     }
+
+
+    public List<ReviewBookSeqResponse> getReviewByBookSeq(int userSeq, Long bookSeq, String orderBy, int cPage, int numPerPage) {
+        Connection conn = getConnection();
+        List<ReviewBookSeqResponse> review = dao.getReviewByBookSeq(conn,userSeq,bookSeq, orderBy,cPage,numPerPage);
+        close(conn);
+        return review;
+    }
+
+    public int getReviewByBookSeqCount(int bookSeq) {
+        Connection conn = getConnection();
+        int listCount = dao.getReviewByBookSeqCount(conn, bookSeq);
+        close(conn);
+        return listCount;
+    }
+
 }
