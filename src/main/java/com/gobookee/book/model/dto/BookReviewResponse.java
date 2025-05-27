@@ -13,6 +13,7 @@ public class BookReviewResponse {
 	
 	private Long bookSeq;
 	private String bookTitle;
+	private String bookDescription;
 	private String bookAuthor;
 	private String bookPublisher;
 	private String bookPubDate;

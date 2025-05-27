@@ -27,65 +27,66 @@ body {
 </style>
 <main>
 	<div class="container py-4">
-		<!-- Category Tabs -->
-		<ul class="nav nav-tabs mb-4">
-			<li class="nav-item"><a class="nav-link" href="#">초등</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">중등</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">고등</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">수험서/자격증</a></li>
-			<li class="nav-item"><a class="nav-link active" href="#">IT/개발</a>
-			</li>
-		</ul>
-
 		<h5 class="mb-3 fw-bold">이번 달 베스트 리뷰</h5>
-		<div class="row row-cols-1 row-cols-md-4 g-4 mb-5">
-			<%if(reviews!=null&& !reviews.isEmpty()){ 
-				for(ReviewListResponse b : reviews){%>
+
+		<% if (reviews != null && !reviews.isEmpty()) { %>
+		<div class="row row-cols-4 row-cols-md-4 g-4 mb-5">
+			<!-- ✅ for문 바깥에 row -->
+			<% for (ReviewListResponse b : reviews) { %>
 			<div class="col">
 				<div class="card h-100 review-card"
 					onclick="location.assign('<%=request.getContextPath()%>/review/reviewseq?seq=<%=b.getReviewSeq() %>')">
-					<img src="<%=b.getBookCover() %>" class="card-img-top" alt="book1">
+					<%-- <div style="flex-shrink: 0; width: 100px; height: 100px;">
+				<img src="<%=b.getBookCover() %>" class="card-img-top" alt="book1">
+				</div> --%>
+					<div class="card-img-wrapper mb-2 d-flex justify-content-center">
+						<img src="<%=b.getBookCover() %>" class="card-img-top" alt="book1"
+							style="width: 100px; height: 130px;">
+					</div>
 					<div class="card-body">
 						<h6 class="card-title"><%=b.getReviewTitle() %></h6>
-						<!-- <p class="card-text small">자바를 처음 배우는 분들에게 강력 추천합니다.</p> -->
+						<p class="card-text small line-clamp"><%=b.getReviewContents()%></p>
 					</div>
 					<div class="card-footer bg-white border-top-0">
-						<small class="review-meta">★ <%=b.getReviewRate() %> | ♥ <%=b.getRecommendCount() %></small>
+						<small class="review-meta">♥ <%=b.getRecommendCount()%> |
+							<i class="bi bi-chat"></i> <%=b.getCommentsCount()%></small>
 					</div>
 				</div>
 			</div>
+			<% } %>
+		</div>
+		<!-- ✅ row 닫는 위치도 for문 밖 -->
+		<% } else { %>
+		<div>
+			<p>조회된 데이터가 없습니다.</p>
+		</div>
+		<% } %>
 
-			<%}
-			}else{ %>
-			<div>
-				<p>조회된 데이터가 없습니다.</p>
-				<div>
-					<%} %>
+
+		<div class="form-container">
+			<select id="sortSelect">
+				<option value="latest">최신순</option>
+				<option value="recommend">추천순</option>
+			</select>
+			<div id="reviewContainer" class="list-group"></div>
+
+			<div id="pageBar"></div>
+			<!-- 📌 Floating Action Button -->
+			<div class="fab-container">
+				<button class="fab-main" id="fabToggle">
+					<i class="bi bi-plus-lg"></i>
+				</button>
+				<div class="fab-menu" id="fabMenu">
+					<a href="<%=request.getContextPath()%>/review/insertpage"
+						class="fab-item"> <i class="bi bi-pencil"></i> 리뷰 쓰기
+					</a> <a href="<%=request.getContextPath()%>/book/insert"
+						class="fab-item"> <i class="bi bi-book"></i> 책 등록하기
+					</a>
 				</div>
-
-				<select id="sortSelect">
-					<option value="latest">최신순</option>
-					<option value="recommend">추천순</option>
-				</select>
-				<div id="reviewContainer" class="list-group"></div>
-
-				<div id="pageBar"></div>
-				<!-- 📌 Floating Action Button -->
-				<div class="fab-container">
-					<button class="fab-main" id="fabToggle">
-						<i class="bi bi-plus-lg"></i>
-					</button>
-					<div class="fab-menu" id="fabMenu">
-						<a href="<%=request.getContextPath()%>/review/insertpage"
-							class="fab-item"> <i class="bi bi-pencil"></i> 리뷰 쓰기
-						</a> <a href="<%=request.getContextPath()%>/book/insert"
-							class="fab-item"> <i class="bi bi-book"></i> 책 등록하기
-						</a>
-					</div>
-				</div>
-
-
-				<style>
+			</div>
+		</div>
+	</div>
+	<style>
 .fab-container {
 	position: fixed;
 	bottom: 80px; /* ✅ 푸터 위로 띄우기 */
@@ -134,11 +135,32 @@ body {
 .fab-item:hover {
 	background-color: #157347;
 }
+
+.card-text {
+	display: -webkit-box;
+	-webkit-line-clamp: 3; /* 최대 줄 수 */
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.line-clamp {
+	display: -webkit-box;
+	-webkit-line-clamp: 2; /* 보이는 줄 수 조절 */
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	/* 추가: 긴 단어 줄바꿈 처리 */
+	word-break: break-word;
+	overflow-wrap: break-word;
+	line-height: 1.4;
+	max-height: calc(1.4em * 2); /* line-height × 줄 수 */
+}
 </style>
 
 
 
-				<script>
+	<script>
 const test = `${b.reviewTitle}`;
 console.log("test:", test);
 let currentSort = "latest"; // 현재 정렬 기준 기억
@@ -187,20 +209,52 @@ function loadReviews(sortType,cPage = 1) {
                 	console.log(b);
                 	console.log("test:", `${b.reviewTitle}`);
                 	console.log(b.reviewTitle);
-                	
+                	/*
                     const itemHtml = `
                     <div class="list-group-item list-group-item-action d-flex gap-3 py-4" 
                     onclick="location.assign('<%=request.getContextPath()%>/review/reviewseq?seq=\${b.reviewSeq}')">
-                    	<img src='\${b.bookCover}' 
-                    	alt='latest1' width='100' height='120' class='rounded'>
+                    	<div style="flex-shrink: 0; width: 100px; height: 120px;">
+                    <img src='\${b.bookCover}' 
+                    	alt='latest1'  class='rounded'>
+                    </div>
                         <div class="d-flex flex-column">
                         	
                             <strong class="mb-1">\${b.reviewTitle}</strong>
-                            <small class="text-muted">\${b.reviewContents}</small>
+                            <small class="text-muted line-clamp">\${b.reviewContents}</small>
+                            <br>
                             <small class="text-muted">\${b.bookTitle}</small>
-                            <small class="review-meta mt-2">♥ \${b.recommendCount}</small>
+                            <p class="review-meta mt-2">♥ \${b.recommendCount}</p>
                         </div>
                     </div>`;
+                    */
+                    const itemHtml = `
+                    	<div class="list-group-item list-group-item-action d-flex gap-3 py-3 align-items-start position-relative"
+                    	     onclick="location.assign('<%=request.getContextPath()%>/review/reviewseq?seq=\${b.reviewSeq}')">
+
+                    	
+                    	  <div style="flex-shrink: 0; width: 120px; height: 150px;">
+                    	    <img src='\${b.bookCover}' alt='book cover' class='rounded w-100 h-100 object-fit-cover'>
+                    	  </div>
+
+                    	
+                    	  <div class="d-flex flex-column flex-grow-1">
+                    	    <strong class="mb-1">\${b.reviewTitle}</strong>
+                    	    <small class="text-muted line-clamp mb-1">\${b.reviewContents}</small>
+                    	    <br>
+                    	    <small class="text-muted">\${b.bookTitle}</small>
+                    	  </div>
+
+                    	 
+                    	  <div class="position-absolute bottom-0 end-0 me-2 mb-2 d-flex align-items-center gap-3">
+                    	    <div class="d-flex align-items-center gap-1 text-muted">
+                    	      <i class="bi bi-heart"></i> \${b.recommendCount}
+                    	    </div>
+                    	    <div class="d-flex align-items-center gap-1 text-muted">
+                    	      <i class="bi bi-chat"></i> \${b.commentsCount}
+                    	    </div>
+                    	  </div>
+                    	</div>`;
+
                     console.log(itemHtml);
                     container.append(itemHtml);
                 });
@@ -213,8 +267,7 @@ function loadReviews(sortType,cPage = 1) {
         }
     });
 }
-</script>
-				<script>
+
 document.addEventListener("DOMContentLoaded", function () {
 	const fabToggle = document.getElementById("fabToggle");
 	const fabMenu = document.getElementById("fabMenu");
@@ -228,9 +281,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 
-
-
-			</div>
 </main>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

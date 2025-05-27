@@ -1,7 +1,8 @@
 package com.gobookee.book.controller;
 import com.gobookee.book.model.dto.Book;
 import com.gobookee.book.service.BookService;
-import com.gobookee.common.AjaxPageBarTemplate;
+import com.gobookee.common.CommonPathTemplate;
+import com.gobookee.common.PageBarTemplate;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,19 +23,19 @@ public class BookListServlet extends HttpServlet {
         }catch(NumberFormatException e) {
             cPage = 1;
         }
-
+        int userSeq = 0;
         int numPerpage = 5;
-        List<Book> bookList = BookService.bookService().getAllBookList(cPage,numPerpage);
+        List<Book> bookList = BookService.bookService().getAllBookList(cPage,numPerpage,userSeq);
         int totalData=BookService.bookService().getAllBookCount();
         int totalPage = (int)Math.ceil((double)totalData/numPerpage);
         StringBuffer pageBar = new StringBuffer();
-        pageBar = AjaxPageBarTemplate.builder().cPage(cPage).numPerPage(numPerpage).totalData(totalData).build().makePageBar(request);
+        pageBar = PageBarTemplate.builder().cPage(cPage).numPerPage(numPerpage).totalData(totalData).build().makePageBar(request);
         request.setAttribute("pageBar", pageBar);
         request.setAttribute("totalPage", totalPage);
         request.setAttribute("bookList", bookList);
         request.setAttribute("cPage", cPage);
         request.setAttribute("numPerpage", numPerpage);
-        request.getRequestDispatcher("/book/booklist.jsp").forward(request, response);
+        request.getRequestDispatcher(CommonPathTemplate.getViewPath("/book/bookList")).forward(request, response);
 
     }
 

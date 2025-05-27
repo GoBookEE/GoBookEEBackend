@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.gobookee.common.CommonPathTemplate;
 import com.gobookee.review.model.dto.Comments;
 import com.gobookee.review.service.CommentsService;
+import com.gobookee.users.model.dto.User;
 
 @WebServlet("/review/insertcomment")
 public class CommentsInsertServlet extends HttpServlet {
@@ -29,8 +30,8 @@ public class CommentsInsertServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String content = request.getParameter("commentContent");
 		long reviewSeq = Long.parseLong(request.getParameter("reviewSeq"));
-		// long userSeq =
-		// ((User)request.getSession().getAttribute("loginUser")).getUserSeq(); // 예시
+		long userSeq =
+		((User)request.getSession().getAttribute("loginUser")).getUserSeq(); // 예시
 		long parentSeq = 0;
 
 		if (request.getParameter("parentCommentSeq") != null) {
@@ -38,7 +39,7 @@ public class CommentsInsertServlet extends HttpServlet {
 		}
 
 		Comments dto = Comments.builder().commentsContents(content).commentsParentSeq(parentSeq)
-				// .userSeq(userSeq)
+				.userSeq(userSeq)
 				.reviewSeq(reviewSeq).build();
 
 		int result = service.insertComment(dto);

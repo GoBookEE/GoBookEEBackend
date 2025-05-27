@@ -30,5 +30,26 @@ header, footer {
 		</div>
 	</div>
 </div>
+<script>
+//평균 색상 적용 (선택된 카드 포함)
+function applyAvgColor(img) {
+    fac.getColorAsync(img)
+        .then(color => {
+            img.parentElement.style.backgroundColor = color.hex;
+        })
+        .catch(err => {
+            console.warn('색상 추출 실패:', err);
+        });
+}
+
+document.querySelectorAll('.book-card-img > img').forEach(img => {
+	img.crossOrigin = 'anonymous';
+	if (img.complete) {
+		applyAvgColor(img);
+	} else {
+		img.onload = () => applyAvgColor(img);
+	}
+});
+</script>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

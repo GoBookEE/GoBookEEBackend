@@ -2,15 +2,13 @@ package com.gobookee.book.model.dto;
 
 import java.sql.Date;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
+@Setter
 public class Book {
 	private Long bookSeq;						//책시퀀스
 	private Long bookID;						//책아이디
@@ -38,4 +36,8 @@ public class Book {
 	private String bookSeriesLink;				//해당 시리즈의 조회 URL
 	private String bookSeriesName;				//시리즈 이름
 	private String bookSubInfo;					//부가정
+
+	private Integer reviewCount;
+	private Double reviewRateAvg;
+	private Integer wishCount;
 }

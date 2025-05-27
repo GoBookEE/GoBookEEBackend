@@ -157,8 +157,25 @@ public class ReviewDAO {
 			pstmt.setString(1, dto.getReviewTitle());
 			pstmt.setString(2, dto.getReviewContents());
 			pstmt.setInt(3, dto.getReviewRate());
-			pstmt.setLong(4, dto.getReviewSeq());
-			pstmt.setLong(5, dto.getUserSeq());
+			pstmt.setLong(4, dto.getBookSeq());
+			pstmt.setLong(5, dto.getReviewSeq());
+			pstmt.setLong(6, dto.getUserSeq());
+			result = pstmt.executeUpdate();
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public int deleteReview(Connection conn, Long reviewSeq, Long userSeq) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("deleteReview"));
+			pstmt.setLong(1, reviewSeq);
+			pstmt.setLong(2, userSeq);
 			result = pstmt.executeUpdate();
 
 		} catch (SQLException e) {
@@ -224,7 +241,9 @@ public class ReviewDAO {
 				.bookPublisher(rs.getString("BOOK_PUBLISHER")).bookCover(rs.getString("BOOK_COVER"))
 				.bookReviewCount(rs.getInt("BOOK_REVIEW_COUNT")).bookAvgRate(rs.getDouble("BOOK_AVG_RATE"))
 				.recommendCount(rs.getInt("RECOMMEND_COUNT")).nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT"))
-				.build();
+				.userNickName(rs.getString("USER_NICKNAME")).userProfile(rs.getString("USER_PROFILE"))
+				.bookDescription(rs.getString("BOOK_DESCRIPTION"))
+				.userSeq(rs.getLong("USER_SEQ")).bookSeq(rs.getLong("BOOK_SEQ")).build();
 	}
 
 }

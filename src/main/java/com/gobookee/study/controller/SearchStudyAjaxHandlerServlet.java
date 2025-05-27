@@ -19,7 +19,7 @@ public class SearchStudyAjaxHandlerServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        User loginMember = (User) request.getSession().getAttribute("loginMember");
+        User loginMember = (User) request.getSession().getAttribute("loginUser");
         List<SearchStudyResponse> studyList = studyService.getStudyListByHostUserSeq(loginMember.getUserSeq());
         JsonConvertTemplate.toJson(studyList, response);
     }
