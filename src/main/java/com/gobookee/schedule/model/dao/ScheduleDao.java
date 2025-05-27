@@ -1,5 +1,7 @@
 package com.gobookee.schedule.model.dao;
 
+import com.gobookee.place.model.dto.PlaceAddress;
+import com.gobookee.schedule.model.dto.ScheduleConfirm;
 import com.gobookee.schedule.model.dto.ScheduleReserve;
 import com.gobookee.study.model.dao.StudyDao;
 
@@ -69,7 +71,88 @@ public class ScheduleDao {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
         }
         return scheduleList;
+    }
+
+    public boolean confirmSchedule(Connection conn, ScheduleConfirm scheduleConfirm, PlaceAddress placeAddress) {
+        int scheduleResult = updateSchedule(conn, scheduleConfirm);
+        int scheduleCount = getSchedulesByStudySeq(conn, scheduleConfirm);
+        int deleteCount = deleteSchedulesByStudySeq(conn, scheduleConfirm);
+        int studyResult = updateStudy(conn, scheduleConfirm, placeAddress);
+        return scheduleResult == 1 && studyResult == 1 && (deleteCount == scheduleCount);
+    }
+
+    private int updateSchedule(Connection conn, ScheduleConfirm scheduleConfirm) {
+        pstmt = null;
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("confirmSchedule"));
+            pstmt.setString(1, String.valueOf(scheduleConfirm.getStatus()));
+            pstmt.setLong(2, scheduleConfirm.getScheduleSeq());
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
+
+    public int updateStudy(Connection conn, ScheduleConfirm scheduleConfirm, PlaceAddress placeAddress) {
+        pstmt = null;
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("confirmStudy"));
+            pstmt.setDate(1, scheduleConfirm.getSqlDate());
+            pstmt.setString(2, placeAddress.getPlaceAddress());
+            pstmt.setDouble(3, placeAddress.getPlaceLatitude());
+            pstmt.setDouble(4, placeAddress.getPlaceLongitude());
+            pstmt.setLong(5, scheduleConfirm.getStudySeq());
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
+
+    private int deleteSchedulesByStudySeq(Connection conn, ScheduleConfirm scheduleConfirm) {
+        pstmt = null;
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("deleteScheduleByStudySeq"));
+            pstmt.setLong(1, scheduleConfirm.getStudySeq());
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
+
+    private int getSchedulesByStudySeq(Connection conn, ScheduleConfirm scheduleConfirm) {
+        rs = null;
+        pstmt = null;
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("getSchedulesByStudySeq"));
+            pstmt.setLong(1, scheduleConfirm.getStudySeq());
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                result = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
     }
 }

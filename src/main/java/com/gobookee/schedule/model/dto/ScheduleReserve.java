@@ -19,6 +19,7 @@ public class ScheduleReserve {
     private Long studyCurrCount;
     private String studyContact;
     private char requestConfirm;
+    private Long scheduleSeq;
 
     public static ScheduleReserve from(ResultSet rs) throws SQLException {
         return ScheduleReserve.builder()
@@ -28,6 +29,7 @@ public class ScheduleReserve {
                 .studyCurrCount(rs.getLong("STUDY_CURR_COUNT"))
                 .studyContact(rs.getString("USER_PHONE"))
                 .requestConfirm(rs.getString("SCHEDULE_IS_CONFIRM").charAt(0))
+                .scheduleSeq(rs.getLong("SCHEDULE_SEQ"))
                 .build();
     }
 }
