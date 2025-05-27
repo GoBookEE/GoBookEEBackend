@@ -15,7 +15,7 @@ public class User {
 
     private String UserPwd;
 
-    private String UserName;
+    private String UserNickName;
 
     //Gender는 MALE, FEMALE로 구분
     private Gender UserGender;
@@ -33,8 +33,6 @@ public class User {
     private String UserEmail;
     
     private String UserAddress;
-    
-    private String UserAddressDetail;
 
     private Timestamp UserCreateTime;
 

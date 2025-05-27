@@ -11,7 +11,6 @@ import java.io.IOException;
  */
 public class JsonConvertTemplate {
     private static final Gson gson = new Gson();
-
     /**
      * JSON 문자열을 자바 객체로 변환해주는 메소드
      * 문자열, 클래스 타입 인자로 전달해주면 해당 타입 객체 반환
@@ -21,7 +20,7 @@ public class JsonConvertTemplate {
      * @param <T>
      * @return
      */
-    public static <T> T formJson(String json, Class<T> clazz) {
+    public static <T> T fromJson(String json, Class<T> clazz) {
         return gson.fromJson(json, clazz);
     }
 

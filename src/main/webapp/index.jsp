@@ -14,7 +14,7 @@ User u = (User)session.getAttribute("loginUser");
 %>
         <p>로그인된 사용자입니다.</p>
         <a href="<%=request.getContextPath() %>/logout">로그아웃</a>
-           <p><strong><%= u.getUserName() %></strong> 님, 안녕하세요!</p>
+           <p><strong><%= u.getUserNickName() %></strong> 님, 안녕하세요!</p>
         <p>아이디: <%= u.getUserId() %></p>
          <p>아이디: <%= u.getUserPhone()%></p>
 <%

@@ -1,6 +1,7 @@
 package com.gobookee.place.model.dao;
 
 import com.gobookee.place.model.dto.Place;
+import com.gobookee.place.model.dto.PlaceAddress;
 import com.gobookee.place.model.dto.PlaceListResponse;
 import com.gobookee.place.model.dto.PlaceViewResponse;
 
@@ -201,5 +202,25 @@ public class PlaceDao {
             close(pstmt);
         }
         return result;
+    }
+
+    public PlaceAddress getPlaceAddressBySeq(Connection conn, Long placeSeq) {
+        PlaceAddress placeAddress = null;
+        rs = null;
+        pstmt = null;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("getPlaceAddressBySeq"));
+            pstmt.setLong(1, placeSeq);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                placeAddress = PlaceAddress.from(rs);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return placeAddress;
     }
 }
