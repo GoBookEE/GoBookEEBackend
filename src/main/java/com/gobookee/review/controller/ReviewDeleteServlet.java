@@ -24,6 +24,10 @@ public class ReviewDeleteServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+	}
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		Long reviewSeq = Long.parseLong(request.getParameter("reviewSeq"));
 		Long loginUserSeq = ((User) request.getSession().getAttribute("loginUser")).getUserSeq();
 
@@ -40,12 +44,6 @@ public class ReviewDeleteServlet extends HttpServlet {
 		request.setAttribute("msg", result > 0 ? "삭제 완료" : "삭제 실패");
 		request.setAttribute("loc", "/review/listpage");
 		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
-
-	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
 	}
 
 }
