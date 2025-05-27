@@ -1,324 +1,210 @@
 <%@ page import="com.gobookee.place.model.dto.PlaceViewResponse" %>
 <%@ page import="com.gobookee.common.CommonPathTemplate" %>
 <%@ page import="com.gobookee.common.enums.FileType" %>
+<%@ page import="com.gobookee.users.model.dto.User" %>
 <%@ page pageEncoding="utf-8" %>
-<%@include file="/WEB-INF/views/common/header.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2d59386dd09d43d5d2ad8f433a1eb0e3&libraries=services"></script>
-<!-- 부트스트랩 CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
 
-<!-- FullCalendar CSS -->
-<link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet"/>
-<style>
-    #calendar {
-        max-width: 100%;
-        margin: 0 auto;
-    }
-</style>
 <%
     PlaceViewResponse place = (PlaceViewResponse) request.getAttribute("place");
+    boolean isOwner = (boolean) request.getAttribute("isOwner");
+    User loginMember = (User) session.getAttribute("loginUser");
 %>
-<main>
-    <h2>장소 상세 페이지</h2>
-    <%
-        if (place != null) {
-    %>
-    <div>
-        주소 : <%=place.getPlaceAddress()%>
-    </div>
-    <div>
-        제목 : <%=place.getPlaceTitle()%>
-    </div>
-    <div>
-        내용 : <%=place.getPlaceContents()%>
-    </div>
-    <div>
-        위도 : <%=place.getPlaceLatitude()%>
-    </div>
-    <div>
-        경도 : <%=place.getPlaceLongitude()%>
-    </div>
-    <div>
-        <div id="map" style="width:100%;height:400px;"></div>
-    </div>
-    <div>
-        유저닉네임 : <%=place.getUserNickname()%>
-    </div>
-    <div>
-        유저속도 : <%=place.getUserSpeed()%>
-    </div>
-    <div>
-        추천 : <%=place.getPlaceRecCount()%>
-    </div>
-    <div>
-        비추천 : <%=place.getPlaceNonRecCount()%>
-    </div>
-    <div>
-        <%
-            if (place.getPhotoNames() != null && !place.getPhotoNames().isEmpty()) {
-                for (String photoName : place.getPhotoNames()) {
-        %>
-        <script>
-        </script>
-        <div>
-            <img src="<%=CommonPathTemplate.getUploadPath(request,FileType.PLACE,photoName)%>"
-                 alt="">
+
+<main class="container my-4">
+    <h2><%= place.getPlaceTitle() %> 예약</h2>
+    <div class="mb-3">
+        <div>주소: <%=place.getPlaceAddress()%>
         </div>
-        <%
-                }
-            }
-        %>
+        <div>제목: <%=place.getPlaceTitle()%>
+        </div>
+        <div>내용: <%=place.getPlaceContents()%>
+        </div>
+        <div>위도: <%=place.getPlaceLatitude()%>
+        </div>
+        <div>경도: <%=place.getPlaceLongitude()%>
+        </div>
+        <div id="map" style="width:50%; height:400px;"></div>
+        <div>유저 닉네임: <%=place.getUserNickname()%>
+        </div>
+        <div>유저 속도: <%=place.getUserSpeed()%>
+        </div>
+        <div>추천: <%=place.getPlaceRecCount()%> / 비추천: <%=place.getPlaceNonRecCount()%>
+        </div>
+        <% if (place.getPhotoNames() != null && !place.getPhotoNames().isEmpty()) {
+            for (String photoName : place.getPhotoNames()) { %>
+        <div><img src="<%=CommonPathTemplate.getUploadPath(request, FileType.PLACE, photoName)%>" alt=""/></div>
+        <% }
+        } %>
     </div>
-    <%
-        }
-    %>
+    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reservationModal">예약하기</button>
 
-
-    <!-- 예약하기 버튼 -->
-    <button
-            type="button"
-            class="btn btn-primary"
-            data-bs-toggle="modal"
-            data-bs-target="#reserveModal">
-        예약하기
-    </button>
-
-    <!-- 모달 -->
-    <div class="modal fade" id="reserveModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+    <!-- 예약 모달 -->
+    <div class="modal fade" id="reservationModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
-
-                <!-- 헤더 -->
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">스터디 그룹 선택</h5>
+                    <h5 class="modal-title">예약 정보</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
-
-                <!-- 바디 -->
                 <div class="modal-body">
-                    <!-- Step 1: 그룹 선택 -->
-                    <div id="step-group-select">
+                    <% if (isOwner) { %>
+                    <!-- 사장용 -->
+                    <div id="ownerCalendar"></div>
+                    <h6 class="mt-3" id="selectedDateTitle">예약 현황</h6>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>스터디명</th>
+                            <th>인원</th>
+                            <th>전화번호</th>
+                            <th>확정</th>
+                        </tr>
+                        </thead>
+                        <tbody id="reservationTableBody"></tbody>
+                    </table>
+                    <% } else { %>
+                    <!-- 일반 유저용 -->
+                    <div id="step-group">
+                        <h6>스터디 그룹 선택</h6>
                         <ul id="groupList" class="list-group"></ul>
                     </div>
-
-                    <!-- Step 2: 캘린더 -->
-                    <div id="step-calendar" class="d-none">
-                        <div id="calendar"></div>
-                        <p id="reservationCountMsg" class="mt-2"></p>
-                        <button id="toReserveForm" class="btn btn-primary mt-3" disabled>예약 계속하기</button>
-                        <button id="backToGroupSelect" class="btn btn-secondary mt-3 ms-2">그룹 선택으로 돌아가기</button>
+                    <div id="step-calendar" style="display:none">
+                        <h6>예약 날짜 선택</h6>
+                        <div id="userCalendar"></div>
+                        <button class="btn btn-link" onclick="goBackToGroup()">이전</button>
                     </div>
-
-                    <!-- Step 3: 예약 입력 -->
-                    <div id="step-reserve-form" class="d-none">
-                        <form id="reserveForm" method="POST" action="<%=request.getContextPath()%>/schedule/insert">
-                            <input type="hidden" name="groupId" id="formGroupId">
-                            <input type="hidden" name="placeSeq" id="formPlaceSeq">
-                            <input type="hidden" name="date" id="formDate">
-                            <p><strong id="selectedGroupName"></strong> 그룹으로 예약합니다.</p>
-                            <p>예약 날짜: <span id="selectedDateDisplay"></span></p>
-                            <button type="submit" class="btn btn-success w-100">예약하기</button>
-                            <button type="button" id="backToCalendar" class="btn btn-secondary mt-2 w-100">날짜 선택으로
-                                돌아가기
-                            </button>
+                    <div id="step-confirm" style="display:none">
+                        <form method="post" action="<%=request.getContextPath()%>/schedule/insert">
+                            <input type="hidden" name="placeSeq" value="<%=place.getPlaceSeq()%>">
+                            <input type="hidden" id="formStudySeq" name="studySeq">
+                            <input type="hidden" id="formDate" name="date">
+                            <div id="confirmInfo" class="my-2"></div>
+                            <button type="submit" class="btn btn-primary">예약하기</button>
                         </form>
+                        <button class="btn btn-link" onclick="goBackToDate()">이전</button>
                     </div>
-
+                    <% } %>
                 </div>
             </div>
         </div>
     </div>
+</main>
 
-    <!-- 부트스트랩 JS + Popper -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    const latitude = <%= place.getPlaceLatitude() %>;
+    const longitude = <%= place.getPlaceLongitude() %>;
+    const mapContainer = document.getElementById('map');
+    const mapOption = {
+        center: new kakao.maps.LatLng(latitude, longitude),
+        level: 3
+    };
+    const map = new kakao.maps.Map(mapContainer, mapOption);
+    const marker = new kakao.maps.Marker({position: new kakao.maps.LatLng(latitude, longitude)});
+    marker.setMap(map);
 
-    <!-- FullCalendar JS -->
-    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    const isOwner = <%= isOwner %>;
+    const placeSeq = <%= place.getPlaceSeq() %>;
+    const userSeq = <%= loginMember.getUserSeq() %>;
+    let calendar, selectedGroupId = null;
 
-    <script>
-        // 전역 상태 변수
-        let selectedGroup = null;
-        let selectedDateForReserve = null;
-        let calendar = null;
-        const placeSeq = 42; // 예약할 게시글 ID (실제론 상세페이지에서 받아와야 함)
+    $('#reservationModal').on('shown.bs.modal', function () {
+        if (isOwner) initOwnerCalendar();
+        else {
+            $('#step-group').show();
+            $('#step-calendar, #step-confirm').hide();
+            loadStudyGroups();
+        }
+    });
 
-        document.getElementById('reserveModal').addEventListener('show.bs.modal', async () => {
-            resetModalToGroupSelect();
+    function loadStudyGroups() {
+        $.get('<%=request.getContextPath()%>/study/searchstudy', function (list) {
+            const $ul = $('#groupList').empty();
+            list.forEach(study => {
+                $ul.append(`<li class="list-group-item group-item" data-id="\${study.studySeq}">\${study.studyTitle}</li>`);
+            });
+        });
+    }
 
-            try {
-                const groups = await fetchMyStudyGroupsFromServer(); // [{studySeq, studyTitle}, ...]
+    $(document).on('click', '.group-item', function () {
+        selectedGroupId = $(this).data('id');
+        $('#formStudySeq').val(selectedGroupId);
+        $('#step-group').hide();
+        $('#step-calendar').show();
+        initUserCalendar();
+    });
 
-                const groupList = document.getElementById('groupList');
-                groupList.innerHTML = '';
+    function goBackToGroup() {
+        $('#step-calendar').hide();
+        $('#step-group').show();
+    }
 
-                groups.forEach(group => {
-                    const li = document.createElement('li');
-                    li.className = 'list-group-item list-group-item-action';
-                    li.textContent = group.studyTitle;
-                    li.style.cursor = 'pointer';
+    function goBackToDate() {
+        $('#step-confirm').hide();
+        $('#step-calendar').show();
+        if (calendar) calendar.updateSize();
+    }
 
-                    // 클릭 시 선택
-                    li.addEventListener('click', () => onGroupSelected({
-                        id: group.studySeq,
-                        name: group.studyTitle
-                    }));
-
-                    groupList.appendChild(li);
-                });
-            } catch (err) {
-                alert('그룹 목록 불러오기 실패');
-                console.error(err);
+    function initUserCalendar() {
+        if (calendar) calendar.destroy();
+        calendar = new FullCalendar.Calendar(document.getElementById('userCalendar'), {
+            initialView: 'dayGridMonth',
+            selectable: true,
+            dateClick(info) {
+                $('#formDate').val(info.dateStr);
+                $('#confirmInfo').html(`<p>예약 날짜: \${info.dateStr}</p>`);
+                $('#step-calendar').hide();
+                $('#step-confirm').show();
             }
         });
+        calendar.render();
+    }
 
-        // 그룹 선택 처리 함수
-        function onGroupSelected(group) {
-            selectedGroup = group;
-            switchToCalendarStep();
-        }
-
-        // 1단계 UI 초기화
-        function resetModalToGroupSelect() {
-            selectedGroup = null;
-            selectedDateForReserve = null;
-
-            document.getElementById('modalTitle').textContent = '스터디 그룹 선택';
-            document.getElementById('step-group-select').classList.remove('d-none');
-            document.getElementById('step-calendar').classList.add('d-none');
-            document.getElementById('step-reserve-form').classList.add('d-none');
-        }
-
-        // 그룹 선택 후 캘린더 단계로 전환
-        function switchToCalendarStep() {
-            document.getElementById('modalTitle').textContent = '예약 날짜 선택';
-            document.getElementById('step-group-select').classList.add('d-none');
-            document.getElementById('step-calendar').classList.remove('d-none');
-            document.getElementById('step-reserve-form').classList.add('d-none');
-
-            // 캘린더 초기화 혹은 재설정
-            if (calendar) {
-                calendar.destroy();
+    function initOwnerCalendar() {
+        if (calendar) calendar.destroy();
+        calendar = new FullCalendar.Calendar(document.getElementById('ownerCalendar'), {
+            initialView: 'dayGridMonth',
+            selectable: true,
+            dateClick(info) {
+                loadReservations(info.dateStr);
+                $('#selectedDateTitle').text(`\${info.dateStr} 예약 현황`);
             }
+        });
+        calendar.render();
+    }
 
-            const calendarEl = document.getElementById('calendar');
-            calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                selectable: true,
-                dateClick: async function (info) {
-                    selectedDateForReserve = info.dateStr;
-                    document.getElementById('reservationCountMsg').textContent = '예약 현황 불러오는 중...';
-                    document.getElementById('toReserveForm').disabled = true;
+    function loadReservations(date) {
+        $.get(`<%=request.getContextPath()%>/schedule/searchreservation?date=\${date}&placeSeq=\${placeSeq}`, function (list) {
+            console.log(list);
+            const $tbody = $('#reservationTableBody').empty();
 
-                    try {
-                        // 실제 API로 바꾸세요
-                        const data = await fetchReservationCount(selectedDateForReserve, placeSeq);
-
-                        // 날짜 문자열 YYYY-MM-DD → 몇월/몇일 변환
-                        const dateObj = new Date(selectedDateForReserve);
-                        const month = dateObj.getMonth() + 1; // 0부터 시작해서 +1
-                        const day = dateObj.getDate();
-
-                        document.getElementById('reservationCountMsg').textContent =
-                            `${month}월 ${day}일에는 ${data.count}팀이 예약했습니다.`;
-                        document.getElementById('toReserveForm').disabled = false;
-                    } catch (err) {
-                        document.getElementById('reservationCountMsg').textContent = '예약 현황 불러오기 실패';
-                        console.error(err);
-                    }
-                }
-            });
-            calendar.render();
-
-            // 초기 메시지 초기화
-            document.getElementById('reservationCountMsg').textContent = '날짜를 선택하세요.';
-            document.getElementById('toReserveForm').disabled = true;
-        }
-
-        // 캘린더 -> 예약 입력폼 전환 시 날짜 표시 업데이트
-        document.getElementById('toReserveForm').addEventListener('click', () => {
-            if (!selectedDateForReserve || !selectedGroup) {
-                alert('날짜와 그룹을 선택해주세요.');
+            if (!Array.isArray(list) || list.length === 0) {
+                $tbody.append('<tr><td colspan="4" class="text-center">예약 없음</td></tr>');
                 return;
             }
-            document.getElementById('modalTitle').textContent = '예약 정보 입력';
-            document.getElementById('step-group-select').classList.add('d-none');
-            document.getElementById('step-calendar').classList.add('d-none');
-            document.getElementById('step-reserve-form').classList.remove('d-none');
 
-            document.getElementById('selectedGroupName').textContent = selectedGroup.name;
-            document.getElementById('selectedDateDisplay').textContent = selectedDateForReserve;
+            for (let i = 0; i < list.length; i++) {
+                const resv = list[i];
+                console.log(resv);
+                const confirmBtn = resv.requestConfirm === 'Y' ? 'O'
+                    : resv.requestConfirm === 'N' ? 'X'
+                        : `<button class="btn btn-sm btn-success">O</button> <button class="btn btn-sm btn-danger">X</button>`;
 
-            // <form> 안에 값 세팅
-            document.getElementById('formGroupId').value = selectedGroup.id;
-            document.getElementById('formPlaceSeq').value = placeSeq;
-            document.getElementById('formDate').value = selectedDateForReserve;
-        });
-
-        // 뒤로 가기 버튼 (캘린더 -> 그룹 선택)
-        document.getElementById('backToGroupSelect').addEventListener('click', () => {
-            resetModalToGroupSelect();
-        });
-
-        // 뒤로 가기 버튼 (예약폼 -> 캘린더)
-        document.getElementById('backToCalendar').addEventListener('click', () => {
-            switchToCalendarStep();
-        });
-
-        async function fetchMyStudyGroupsFromServer() {
-            const response = await fetch('<%=request.getContextPath()%>/study/searchstudy');
-            console.log(response);
-            if (!response.ok) {
-                throw new Error('스터디 그룹 목록 조회 실패');
+                $tbody.append(`
+                <tr>
+                    <td>\${resv.studyTitle}</td>
+                    <td>\${resv.studyCurrCount}/\${resv.studyMemberLimit}</td>
+                    <td>\${resv.studyContact || '-'}</td>
+                    <td>\${confirmBtn}</td>
+                </tr>
+            `);
             }
-            return await response.json(); // List<SearchStudyResponse>
-        }
-
-        async function fetchReservationCount(date, placeSeq) {
-            const query = new URLSearchParams({date, placeSeq}).toString();
-            const response = await fetch(`<%=request.getContextPath()%>/study/searchstudycount?${query}`);
-
-            if (!response.ok) {
-                throw new Error('예약 수 조회 실패');
-            }
-            return await response.json(); // { count: number }
-        }
-
-        async function mockPostReserve(data) {
-            return new Promise((resolve, reject) => {
-                setTimeout(() => {
-                    if (data.groupId && data.placeSeq && data.date) {
-                        resolve({success: true});
-                    } else {
-                        reject(new Error('잘못된 데이터'));
-                    }
-                }, 700);
-            });
-        }
-    </script>
-</main>
-<script>
-    // 위도와 경도 값
-    var latitude =
-    <%=place.getPlaceLatitude()%>
-    var longitude =
-    <%=place.getPlaceLongitude()%>
-
-    // 지도 옵션 설정
-    var mapContainer = document.getElementById('map'); // 지도를 표시할 div
-    var mapOption = {
-        center: new kakao.maps.LatLng(latitude, longitude), // 중심좌표
-        level: 3 // 확대 수준 (1~14, 작을수록 확대됨)
-    };
-
-    // 지도 생성
-    var map = new kakao.maps.Map(mapContainer, mapOption);
-
-    // 마커 생성
-    var markerPosition = new kakao.maps.LatLng(latitude, longitude);
-    var marker = new kakao.maps.Marker({
-        position: markerPosition
-    });
-    marker.setMap(map);
+        });
+    }
 </script>
-<%@include file="/WEB-INF/views/common/footer.jsp" %>
+
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>

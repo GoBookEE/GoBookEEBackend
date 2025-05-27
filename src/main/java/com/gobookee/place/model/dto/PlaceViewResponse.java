@@ -22,6 +22,7 @@ public class PlaceViewResponse {
     Double placeLongitude;
     Long placeRecCount;
     Long placeNonRecCount;
+    Long userSeq;
 
     public static PlaceViewResponse from(ResultSet rs) throws SQLException {
         return PlaceViewResponse.builder()
@@ -35,6 +36,7 @@ public class PlaceViewResponse {
                 .placeNonRecCount(rs.getLong("NON_RECOMMEND_COUNT"))
                 .placeTitle(rs.getString("PLACE_TITLE"))
                 .placeContents(rs.getString("PLACE_CONTENTS"))
+                .userSeq(rs.getLong("USER_SEQ"))
                 .build();
     }
 }

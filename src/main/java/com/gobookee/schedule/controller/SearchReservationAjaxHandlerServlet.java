@@ -1,18 +1,18 @@
 package com.gobookee.schedule.controller;
 
 import com.gobookee.common.JsonConvertTemplate;
+import com.gobookee.schedule.model.dto.ScheduleReserve;
 import com.gobookee.schedule.service.ScheduleService;
 
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.sql.Date;
+import java.util.List;
 
-@WebServlet(name = "searchStudyCountAjaxHandlerServlet", urlPatterns = "/schedule/searchstudycount")
-public class SearchStudyCountAjaxHandlerServlet extends HttpServlet {
+@WebServlet(name = "searchReservationAjaxHandlerServlet", urlPatterns = "/schedule/searchreservation")
+public class SearchReservationAjaxHandlerServlet extends HttpServlet {
     private ScheduleService scheduleService = ScheduleService.scheduleService();
 
     @Override
@@ -20,8 +20,9 @@ public class SearchStudyCountAjaxHandlerServlet extends HttpServlet {
         String stringDate = request.getParameter("date");
         Long placeSeq = Long.valueOf(request.getParameter("placeSeq"));
         Date date = Date.valueOf(stringDate);
-        int count = scheduleService.getStudyCountByPlaceSeqAndDate(placeSeq, date);
-        JsonConvertTemplate.toJson(count, response);
+        List<ScheduleReserve> scheduleList = scheduleService.getStudyListPlaceSeqAndDate(placeSeq, date);
+        System.out.println(scheduleList.size());
+        JsonConvertTemplate.toJson(scheduleList, response);
     }
 
     @Override
