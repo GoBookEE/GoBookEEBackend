@@ -19,7 +19,6 @@ import static com.gobookee.common.JDBCTemplate.close;
 public class BookDao {
     PreparedStatement pstmt = null;
     ResultSet rs = null;
-    Properties sql = new Properties();
     Properties sqlProp = new Properties();
 
     private static BookDao dao;
@@ -30,17 +29,11 @@ public class BookDao {
     private BookDao() {
         String path = BookDao.class.getResource("/config/book-sql.properties").getPath();
         try(FileReader fr = new FileReader(path)){
-            sql.load(fr);
-        }catch(IOException e){
-            e.printStackTrace();
-        }
-
-        String path2 = BookDao.class.getResource("/config/review-sql.properties").getPath();
-        try(FileReader fr = new FileReader(path2)){
             sqlProp.load(fr);
         }catch(IOException e){
             e.printStackTrace();
         }
+
     }
 
 
@@ -48,7 +41,7 @@ public class BookDao {
     public List<Book> getAllBookList(Connection conn, int cPage, int numPage, int userSeq){
         List<Book> bookList = new ArrayList<Book>();
         try{
-            pstmt = conn.prepareStatement(sql.getProperty("getBookListPaging"));
+            pstmt = conn.prepareStatement(sqlProp.getProperty("getBookListPaging"));
             pstmt.setInt(1, userSeq);
             pstmt.setInt(2, (cPage-1)*numPage+1);
             pstmt.setInt(3, cPage*numPage);
@@ -69,7 +62,7 @@ public class BookDao {
     public int getAllBookCount(Connection conn){
         int bookCount = 0;
         try{
-            pstmt = conn.prepareStatement(sql.getProperty("getBookCount"));
+            pstmt = conn.prepareStatement(sqlProp.getProperty("getBookCount"));
             rs=pstmt.executeQuery();
             while(rs.next()) bookCount =rs.getInt(1);
         }catch (SQLException e){
@@ -80,7 +73,7 @@ public class BookDao {
     public Book getBookDetailBySeq(Connection conn, int bookSeq, int userSeq){
         Book book = null;
         try{
-            pstmt = conn.prepareStatement(sql.getProperty("getBookDetailBySeq"));
+            pstmt = conn.prepareStatement(sqlProp.getProperty("getBookDetailBySeq"));
             pstmt.setInt(1, userSeq);
             pstmt.setInt(2, bookSeq);
             rs=pstmt.executeQuery();
@@ -97,7 +90,7 @@ public class BookDao {
     public int insertBook(Connection conn, Book b){
         int result = 0;
         try{
-            pstmt = conn.prepareStatement(sql.getProperty("insertBook"));
+            pstmt = conn.prepareStatement(sqlProp.getProperty("insertBook"));
             pstmt.setLong(1,b.getBookID());//BOOK_ID
             pstmt.setString(2,b.getBookTitle());//BOOK_TITLE
             pstmt.setString(3,b.getBookLink());//BOOK_LINK
