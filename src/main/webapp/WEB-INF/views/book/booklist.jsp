@@ -10,7 +10,7 @@
 %>
 <main class="flex-fill">
 
-    <div class="form-container">
+    <div class="form-container" style="padding: 70px 0">
         <%for(Book b : bookList){%>
         <a href="<%=request.getContextPath()%>/books/bookdetail?bookSeq=<%=b.getBookSeq()%>">
         <div class="p-4 book-card">
@@ -32,7 +32,7 @@
                         <%}%>
                     </div>
                     <div><%=b.getBookPublisher()%> | <%=b.getBookPubdate()%></div>
-                    <div class="book-card-review">리뷰 <span>10개</span> <i class="bi bi-star-fill"> </i>4.0</div>
+                    <div class="book-card-review">리뷰 <span><%=b.getReviewCount()%>개</span> <i class="bi bi-star-fill"> </i><%=Math.ceil(b.getReviewRateAvg()*100)/100%></div>
                 </div>
             </div>
         </div>
