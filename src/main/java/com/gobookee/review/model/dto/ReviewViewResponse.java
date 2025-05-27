@@ -24,6 +24,7 @@ public class ReviewViewResponse {
 	private Timestamp reviewEditTime;
 	private List<CommentsViewResponse> comments;
 	private Long userSeq;
+	private Long bookSeq;
 
 	private String bookTitle;
 	private String bookAuthor;

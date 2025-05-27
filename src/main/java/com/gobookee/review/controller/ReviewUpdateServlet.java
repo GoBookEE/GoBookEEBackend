@@ -1,6 +1,7 @@
 package com.gobookee.review.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.gobookee.common.CommonPathTemplate;
 import com.gobookee.review.model.dto.Review;
 import com.gobookee.review.service.ReviewService;
+import com.gobookee.users.model.dto.User;
 
 @WebServlet("/review/update")
 public class ReviewUpdateServlet extends HttpServlet {
@@ -31,19 +33,18 @@ public class ReviewUpdateServlet extends HttpServlet {
 		String title = request.getParameter("reviewTitle");
 		String contents = request.getParameter("reviewContents");
 		int rate = Integer.parseInt(request.getParameter("reviewRate"));
+		Long reviewSeq = Long.parseLong(request.getParameter("reviewSeq"));
 		System.out.println(bookSeq + title + contents + rate);
-		// Long userSeq = ((User)
-		// request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자
+		Long userSeq = ((User) request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자
 
-		Review review = Review.builder().bookSeq(bookSeq)
-				// .userSeq(userSeq)
-				.reviewTitle(title).reviewContents(contents).reviewRate(rate).build();
+		Review review = Review.builder().bookSeq(bookSeq).userSeq(userSeq).reviewTitle(title).reviewContents(contents)
+				.reviewRate(rate).reviewSeq(reviewSeq).build();
 
 		int result = service.updateReview(review);
 		String msg, loc;
 		if (result > 0) {
 			msg = "리뷰 수정 성공";
-			loc = "/review/reviewseq?seq=" + request.getParameter("reviewSeq");
+			loc = "/review/reviewseq?seq=" + reviewSeq;
 		} else {
 			msg = "리뷰 수정 실패";
 			loc = "review/updatepage";

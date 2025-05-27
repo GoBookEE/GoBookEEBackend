@@ -243,7 +243,7 @@ public class ReviewDAO {
 				.recommendCount(rs.getInt("RECOMMEND_COUNT")).nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT"))
 				.userNickName(rs.getString("USER_NICKNAME")).userProfile(rs.getString("USER_PROFILE"))
 				.bookDescription(rs.getString("BOOK_DESCRIPTION"))
-				.userSeq(rs.getLong("USER_SEQ")).build();
+				.userSeq(rs.getLong("USER_SEQ")).bookSeq(rs.getLong("BOOK_SEQ")).build();
 	}
 
 }

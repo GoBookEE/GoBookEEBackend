@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page import="com.gobookee.review.model.dto.ReviewViewResponse"%>
+<%@ page
+	import="com.gobookee.review.model.dto.ReviewViewResponse, com.gobookee.users.model.dto.*"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
+User loginUser = (User)session.getAttribute("loginUser");
 ReviewViewResponse review = (ReviewViewResponse) request.getAttribute("review");
 String mode = (String) request.getAttribute("mode");
 boolean isUpdate = "update".equals(mode);
@@ -59,11 +61,20 @@ header, footer {
 	<form
 		action="<%= isUpdate ? request.getContextPath() + "/review/update" : request.getContextPath() + "/review/insert" %>"
 		method="post">
-		<% if (isUpdate) { %>
+		<%-- <% if (isUpdate) { %>
 		<input type="hidden" name="reviewSeq"
 			value="<%= review.getReviewSeq() %>">
 		<% } %>
-		<input type="hidden" name="bookSeq" id="bookSeq">
+		<input type="hidden" name="bookSeq" id="bookSeq"
+		value="<%= review.getBookSeq() %>"> --%>
+		<% if (isUpdate && review != null) { %>
+		<input type="hidden" name="reviewSeq"
+			value="<%= review.getReviewSeq() %>"> <input type="hidden"
+			name="bookSeq" id="bookSeq" value="<%= review.getBookSeq() %>">
+		<% } else { %>
+		<input type="hidden" name="bookSeq" id="bookSeq" value="">
+		<% } %>
+
 
 		<div class="mb-3">
 			<label class="form-label">제목을 입력해 주세요 (20자 이내)</label> <input

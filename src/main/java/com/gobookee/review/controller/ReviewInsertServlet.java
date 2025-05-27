@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.gobookee.common.CommonPathTemplate;
 import com.gobookee.review.model.dto.Review;
 import com.gobookee.review.service.ReviewService;
+import com.gobookee.users.model.dto.User;
 
 @WebServlet("/review/insert")
 public class ReviewInsertServlet extends HttpServlet {
@@ -33,13 +34,11 @@ public class ReviewInsertServlet extends HttpServlet {
 		String title = request.getParameter("reviewTitle");
 		String contents = request.getParameter("reviewContents");
 		int rate = Integer.parseInt(request.getParameter("reviewRate"));
-		System.out.println(bookSeq+ title+ contents +rate);
-		// Long userSeq = ((User)
-		// request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자
+		System.out.println(bookSeq + title + contents + rate);
+		Long userSeq = ((User) request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자
 
-		Review review = Review.builder().bookSeq(bookSeq)
-				// .userSeq(userSeq)
-				.reviewTitle(title).reviewContents(contents).reviewRate(rate).build();
+		Review review = Review.builder().bookSeq(bookSeq).userSeq(userSeq).reviewTitle(title).reviewContents(contents)
+				.reviewRate(rate).build();
 
 		int result = service.insertReview(review);
 		String msg, loc;

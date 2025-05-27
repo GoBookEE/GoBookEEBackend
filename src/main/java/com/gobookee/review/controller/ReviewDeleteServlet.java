@@ -31,14 +31,14 @@ public class ReviewDeleteServlet extends HttpServlet {
 
 		if (review == null || !review.getUserSeq().equals(loginUserSeq)) {
 			request.setAttribute("msg", "삭제 권한이 없습니다.");
-			request.setAttribute("loc", "/review/list");
+			request.setAttribute("loc", "/review/listpage");
 			request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 			return;
 		}
 
 		int result = service.deleteReview(reviewSeq, loginUserSeq);
 		request.setAttribute("msg", result > 0 ? "삭제 완료" : "삭제 실패");
-		request.setAttribute("loc", "/review/list");
+		request.setAttribute("loc", "/review/listpage");
 		request.getRequestDispatcher("/WEB-INF/views/common/msg.jsp").forward(request, response);
 
 	}
