@@ -12,7 +12,7 @@
     <div id="previewContainer"></div>
     <br>
 
-    <input type="text" id="placeAddress" placeholder="주소"> <br>
+    <input type="text" id="placeAddress" placeholder="주소" readonly> <br>
     <input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
     <div id="map" style="width:300px;height:300px;margin-top:10px;display:none"></div>
 
