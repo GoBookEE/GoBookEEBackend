@@ -13,12 +13,12 @@ import com.gobookee.review.model.dto.Review;
 import com.gobookee.review.service.ReviewService;
 import com.gobookee.users.model.dto.User;
 
-@WebServlet("/review/insert")
-public class ReviewInsertServlet extends HttpServlet {
+@WebServlet("/review/update")
+public class ReviewUpdateServlet extends HttpServlet {
 	private ReviewService service = ReviewService.reviewService();
 	private static final long serialVersionUID = 1L;
 
-	public ReviewInsertServlet() {
+	public ReviewUpdateServlet() {
 		super();
 	}
 
@@ -29,31 +29,30 @@ public class ReviewInsertServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
 		Long bookSeq = Long.parseLong(request.getParameter("bookSeq"));
 		String title = request.getParameter("reviewTitle");
 		String contents = request.getParameter("reviewContents");
 		int rate = Integer.parseInt(request.getParameter("reviewRate"));
+		Long reviewSeq = Long.parseLong(request.getParameter("reviewSeq"));
 		System.out.println(bookSeq + title + contents + rate);
 		Long userSeq = ((User) request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자
 
 		Review review = Review.builder().bookSeq(bookSeq).userSeq(userSeq).reviewTitle(title).reviewContents(contents)
-				.reviewRate(rate).build();
+				.reviewRate(rate).reviewSeq(reviewSeq).build();
 
-		int result = service.insertReview(review);
+		int result = service.updateReview(review);
 		String msg, loc;
 		if (result > 0) {
-			msg = "리뷰 등록 성공";
-			loc = "/review/listpage";
+			msg = "리뷰 수정 성공";
+			loc = "/review/reviewseq?seq=" + reviewSeq;
 		} else {
-			msg = "리뷰 등록 실패";
-			loc = "review/reviewInsert.jsp?error=fail";
+			msg = "리뷰 수정 실패";
+			loc = "review/updatepage";
 		}
 		request.setAttribute("msg", msg);
 		request.setAttribute("loc", loc);
 
 		request.getRequestDispatcher(CommonPathTemplate.getViewPath("/common/msg")).forward(request, response);
-
 	}
 
 }

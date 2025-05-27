@@ -23,15 +23,22 @@ public class ReviewViewResponse {
 	private Integer reviewRate;
 	private Timestamp reviewEditTime;
 	private List<CommentsViewResponse> comments;
+	private Long userSeq;
+	private Long bookSeq;
 
 	private String bookTitle;
 	private String bookAuthor;
 	private String bookPublisher;
 	private String bookCover;
+	private String bookDescription;
 
 	private Integer recommendCount;
 	private Integer bookReviewCount;
 	private Double bookAvgRate;
 	private Integer nonRecommendCount;
+
+	private String userNickName;
+	private String userProfile;
+	
 
 }
