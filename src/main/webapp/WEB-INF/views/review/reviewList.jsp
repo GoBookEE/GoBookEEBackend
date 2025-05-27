@@ -31,7 +31,6 @@ body {
 
 		<% if (reviews != null && !reviews.isEmpty()) { %>
 		<div class="row row-cols-4 row-cols-md-4 g-4 mb-5">
-			<!-- ✅ for문 바깥에 row -->
 			<% for (ReviewListResponse b : reviews) { %>
 			<div class="col">
 				<div class="card h-100 review-card"
@@ -55,7 +54,6 @@ body {
 			</div>
 			<% } %>
 		</div>
-		<!-- ✅ row 닫는 위치도 for문 밖 -->
 		<% } else { %>
 		<div>
 			<p>조회된 데이터가 없습니다.</p>
@@ -71,7 +69,7 @@ body {
 			<div id="reviewContainer" class="list-group"></div>
 
 			<div id="pageBar"></div>
-			<!-- 📌 Floating Action Button -->
+			<!-- Floating Action Button -->
 			<div class="fab-container">
 				<button class="fab-main" id="fabToggle">
 					<i class="bi bi-plus-lg"></i>
@@ -89,7 +87,7 @@ body {
 	<style>
 .fab-container {
 	position: fixed;
-	bottom: 80px; /* ✅ 푸터 위로 띄우기 */
+	bottom: 80px; /* 푸터 위로 띄우기 */
 	right: 24px;
 	z-index: 999;
 	display: flex;
@@ -156,6 +154,15 @@ body {
 	line-height: 1.4;
 	max-height: calc(1.4em * 2); /* line-height × 줄 수 */
 }
+.review-meta {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+.review-meta i.bi {
+  font-size: 1rem;
+  vertical-align: middle;
+}
+
 </style>
 
 
@@ -243,14 +250,14 @@ function loadReviews(sortType,cPage = 1) {
                     	    <br>
                     	    <small class="text-muted">\${b.bookTitle}</small>
                     	  </div>
-
+						
                     	 
                     	  <div class="position-absolute bottom-0 end-0 me-2 mb-2 d-flex align-items-center gap-3">
                     	    <div class="d-flex align-items-center gap-1 text-muted">
-                    	      <i class="bi bi-heart"></i> \${b.recommendCount}
+                    	      <i class="bi bi-heart" style="font-size: 0.9rem;"></i> \${b.recommendCount}
                     	    </div>
                     	    <div class="d-flex align-items-center gap-1 text-muted">
-                    	      <i class="bi bi-chat"></i> \${b.commentsCount}
+                    	      <i class="bi bi-chat" style="font-size: 0.9rem;"></i> \${b.commentsCount}
                     	    </div>
                     	  </div>
                     	</div>`;
