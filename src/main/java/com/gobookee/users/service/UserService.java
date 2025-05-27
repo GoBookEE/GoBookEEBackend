@@ -38,5 +38,11 @@ public class UserService {
 	}
 	
 	
+	public User searchUserByNickName (String userNickname) {
+		Connection conn = getConnection();
+		User u = UserDAO.userDao().searchUserByNickName(conn, userNickname);
+		close(conn);
+		return u;
+	}
 	
 }

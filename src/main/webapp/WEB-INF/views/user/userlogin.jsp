@@ -190,7 +190,7 @@
     				<label for="saveId" >아이디 저장</label>
 			</div>
 			<div>
-         <a href="<%=request.getContextPath()%>/"class="idpw-find">아이디/비밀번호 찾기</a>
+         <a href="<%=request.getContextPath()%>/findidpwdpage "class="idpw-find">아이디/비밀번호 찾기</a>
       	    </div>
       </div>   
           <div class="userBtn">
@@ -239,10 +239,10 @@
 	     <p style="font-weight:600; font-size:18px; letter-spacing: -0.3px;">회원 가입 유형을 선택해 주세요</p>
 	     <div class="userTypeBtn">
 	     	<div>	
-	     		<button type="submit" class="btn btn-success btn-lg" onclick="location.assign('<%=request.getContextPath()%>/signuppage?userType=0')">일반 회원</button>
+	     		<button type="submit" class="btn btn-success btn-lg" onclick="location.assign('<%=request.getContextPath()%>/signuppage?userType=USER')">일반 회원</button>
 	     	</div>
 	    	<div>
-	    		<button type="submit" class="btn btn-success btn-lg" onclick="location.assign('<%=request.getContextPath()%>/signuppage?userType=1')">사업자 회원</button>
+	    		<button type="submit" class="btn btn-success btn-lg" onclick="location.assign('<%=request.getContextPath()%>/signuppage?userType=OWNER')">사업자 회원</button>
 	    	</div>	 
 	     </div>
       </div>
