@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/StudyInsertServlet")
-public class StudyInsertServlet extends HttpServlet {
+@WebServlet("/StudyViewPageServlet")
+public class StudyViewServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public StudyInsertServlet() {
+    public StudyViewServlet() {
         super();
     }
 
