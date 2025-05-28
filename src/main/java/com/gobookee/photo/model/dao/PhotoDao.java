@@ -116,4 +116,24 @@ public class PhotoDao {
         }
         return result;
     }
+
+    public String getFirstPhotoNameByBoardSeq(Connection conn, Long placeSeq) {
+        pstmt = null;
+        rs = null;
+        String photoName = null;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("getFirstPhotoNameByBoardSeq"));
+            pstmt.setLong(1, placeSeq);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                photoName = rs.getString(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return photoName;
+    }
 }

@@ -3,9 +3,6 @@ package com.gobookee.review.controller;
 import com.gobookee.book.service.BookService;
 import com.gobookee.common.AjaxPageBarTemplate;
 import com.gobookee.review.model.dto.ReviewBookSeqResponse;
-import com.gobookee.review.model.dto.ReviewListResponse;
-import com.gobookee.review.model.dto.ReviewViewResponse;
-import com.gobookee.review.service.ReviewService;
 import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
@@ -19,11 +16,11 @@ import java.util.List;
 import java.util.Map;
 
 @WebServlet("/review/ajax/reviewbookseq")
-public class ReviewAjaxGetBookSeq extends HttpServlet {
+public class ReviewAjaxGetBookSeqServlet extends HttpServlet {
 	private BookService service = BookService.bookService();
 	private static final long serialVersionUID = 1L;
 
-	public ReviewAjaxGetBookSeq() {
+	public ReviewAjaxGetBookSeqServlet() {
 		super();
 	}
 
