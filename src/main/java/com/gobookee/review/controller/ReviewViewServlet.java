@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.gobookee.review.service.ReviewService;
 
-@WebServlet("/review/reviewseq")
+@WebServlet("/review/view")
 public class ReviewViewServlet extends HttpServlet {
 	private ReviewService service = ReviewService.reviewService();
 	private static final long serialVersionUID = 1L;
