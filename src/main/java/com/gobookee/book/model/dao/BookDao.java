@@ -55,6 +55,9 @@ public class BookDao {
             }
         }catch (SQLException e){
             e.printStackTrace();
+        }finally {
+            close(rs);
+            close(pstmt);
         }
         return bookList;
     }
@@ -67,6 +70,9 @@ public class BookDao {
             while(rs.next()) bookCount =rs.getInt(1);
         }catch (SQLException e){
             e.printStackTrace();
+        }finally {
+            close(rs);
+            close(pstmt);
         }
         return bookCount;
     }
@@ -84,8 +90,29 @@ public class BookDao {
             }
         }catch (SQLException e){
             e.printStackTrace();
+        }finally {
+            close(rs);
+            close(pstmt);
         }
         return book;
+    }
+
+    public int getBookDetailByBookID(Connection conn, int bookID){
+        int bookSeq = 0;
+        try{
+            pstmt = conn.prepareStatement(sqlProp.getProperty("getBookDetailByID"));
+            pstmt.setInt(1, bookID);
+            rs=pstmt.executeQuery();
+            while(rs.next()){
+                bookSeq = rs.getInt("BOOK_SEQ");
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            close(rs);
+            close(pstmt);
+        }
+        return bookSeq;
     }
     public int insertBook(Connection conn, Book b){
         int result = 0;
@@ -115,7 +142,7 @@ public class BookDao {
             pstmt.setString(22,b.getBookSeriesId());//BOOK_SERIESID
             pstmt.setString(23,b.getBookSeriesLink());//BOOK_SERIESLINK
             pstmt.setString(24,b.getBookSeriesName());//BOOK_SERIESNAME
-            pstmt.setString(25,b.getBookSubInfo());//BOOK_SUBINFO
+            pstmt.setString(25,"");//BOOK_SUBINFO
             result = pstmt.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
