@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class PlaceListAjaxHandlerServlet extends HttpServlet {
                 .totalData(placeService.placeCount())
                 .build().makePageBar(request);
 
-        List<PlaceListResponse> placeList = new ArrayList<>();
+        List<PlaceListResponse> placeList;
         HashMap requestParam = new HashMap();
         requestParam.put("cPage", cPage);
         requestParam.put("numPerPage", numPerPage);

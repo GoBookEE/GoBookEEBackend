@@ -77,6 +77,10 @@ public class PlaceService {
     public List<PlaceListResponse> getAllPlaceList(HashMap requestParam) {
         conn = getConnection();
         List<PlaceListResponse> placeList = placeDao.getAllPlaceList(conn, requestParam);
+        for (PlaceListResponse placeListResponse : placeList) {
+            String photoName = photoDao.getFirstPhotoNameByBoardSeq(conn, placeListResponse.getPlaceSeq());
+            placeListResponse.setPlaceThumbnail(photoName);
+        }
         close(conn);
         return placeList;
     }
@@ -84,6 +88,10 @@ public class PlaceService {
     public List<PlaceListResponse> getAllPlaceListByRec(HashMap requestParam) {
         conn = getConnection();
         List<PlaceListResponse> placeList = placeDao.getAllPlaceListByRec(conn, requestParam);
+        for (PlaceListResponse placeListResponse : placeList) {
+            String photoName = photoDao.getFirstPhotoNameByBoardSeq(conn, placeListResponse.getPlaceSeq());
+            placeListResponse.setPlaceThumbnail(photoName);
+        }
         close(conn);
         return placeList;
     }
