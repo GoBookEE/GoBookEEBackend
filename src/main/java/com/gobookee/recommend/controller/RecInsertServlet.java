@@ -31,6 +31,7 @@ public class RecInsertServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Long boardSeq = Long.parseLong(request.getParameter("boardSeq"));
+		String recType = request.getParameter("recType");
 		User loginUser = (User) request.getSession().getAttribute("loginUser");
 		Long userSeq = loginUser.getUserSeq();
 
@@ -38,7 +39,7 @@ public class RecInsertServlet extends HttpServlet {
 		response.setContentType("application/json;charset=UTF-8");
 		Map<String, Object> result = new HashMap<>();
 		try {
-			result = service.toggleRecommend(userSeq, boardSeq);
+			result = service.toggleRecommend(userSeq, boardSeq, recType);
 			result.put("success", true);
 		} catch (Exception e) {
 			result.put("success", false);
