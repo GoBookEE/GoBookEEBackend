@@ -14,6 +14,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 <style>
+    header, footer {
+        display: none !important;
+    }
+
+    .container {
+        padding-top: 10px !important;
+        padding-bottom: 10px !important;
+        margin: 0 auto !important;
+    }
+
     .confirm-group {
         display: flex;
         justify-content: center;
@@ -45,46 +55,6 @@
     .confirm-btn.active:hover {
         background-color: #449953;
     }
-
-    .fc {
-        font-family: 'Segoe UI', sans-serif;
-        font-size: 14px;
-        background: #fff;
-        border-radius: 10px;
-        padding: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-    }
-
-    .fc-toolbar-title {
-        font-size: 18px;
-        font-weight: 600;
-        color: #333;
-    }
-
-    .fc-button-primary {
-        background-color: #495057;
-        border-color: #495057;
-    }
-
-    .fc-daygrid-day-number {
-        font-size: 12px;
-        color: #555;
-    }
-
-    .fc-day-today {
-        background: #f8f9fa !important;
-        border: 1px solid #dee2e6;
-    }
-
-    .fc-day:hover {
-        background-color: #e9ecef;
-        cursor: pointer;
-    }
-
-    .fc-col-header-cell-cushion {
-        color: #50A65D !important;
-        font-weight: bold;
-    }
 </style>
 <%
     PlaceViewResponse place = (PlaceViewResponse) request.getAttribute("place");
@@ -92,11 +62,11 @@
     boolean isOwner = loginUser.getUserSeq().equals(place.getUserSeq());
 %>
 
-<main class="container my-4">
-    <div class="d-flex justify-content-between align-items-center py-2 border-bottom mb-3">
+<main class="container">
+    <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
         <button class="btn btn-link text-dark text-decoration-none"
                 onclick="history.back()">
-            <i class="bi bi-arrow-left"></i> 뒤로
+            <i class="bi bi-arrow-left"></i>
         </button>
         <%
             if (loginUser != null && loginUser.getUserSeq().equals(place.getUserSeq())) {
@@ -133,7 +103,7 @@
         }
         %>
     </div>
-    <div class="container my-4" style="max-width: 600px;">
+    <div class="container" style="max-width: 600px;">
         <!-- 🖼️ 이미지 Carousel -->
         <div id="placeImageCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
             <div class="carousel-inner rounded">
@@ -158,7 +128,7 @@
         <div class="d-flex align-items-center mb-3">
             <img src="<%=CommonPathTemplate.getUploadPath(request,FileType.USER,place.getUserProfileImage())%>"
                  class="rounded-circle me-3"
-                 width="50" height="50" alt="프로필">
+                 width="50" height="50" alt="프로필" onerror="this.src='<%=request.getContextPath()%>/resources/images/default.jpg'">
             <div>
                 <div class="fw-bold"><%=place.getUserNickname()%>
                 </div>
@@ -192,7 +162,7 @@
     </div>
 
     <div class="text-center">
-        <button class="btn btn-dark px-5 py-2" data-bs-toggle="modal" data-bs-target="#reservationModal">예약</button>
+        <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#reservationModal" style="width: 200px">예약</button>
     </div>
 
     <div class="modal fade" id="reservationModal" tabindex="-1">

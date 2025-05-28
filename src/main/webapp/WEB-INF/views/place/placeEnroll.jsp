@@ -10,26 +10,30 @@
     User loginUser = (User) request.getSession().getAttribute("loginUser");
 %>
 <style>
-    body{
-        padding-bottom: 80px;
+    header, footer {
+        display: none !important;
     }
+
     .form-container {
         max-width: 500px;
         margin: auto;
         padding: 30px 20px;
     }
+
     .form-box {
         border-radius: 20px;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         background-color: #fff;
         padding: 25px;
     }
+
     .preview-image {
         width: 60px;
         height: 60px;
         object-fit: cover;
         margin-right: 5px;
     }
+
     .map-container {
         display: none;
         width: 100%;
@@ -60,14 +64,16 @@
 
         <div class="mb-3">
             <label class="form-label fw-semibold">장소를 등록해 주세요</label>
-            <input type="text" id="placeTitle" class="form-control mb-2" placeholder="장소 이름을 입력해 주세요 (20자 이내)" maxlength="20">
+            <input type="text" id="placeTitle" class="form-control mb-2" placeholder="장소 이름을 입력해 주세요 (20자 이내)"
+                   maxlength="20">
             <textarea id="placeContent" class="form-control" rows="5" placeholder="내용을 입력해 주세요"></textarea>
         </div>
 
         <div class="mb-3">
             <label class="form-label fw-semibold">주소 입력</label>
             <input type="text" id="placeAddress" class="form-control mb-2" placeholder="주소를 검색해보세요" readonly>
-            <button type="button" class="btn btn-outline-secondary w-100" onclick="sample5_execDaumPostcode()">주소 검색</button>
+            <button type="button" class="btn btn-outline-secondary w-100" onclick="sample5_execDaumPostcode()">주소 검색
+            </button>
             <div id="map" class="map-container mt-2"></div>
         </div>
 
