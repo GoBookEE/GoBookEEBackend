@@ -34,7 +34,7 @@ body {
 			<% for (ReviewListResponse b : reviews) { %>
 			<div class="col">
 				<div class="card h-100 review-card"
-					onclick="location.assign('<%=request.getContextPath()%>/review/reviewseq?seq=<%=b.getReviewSeq() %>')">
+					onclick="location.assign('<%=request.getContextPath()%>/review/view?seq=<%=b.getReviewSeq() %>')">
 					<div class="card-img-wrapper mb-2 d-flex justify-content-center">
 						<img src="<%=b.getBookCover() %>" class="card-img-top" alt="book1"
 							style="width: 100px; height: 130px;">
@@ -44,8 +44,9 @@ body {
 						<p class="card-text small line-clamp"><%=b.getReviewContents()%></p>
 					</div>
 					<div class="card-footer bg-white border-top-0">
-						<small class="review-meta">♥ <%=b.getRecommendCount()%> |
-							<i class="bi bi-chat"></i> <%=b.getCommentsCount()%></small>
+						<small class="review-meta"><i class="bi bi-heart"
+							style="font-size: 0.9rem;"></i> <%=b.getRecommendCount()%> | <i
+							class="bi bi-chat"></i> <%=b.getCommentsCount()%></small>
 					</div>
 				</div>
 			</div>
@@ -59,7 +60,7 @@ body {
 
 
 		<div class="form-container">
-			<select id="sortSelect">
+			<select id="sortSelect" class="sort-pill-select">
 				<option value="latest">최신순</option>
 				<option value="recommend">추천순</option>
 			</select>
@@ -82,6 +83,28 @@ body {
 		</div>
 	</div>
 	<style>
+.sort-pill-select {
+	width: auto;
+	border: none;
+	border-radius: 999px;
+	padding: 0.375rem 2.5rem 0.375rem 1.25rem; /* 오른쪽 padding을 넉넉히 */
+	background-color: #6fcf97;
+	color: white;
+	font-weight: 500;
+	appearance: none;
+	background-image:
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6 6 6-6'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 1rem center; /* 화살표를 오른쪽으로 이동 */
+	background-size: 12px;
+	margin-bottom: 20px;
+}
+
+.sort-pill-select:focus {
+	outline: none;
+	box-shadow: 0 0 0 0.2rem rgba(111, 207, 151, 0.4);
+}
+
 .fab-container {
 	position: fixed;
 	bottom: 80px; /* 푸터 위로 띄우기 */
@@ -141,7 +164,7 @@ body {
 
 .line-clamp {
 	display: -webkit-box;
-	-webkit-line-clamp: 2; /* 보이는 줄 수 조절 */
+	-webkit-line-clamp: 1; /* 보이는 줄 수 조절 */
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -149,17 +172,18 @@ body {
 	word-break: break-word;
 	overflow-wrap: break-word;
 	line-height: 1.4;
-	max-height: calc(1.4em * 2); /* line-height × 줄 수 */
-}
-.review-meta {
-  font-size: 0.9rem;
-  color: #6c757d;
-}
-.review-meta i.bi {
-  font-size: 1rem;
-  vertical-align: middle;
+	max-height: calc(1.4em * 1); /* line-height × 줄 수 */
 }
 
+.review-meta {
+	font-size: 0.9rem;
+	color: #6c757d;
+}
+
+.review-meta i.bi {
+	font-size: 1rem;
+	vertical-align: middle;
+}
 </style>
 
 
