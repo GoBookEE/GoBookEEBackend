@@ -37,10 +37,10 @@ public class CommentsUpdateServlet extends HttpServlet {
         String msg, loc;
 		if(result>0) {
 			msg="댓글 수정 성공";
-			loc="/review/reviewseq?seq=" + reviewSeq;
+			loc="/review/view?seq=" + reviewSeq;
 		}else {
 			msg="댓글 수정 실패";
-			loc="/review/reviewseq?seq=" + reviewSeq; 
+			loc="/review/view?seq=" + reviewSeq; 
 		}
 		 request.setAttribute("msg", msg);
 		 request.setAttribute("loc", loc);

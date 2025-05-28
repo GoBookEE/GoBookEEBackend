@@ -15,6 +15,7 @@ import com.gobookee.study.model.dao.StudyDao;
 import com.gobookee.study.model.dto.SearchStudyResponse;
 import com.gobookee.study.model.dto.StudyInsert;
 import com.gobookee.study.model.dto.StudyList;
+import com.gobookee.study.model.dto.StudyView;
 
 public class StudyService {
 
@@ -91,4 +92,19 @@ public class StudyService {
         }
         return isSuccess;
     }
+    
+    public List<StudyView> getStudyView (Long studySeq){
+    	conn = getConnection();
+    	List<StudyView> studyview = dao.getStudyView(conn, studySeq);
+    	close(conn);
+    	return studyview;
+    }
+    
+    public List<StudyView> getStudyViewUser (Long studySeq){
+    	conn = getConnection();
+    	List<StudyView> studyviewuser = dao.getStudyViewUser(conn, studySeq);
+    	close(conn);
+    	return studyviewuser;
+    }
+    
 }

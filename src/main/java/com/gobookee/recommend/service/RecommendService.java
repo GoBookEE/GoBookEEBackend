@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.gobookee.recommend.model.dao.RecommendDAO;
+import com.gobookee.recommend.model.dto.Recommend;
 
 public class RecommendService {
 
@@ -25,41 +26,28 @@ public class RecommendService {
 		return SERVICE;
 	}
 
-	public Map<String, Object> toggleRecommend(Long userSeq, Long boardSeq) {
-		Connection conn = getConnection();
-		Map<String, Object> result = new HashMap<>();
-
-		try {
-			if (dao.exists(conn, userSeq, boardSeq, "0")) {// 추천이 있는상태면
-				dao.delete(conn, userSeq, boardSeq); // 추천 취소
-			} else { // 추천이 없는 상태여도
-				dao.delete(conn, userSeq, boardSeq); // 비추천도 있을 수 있으니 삭제
-				dao.insert(conn, userSeq, boardSeq, "0"); // 추천등록
-			}
-
-			result.put("recommendCount", dao.countByType(conn, boardSeq, "0"));
-			result.put("nonRecommendCount", dao.countByType(conn, boardSeq, "1"));
-
-			commit(conn);
-		} catch (Exception e) {
-			rollback(conn);
-			e.printStackTrace();
-		} finally {
-			close(conn);
-		}
-
-		return result;
-	}
-
-	public Map<String, Object> toggleNonRecommend(Long userSeq, Long boardSeq) {
+	public Map<String, Object> toggleRecommend(Long userSeq, Long boardSeq, String newType) {
 		Connection conn = getConnection();
 		Map<String, Object> result = new HashMap<>();
 		try {
-			if (dao.exists(conn, userSeq, boardSeq, "1")) {
-				dao.delete(conn, userSeq, boardSeq);
+			Recommend rec = dao.getRecommendBySeq(conn, userSeq, boardSeq);
+			int speedChange = 0;
+			if (rec != null && newType.equals(rec.getRecType())) {
+				// 같은 버튼 다시 누름 → 토글 취소
+				dao.delete(conn, rec.getRecSeq());
+				speedChange = "0".equals(newType) ? -1 : +1;
 			} else {
-				dao.delete(conn, userSeq, boardSeq);
-				dao.insert(conn, userSeq, boardSeq, "1");
+				// 상태 변경 or 새로 누름
+				if (rec != null) {
+					speedChange += "0".equals(rec.getRecType()) ? -1 : +1; // 기존 것 취소
+				}
+				speedChange += "0".equals(newType) ? +1 : -1; // 새로 누른 것 반영
+				dao.merge(conn, userSeq, boardSeq, newType);
+			}
+
+			// 점수 업데이트
+			if (speedChange != 0) {
+				dao.updateUserSpeed(conn, userSeq, speedChange);
 			}
 
 			result.put("recommendCount", dao.countByType(conn, boardSeq, "0"));
@@ -75,4 +63,5 @@ public class RecommendService {
 
 		return result;
 	}
+
 }

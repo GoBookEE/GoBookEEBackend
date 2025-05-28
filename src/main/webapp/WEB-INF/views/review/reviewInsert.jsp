@@ -27,7 +27,7 @@ header, footer {
 
 	<h5 class="fw-bold mb-4"><%= isUpdate ? "수정하기" : "리뷰 쓰기" %></h5>
 
-	<!-- ✅ 선택된 도서 카드 -->
+	<!-- 선택된 도서 카드 -->
 	<div id="selectedBookCard"
 		class="p-3 book-card mb-2 <%= isUpdate ? "" : "d-none" %>">
 		<div class="row book-card-row align-items-center">
@@ -46,7 +46,7 @@ header, footer {
 		</div>
 	</div>
 
-	<!-- ✅ 도서 검색 입력 필드 -->
+	<!-- 도서 검색 입력 필드 -->
 	<div class="mb-3">
 		<br> <label class="form-label fw-semibold">리뷰를 쓰고 싶은 책을
 			검색해 보세요</label>
@@ -57,16 +57,10 @@ header, footer {
 		</div>
 	</div>
 
-	<!-- ✅ 리뷰 입력 폼 -->
+	<!-- 리뷰 입력 폼 -->
 	<form
 		action="<%= isUpdate ? request.getContextPath() + "/review/update" : request.getContextPath() + "/review/insert" %>"
 		method="post">
-		<%-- <% if (isUpdate) { %>
-		<input type="hidden" name="reviewSeq"
-			value="<%= review.getReviewSeq() %>">
-		<% } %>
-		<input type="hidden" name="bookSeq" id="bookSeq"
-		value="<%= review.getBookSeq() %>"> --%>
 		<% if (isUpdate && review != null) { %>
 		<input type="hidden" name="reviewSeq"
 			value="<%= review.getReviewSeq() %>"> <input type="hidden"
