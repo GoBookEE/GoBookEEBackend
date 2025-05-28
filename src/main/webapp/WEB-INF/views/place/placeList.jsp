@@ -139,8 +139,8 @@
 
 </style>
 
-<main class="container py-3">
-    <div class="form-container">
+<main class="container-fluid py-3 d-flex justify-content-center">
+    <div class="form-container w-100" style="max-width: 1140px;">
         <select id="sortSelect" class="form-select sort-pill-select">
             <option value="latest">최신순</option>
             <option value="recommend">추천순</option>
@@ -155,7 +155,7 @@
             </button>
             <div class="fab-menu" id="fabMenu">
                 <a href="<%=request.getContextPath()%>/place/insertpage"
-                   class="fab-item"> <i class="bi bi-pencil"></i> 리뷰 쓰기
+                   class="fab-item"> <i class="bi bi-pencil"></i> 장소 글쓰기
                 </a>
             </div>
         </div>
