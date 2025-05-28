@@ -116,6 +116,7 @@
         font-size: 1rem;
         vertical-align: middle;
     }
+
     .sort-pill-select {
         width: auto;
         border: none;
@@ -198,7 +199,8 @@
                 placeList.forEach(function (place) {
                     const itemHtml = `
                     <div class="place-card" onclick="location.href='<%=request.getContextPath()%>/place/view?placeSeq=\${place.placeSeq}'">
-                        <img src='<%=request.getContextPath()%><%=CommonPathTemplate.BASIC_UPLOAD_PATH%>place/\${place.placeThumbnail}' class="place-image" alt="썸네일">
+                        <img src='<%=request.getContextPath()%><%=CommonPathTemplate.BASIC_UPLOAD_PATH%>place/\${place.placeThumbnail}' class="place-image" alt="썸네일"
+                        onerror="this.src='<%=request.getContextPath()%>/resources/images/default.jpg'">
                         <div class="flex-grow-1">
                             <div class="place-title">\${place.placeTitle}</div>
                             <div class="place-address">\${place.placeAddress}</div>

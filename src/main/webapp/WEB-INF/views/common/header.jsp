@@ -28,7 +28,7 @@
             <img height="70" src="https://avatars.githubusercontent.com/u/206787080">
         </div>
         <div class="col-2">
-            <i class="bi bi-search fs-1"></i>
+            <i class="bi bi-search fs-1" onclick="location.assign('<%=request.getContextPath()%>/search/page')"></i>
         </div>
     </div>
 </header>
