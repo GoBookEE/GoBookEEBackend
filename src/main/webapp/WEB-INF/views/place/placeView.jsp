@@ -68,9 +68,7 @@
                 onclick="history.back()">
             <i class="bi bi-arrow-left"></i>
         </button>
-        <%
-            if (loginUser != null && loginUser.getUserSeq().equals(place.getUserSeq())) {
-        %>
+
         <script>
             console.log(<%=loginUser%>)
         </script>
@@ -79,29 +77,35 @@
                     data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="bi bi-three-dots-vertical"></i>
             </button>
-            <form id="deleteForm" action="<%=request.getContextPath()%>/place/delete" method="post" style="display:none;">
+            <form id="deleteForm" action="<%=request.getContextPath()%>/place/delete" method="post"
+                  style="display:none;">
                 <input type="hidden" name="placeSeq" id="deletePlaceSeq">
             </form>
             <ul class="dropdown-menu dropdown-menu-end"
                 aria-labelledby="moreMenu">
+                <%
+                    if (loginUser != null && loginUser.getUserSeq().equals(place.getUserSeq())) {
+                %>
                 <li><a class="dropdown-item"
                        href="<%=request.getContextPath()%>/place/updatepage?placeSeq=<%=place.getPlaceSeq()%>">게시물
                     수정</a></li>
                 <li><a class="dropdown-item text-danger" href="#"
                        onclick="return confirmDeleteReview(<%=place.getPlaceSeq()%>);">
                     게시물 삭제 </a></li>
+                <%
+                } else {
+                %>
+                <li>
+                    <button class="dropdown-item text-danger"
+                            onclick="reportPost(<%=place.getPlaceSeq()%>,'PLACE')">장소글 신고
+                    </button>
+                </li>
+                <%
+                    }
+                %>
             </ul>
         </div>
-        <%
-        } else {
-        %>
-        <script>
-            console.log(<%=loginUser%>)
-            console.log(<%=loginUser.getUserSeq().equals(place.getUserSeq())%>)
-        </script>
-        <%
-        }
-        %>
+
     </div>
     <div class="container" style="max-width: 600px;">
         <!-- 🖼️ 이미지 Carousel -->
@@ -128,7 +132,8 @@
         <div class="d-flex align-items-center mb-3">
             <img src="<%=CommonPathTemplate.getUploadPath(request,FileType.USER,place.getUserProfileImage())%>"
                  class="rounded-circle me-3"
-                 width="50" height="50" alt="프로필" onerror="this.src='<%=request.getContextPath()%>/resources/images/default.jpg'">
+                 width="50" height="50" alt="프로필"
+                 onerror="this.src='<%=request.getContextPath()%>/resources/images/default.jpg'">
             <div>
                 <div class="fw-bold"><%=place.getUserNickname()%>
                 </div>
@@ -162,7 +167,8 @@
     </div>
 
     <div class="text-center">
-        <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#reservationModal" style="width: 200px">예약</button>
+        <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#reservationModal" style="width: 200px">예약
+        </button>
     </div>
 
     <div class="modal fade" id="reservationModal" tabindex="-1">
@@ -381,6 +387,36 @@
             document.getElementById("deleteForm").submit();
         }
         return false; // 기본 링크 동작 방지
+    }
+
+
+    //신고
+    function reportPost(placeSeq, boardType) {
+        const reason = prompt("신고 사유를 입력해주세요.");
+        if (reason === null || reason.trim() === "") {
+            alert("신고 사유가 필요합니다.");
+            return;
+        }
+
+        $.ajax({
+            url: "<%=request.getContextPath()%>/reports/insert",
+            method: "POST",
+            data: {
+                boardSeq: placeSeq,
+                boardType: boardType,
+                reason: reason
+            },
+            success: function (res) {
+                if (res.success) {
+                    alert("신고가 접수되었습니다.");
+                } else {
+                    alert(res.message || "이미 신고하셨습니다.");
+                }
+            },
+            error: function () {
+                alert("신고 처리 중 오류 발생.");
+            }
+        });
     }
 </script>
 
