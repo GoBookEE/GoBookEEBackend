@@ -90,8 +90,7 @@
                        href="<%=request.getContextPath()%>/place/updatepage?placeSeq=<%=place.getPlaceSeq()%>">게시물
                     수정</a></li>
                 <li><a class="dropdown-item text-danger" href="#"
-                       onclick="return confirmDeleteReview(<%=place.getPlaceSeq()%>);">
-                    게시물 삭제 </a></li>
+                       onclick="return confirmDeleteReview(<%=place.getPlaceSeq()%>);">게시물 삭제 </a></li>
                 <%
                 } else {
                 %>
@@ -159,10 +158,28 @@
 
         <!-- 👍👎 추천/비추천 -->
         <div class="d-flex justify-content-start align-items-center gap-4 mt-3">
-            <div class="text-success"><i class="bi bi-hand-thumbs-up"></i> <%=place.getPlaceRecCount()%>
-            </div>
-            <div class="text-danger"><i class="bi bi-hand-thumbs-down"></i> <%=place.getPlaceNonRecCount()%>
-            </div>
+            <%
+                if (loginUser != null) {
+            %>
+            <button
+                    class="btn-recommend-action btn-sm text-success d-flex align-items-center p-0 border-0 bg-transparent"
+                    data-type="PLACE" data-seq="<%=place.getPlaceSeq()%>"
+                    data-rec="0">
+                <i class="bi bi-hand-thumbs-up-fill me-1"
+                   style="font-size: 0.9rem;"></i> <span class="count"><%=place.getPlaceRecCount()%></span>
+            </button>
+
+            <!-- 비추천 버튼 -->
+            <button
+                    class="btn-recommend-action btn-sm text-danger d-flex align-items-center p-0 border-0 bg-transparent"
+                    data-type="PLACE" data-seq="<%=place.getPlaceSeq()%>"
+                    data-rec="1">
+                <i class="bi bi-hand-thumbs-down-fill me-1"
+                   style="font-size: 0.9rem;"></i> <span class="count"><%=place.getPlaceNonRecCount()%></span>
+            </button>
+            <%
+                }
+            %>
         </div>
     </div>
 
@@ -418,6 +435,41 @@
             }
         });
     }
-</script>
 
+
+    //추천, 비추천
+    $(document).on("click", ".btn-recommend-action", function () {
+        const $btn = $(this);
+        const targetType = $btn.data("type"); // "REVIEW" or "COMMENT"
+        const targetSeq = $btn.data("seq");
+        const recType = $btn.data("rec");     // 0: 추천, 1: 비추천
+
+        $.ajax({
+            url: "<%=request.getContextPath()%>/recommend/insert",
+            type: "POST",
+            data: {
+                boardSeq: targetSeq,
+                recType: recType
+            },
+            success: function (data) {
+                if (data.success) {
+                    // 추천
+                    $(`.btn-recommend-action[data-type='\${targetType}'][data-seq='\${targetSeq}'][data-rec='0']`)
+                        .find(".count")
+                        .text(data.recommendCount);
+
+                    // 비추천
+                    $(`.btn-recommend-action[data-type='\${targetType}'][data-seq='\${targetSeq}'][data-rec='1']`)
+                        .find(".count")
+                        .text(data.nonRecommendCount);
+                } else {
+                    alert(data.message || "이미 처리된 항목입니다.");
+                }
+            },
+            error: function () {
+                alert("추천/비추천 처리 중 오류 발생!");
+            }
+        });
+    });
+</script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
