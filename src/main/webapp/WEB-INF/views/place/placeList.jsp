@@ -112,42 +112,36 @@
         background-color: #157347;
     }
 
-    .card-text {
-        display: -webkit-box;
-        -webkit-line-clamp: 3; /* 최대 줄 수 */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-    }
-
-    .line-clamp {
-        display: -webkit-box;
-        -webkit-line-clamp: 2; /* 보이는 줄 수 조절 */
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        /* 추가: 긴 단어 줄바꿈 처리 */
-        word-break: break-word;
-        overflow-wrap: break-word;
-        line-height: 1.4;
-        max-height: calc(1.4em * 2); /* line-height × 줄 수 */
-    }
-
-    .review-meta {
-        font-size: 0.9rem;
-        color: #6c757d;
-    }
-
     .review-meta i.bi {
         font-size: 1rem;
         vertical-align: middle;
+    }
+    .sort-pill-select {
+        width: auto;
+        border: none;
+        border-radius: 999px;
+        padding: 0.375rem 2.5rem 0.375rem 1.25rem; /* 오른쪽 padding을 넉넉히 */
+        background-color: #6fcf97;
+        color: white;
+        font-weight: 500;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6 6 6-6'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 1rem center; /* 화살표를 오른쪽으로 이동 */
+        background-size: 12px;
+        margin-bottom: 20px;
+    }
+
+    .sort-pill-select:focus {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(111, 207, 151, 0.4);
     }
 
 </style>
 
 <main class="container py-3">
     <div class="form-container">
-        <select id="sortSelect">
+        <select id="sortSelect" class="form-select sort-pill-select">
             <option value="latest">최신순</option>
             <option value="recommend">추천순</option>
         </select>
