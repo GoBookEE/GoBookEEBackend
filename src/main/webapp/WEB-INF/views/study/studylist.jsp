@@ -55,7 +55,7 @@
                     } else {
                         studies.forEach(function (b) {
                             const itemHtml = `
-							        <div class="p-4 book-card" onclick="location.assign('<%=request.getContextPath()%>/study/studyinfo?seq=\${b.studySeq}')">
+							        <div class="p-4 book-card" onclick="location.assign('<%=request.getContextPath()%>/study/view?seq=\${b.studySeq}')">
 							            <div class="row book-card-row">
 							                <div class="book-card-img col col-5">
 							                
