@@ -35,9 +35,6 @@ body {
 			<div class="col">
 				<div class="card h-100 review-card"
 					onclick="location.assign('<%=request.getContextPath()%>/review/reviewseq?seq=<%=b.getReviewSeq() %>')">
-					<%-- <div style="flex-shrink: 0; width: 100px; height: 100px;">
-				<img src="<%=b.getBookCover() %>" class="card-img-top" alt="book1">
-				</div> --%>
 					<div class="card-img-wrapper mb-2 d-flex justify-content-center">
 						<img src="<%=b.getBookCover() %>" class="card-img-top" alt="book1"
 							style="width: 100px; height: 130px;">
@@ -168,8 +165,6 @@ body {
 
 
 	<script>
-const test = `${b.reviewTitle}`;
-console.log("test:", test);
 let currentSort = "latest"; // 현재 정렬 기준 기억
 
 //정렬 드롭다운 이벤트
@@ -213,30 +208,10 @@ function loadReviews(sortType,cPage = 1) {
                 container.append("<div>리뷰가 없습니다.</div>");
             } else {
                 reviews.forEach(function (b) {
-                	console.log(b);
-                	console.log("test:", `${b.reviewTitle}`);
-                	console.log(b.reviewTitle);
-                	/*
-                    const itemHtml = `
-                    <div class="list-group-item list-group-item-action d-flex gap-3 py-4" 
-                    onclick="location.assign('<%=request.getContextPath()%>/review/reviewseq?seq=\${b.reviewSeq}')">
-                    	<div style="flex-shrink: 0; width: 100px; height: 120px;">
-                    <img src='\${b.bookCover}' 
-                    	alt='latest1'  class='rounded'>
-                    </div>
-                        <div class="d-flex flex-column">
-                        	
-                            <strong class="mb-1">\${b.reviewTitle}</strong>
-                            <small class="text-muted line-clamp">\${b.reviewContents}</small>
-                            <br>
-                            <small class="text-muted">\${b.bookTitle}</small>
-                            <p class="review-meta mt-2">♥ \${b.recommendCount}</p>
-                        </div>
-                    </div>`;
-                    */
+
                     const itemHtml = `
                     	<div class="list-group-item list-group-item-action d-flex gap-3 py-3 align-items-start position-relative"
-                    	     onclick="location.assign('<%=request.getContextPath()%>/review/reviewseq?seq=\${b.reviewSeq}')">
+                    	     onclick="location.assign('<%=request.getContextPath()%>/review/view?seq=\${b.reviewSeq}')">
 
                     	
                     	  <div style="flex-shrink: 0; width: 120px; height: 150px;">
