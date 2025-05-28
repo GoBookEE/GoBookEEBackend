@@ -1,22 +1,24 @@
 package com.gobookee.study.model.dto;
 
+import java.sql.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.sql.Timestamp;
+import lombok.Setter;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Getter
+@Setter
 public class StudyList {
     private Long studySeq;
     private String studyTitle;
-    private Timestamp studyDate;
+    private Date studyDate;
     private Integer studyMemberLimit;
-    private String studyPlace;
+    private String studyAddress;
     private Integer confirmedCount;
     private String photoRenamedName;
     private Integer likeCount;

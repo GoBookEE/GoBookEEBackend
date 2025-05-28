@@ -48,6 +48,15 @@ public class StudyListServlet extends HttpServlet {
 			list=StudyService.studyService().getStudiesByTime(cPage,numPerPage);
 		}
 		
+        for (StudyList s : list) {
+            if (s.getStudyAddress() == null || s.getStudyAddress().isBlank()) {
+                s.setStudyAddress("주소미입력");
+            }
+            if (s.getPhotoRenamedName() == null || s.getPhotoRenamedName().isBlank()) {
+                s.setPhotoRenamedName("default.png");
+            }
+        }
+        
 		Gson gson = new Gson();
 		response.setContentType("application/json;charset=UTF-8");
 		Map<String, Object> result = new HashMap<>();
