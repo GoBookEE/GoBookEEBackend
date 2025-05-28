@@ -44,7 +44,7 @@ public class ReviewUpdateServlet extends HttpServlet {
 		String msg, loc;
 		if (result > 0) {
 			msg = "리뷰 수정 성공";
-			loc = "/review/reviewseq?seq=" + reviewSeq;
+			loc = "/review/view?seq=" + reviewSeq;
 		} else {
 			msg = "리뷰 수정 실패";
 			loc = "review/updatepage";

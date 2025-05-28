@@ -3,6 +3,9 @@
 <%@ page
 	import="java.sql.Timestamp,java.util.List,com.gobookee.review.model.dto.*,com.gobookee.common.DateTimeFormatUtil,
 	com.gobookee.users.model.dto.*"%>
+<%@ page import="com.gobookee.users.model.dto.User" %>
+<%@ page import="com.gobookee.common.CommonPathTemplate" %>
+<%@ page import="com.gobookee.common.enums.FileType" %>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
 User loginUser = (User) session.getAttribute("loginUser");
@@ -19,9 +22,7 @@ List<CommentsViewResponse> comments = review.getComments();
 					onclick="history.back()">
 					<i class="bi bi-arrow-left" style="font-size: 0.9rem;"></i>
 				</button>
-				<%
-				if (loginUser != null && loginUser.getUserSeq().equals(review.getUserSeq())) {
-				%>
+
 				<div class="dropdown">
 					<button class="btn btn-link text-dark" id="moreMenu"
 						data-bs-toggle="dropdown" aria-expanded="false">
@@ -30,6 +31,9 @@ List<CommentsViewResponse> comments = review.getComments();
 
 					<ul class="dropdown-menu dropdown-menu-end"
 						aria-labelledby="moreMenu">
+						<%
+						if (loginUser != null && loginUser.getUserSeq().equals(review.getUserSeq())) {
+						%>
 						<li><a class="dropdown-item"
 							href="<%=request.getContextPath()%>/review/updatepage?reviewSeq=<%=review.getReviewSeq()%>">게시물
 								수정</a></li>
@@ -42,11 +46,20 @@ List<CommentsViewResponse> comments = review.getComments();
 									삭제</button>
 							</form>
 						</li>
+						<%
+						} else {
+						%>
+						<li>
+							<button class="dropdown-item text-danger"
+								onclick="reportPost(<%=review.getReviewSeq()%>, 'REVIEW')">게시물
+								신고</button>
+						</li>
+						<%
+						}
+						%>
+
 					</ul>
 				</div>
-				<%
-				}
-				%>
 			</div>
 
 			<!-- 제목 -->
@@ -54,15 +67,17 @@ List<CommentsViewResponse> comments = review.getComments();
 
 			<!-- 유저 정보 -->
 			<div class="d-flex align-items-center mb-3">
-				<img src="https://via.placeholder.com/40"
-					class="rounded-circle me-2" alt="user" width="40" height="40">
+				<img src="<%=CommonPathTemplate.getUploadPath(request,FileType.USER,review.getUserProfile())%>"
+					class="rounded-circle me-2" alt="user" width="40" height="40"
+					onerror="this.src='<%=request.getContextPath()%>/resources/images/default.jpg'">
 				<div>
 					<div class="fw-semibold"><%=review.getUserNickName()%></div>
 					<small class="text-muted"><%=DateTimeFormatUtil.format(review.getReviewCreateTime())%></small>
 				</div>
 			</div>
 			<div
-				class="d-flex border rounded p-3 mb-3 align-items-center bg-light">
+				class="d-flex border rounded p-3 mb-3 align-items-center bg-light" 
+				onclick="location.assign('<%=request.getContextPath()%>//books/bookdetail?bookSeq=<%=review.getBookSeq()%>')">
 				<img src="<%=review.getBookCover()%>" alt="book-cover" width="90"
 					height="120" class="me-3 rounded">
 				<div>
@@ -91,7 +106,8 @@ List<CommentsViewResponse> comments = review.getComments();
 					class="btn-recommend-action btn-sm text-success d-flex align-items-center p-0 border-0 bg-transparent"
 					data-type="REVIEW" data-seq="<%=review.getReviewSeq()%>"
 					data-rec="0">
-					<i class="bi bi-hand-thumbs-up-fill me-1" style="font-size: 0.9rem;"></i> <span class="count"><%=review.getRecommendCount()%></span>
+					<i class="bi bi-hand-thumbs-up-fill me-1"
+						style="font-size: 0.9rem;"></i> <span class="count"><%=review.getRecommendCount()%></span>
 				</button>
 
 				<!-- 비추천 버튼 -->
@@ -99,8 +115,8 @@ List<CommentsViewResponse> comments = review.getComments();
 					class="btn-recommend-action btn-sm text-danger d-flex align-items-center p-0 border-0 bg-transparent"
 					data-type="REVIEW" data-seq="<%=review.getReviewSeq()%>"
 					data-rec="1">
-					<i class="bi bi-hand-thumbs-down-fill me-1" style="font-size: 0.9rem;"></i> <span
-						class="count"><%=review.getNonRecommendCount()%></span>
+					<i class="bi bi-hand-thumbs-down-fill me-1"
+						style="font-size: 0.9rem;"></i> <span class="count"><%=review.getNonRecommendCount()%></span>
 				</button>
 				<%
 				}
@@ -146,8 +162,8 @@ List<CommentsViewResponse> comments = review.getComments();
 								class="btn-recommend-action btn-sm text-success d-flex align-items-center p-0 border-0 bg-transparent"
 								data-type="COMMENT" data-seq="<%=c.getCommentsSeq()%>"
 								data-rec="0">
-								<i class="bi bi-hand-thumbs-up-fill me-1" style="font-size: 0.9rem;"></i> <span
-									class="count"><%=c.getRecommendCount()%></span>
+								<i class="bi bi-hand-thumbs-up-fill me-1"
+									style="font-size: 0.9rem;"></i> <span class="count"><%=c.getRecommendCount()%></span>
 							</button>
 
 							<!-- 댓글 비추천 버튼 -->
@@ -155,8 +171,8 @@ List<CommentsViewResponse> comments = review.getComments();
 								class="btn-recommend-action btn-sm text-danger d-flex align-items-center p-0 border-0 bg-transparent"
 								data-type="COMMENT" data-seq="<%=c.getCommentsSeq()%>"
 								data-rec="1">
-								<i class="bi bi-hand-thumbs-down-fill me-1" style="font-size: 0.9rem;"></i> <span
-									class="count"><%=c.getNonRecommendCount()%></span>
+								<i class="bi bi-hand-thumbs-down-fill me-1"
+									style="font-size: 0.9rem;"></i> <span class="count"><%=c.getNonRecommendCount()%></span>
 							</button>
 							<%
 							}
@@ -168,9 +184,7 @@ List<CommentsViewResponse> comments = review.getComments();
 								<i class="bi bi-chevron-down" style="font-size: 0.9rem;"></i>
 							</button>
 						</div>
-						<%
-						if (loginUser != null && c.getUserSeq().equals(loginUser.getUserSeq())) {
-						%>
+
 						<div class="dropdown dropup">
 							<button class="btn btn-sm btn-outline-secondary dropdown-toggle"
 								type="button" id="commentDropdown<%=c.getCommentsSeq()%>"
@@ -179,6 +193,9 @@ List<CommentsViewResponse> comments = review.getComments();
 							</button>
 							<ul class="dropdown-menu dropdown-menu-end"
 								aria-labelledby="commentDropdown<%=c.getCommentsSeq()%>">
+								<%
+								if (loginUser != null && c.getUserSeq().equals(loginUser.getUserSeq())) {
+								%>
 								<li>
 									<form
 										action="<%=request.getContextPath()%>/review/updatecomment"
@@ -203,11 +220,20 @@ List<CommentsViewResponse> comments = review.getComments();
 										<button type="submit" class="btn btn-sm btn-danger w-100">삭제</button>
 									</form>
 								</li>
+								<%
+								} else {
+								%>
+								<li>
+									<button class="dropdown-item text-danger"
+										onclick="reportPost(<%=review.getReviewSeq()%>,'COMMENTS')">댓글
+										신고</button>
+								</li>
+								<%
+								}
+								%>
 							</ul>
 						</div>
-						<%
-						}
-						%>
+
 					</div>
 					<div class="mt-1 comment-content"><%=c.getCommentsContents()%></div>
 
@@ -217,7 +243,7 @@ List<CommentsViewResponse> comments = review.getComments();
 
 						<%
 						for (CommentsViewResponse child : comments) {
-							if (child.getCommentLevel() == 2 && child.getCommentsParentSeq() == c.getCommentsSeq()) {
+							if (child.getCommentLevel() == 2 && child.getCommentsParentSeq().equals(c.getCommentsSeq())) {
 						%>
 						<div class="border rounded p-2 mb-2 bg-light ms-4">
 							<div class="d-flex justify-content-between">
@@ -233,37 +259,39 @@ List<CommentsViewResponse> comments = review.getComments();
 									<!-- 댓글 추천 버튼 -->
 									<button
 										class="btn-recommend-action btn-sm text-success d-flex align-items-center p-0 border-0 bg-transparent"
-										data-type="COMMENT" data-seq="<%=c.getCommentsSeq()%>"
+										data-type="COMMENT" data-seq="<%=child.getCommentsSeq()%>"
 										data-rec="0">
-										<i class="bi bi-hand-thumbs-up-fill me-1" style="font-size: 0.9rem;"></i> <span
-											class="count"><%=c.getRecommendCount()%></span>
+										<i class="bi bi-hand-thumbs-up-fill me-1"
+											style="font-size: 0.9rem;"></i> <span class="count"><%=c.getRecommendCount()%></span>
 									</button>
 
 									<!-- 댓글 비추천 버튼 -->
 									<button
 										class="btn-recommend-action btn-sm text-danger d-flex align-items-center p-0 border-0 bg-transparent"
-										data-type="COMMENT" data-seq="<%=c.getCommentsSeq()%>"
+										data-type="COMMENT" data-seq="<%=child.getCommentsSeq()%>"
 										data-rec="1">
-										<i class="bi bi-hand-thumbs-down-fill me-1" style="font-size: 0.9rem;"></i> <span
-											class="count"><%=c.getNonRecommendCount()%></span>
+										<i class="bi bi-hand-thumbs-down-fill me-1"
+											style="font-size: 0.9rem;"></i> <span class="count"><%=c.getNonRecommendCount()%></span>
 									</button>
 									<%
 									}
 									%>
 
 								</div>
-								<%
-								if (c.getUserSeq().equals(loginUser.getUserSeq())) {
-								%>
+
 								<div class="dropdown">
 									<button
 										class="btn btn-sm btn-outline-secondary dropdown-toggle"
 										type="button" id="replyDropdown<%=child.getCommentsSeq()%>"
 										data-bs-toggle="dropdown" aria-expanded="false">
-										<i class="bi bi-three-dots-vertical" style="font-size: 0.9rem;"></i>
+										<i class="bi bi-three-dots-vertical"
+											style="font-size: 0.9rem;"></i>
 									</button>
 									<ul class="dropdown-menu dropdown-menu-end"
 										aria-labelledby="replyDropdown<%=child.getCommentsSeq()%>">
+										<%
+										if (c.getUserSeq().equals(loginUser.getUserSeq())) {
+										%>
 										<li>
 											<form
 												action="<%=request.getContextPath()%>/review/updatecomment"
@@ -290,11 +318,19 @@ List<CommentsViewResponse> comments = review.getComments();
 												<button type="submit" class="btn btn-sm btn-danger w-100">삭제</button>
 											</form>
 										</li>
+										<%
+										} else {
+										%>
+										<li>
+											<button class="dropdown-item text-danger"
+												onclick="reportPost(<%=review.getReviewSeq()%>,'COMMENTS')">댓글
+												신고</button>
+										</li>
+										<%
+										}
+										%>
 									</ul>
 								</div>
-								<%
-								}
-								%>
 
 							</div>
 							<div class="mt-1 comment-content"><%=child.getCommentsContents()%></div>
@@ -359,15 +395,12 @@ $(document).ready(function () {
     const targetSeq = $btn.data("seq");
     const recType = $btn.data("rec");     // 0: 추천, 1: 비추천
 
-    const url = recType === 0
-      ? "<%=request.getContextPath()%>/recommend/insert"
-      : "<%=request.getContextPath()%>/nonrecommend/insert";
-
     $.ajax({
-      url: url,
+      url: "<%=request.getContextPath()%>/recommend/insert",
       type: "POST",
       data: {
         boardSeq: targetSeq,
+        recType: recType
       },
       success: function (data) {
         if (data.success) {
@@ -390,6 +423,37 @@ $(document).ready(function () {
     });
   });
 </script>
+<!-- 신고 ajax -->
+<script>
+function reportPost(reviewSeq, boardType) {
+  const reason = prompt("신고 사유를 입력해주세요.");
+  if (reason === null || reason.trim() === "") {
+    alert("신고 사유가 필요합니다.");
+    return;
+  }
+
+  $.ajax({
+    url: "<%=request.getContextPath()%>/reports/insert",
+    method: "POST",
+    data: {
+      boardSeq: reviewSeq,
+      boardType: boardType,
+      reason: reason
+    },
+    success: function(res) {
+      if (res.success) {
+        alert("신고가 접수되었습니다.");
+      } else {
+        alert(res.message || "이미 신고하셨습니다.");
+      }
+    },
+    error: function() {
+      alert("신고 처리 중 오류 발생.");
+    }
+  });
+}
+</script>
+
 
 
 
