@@ -32,6 +32,12 @@ public class BookService {
         close(conn);
         return book;
     }
+    public int getBookDetailByBookID (int bookId) {
+        Connection conn = getConnection();
+        int bookSeq = dao.getBookDetailByBookID(conn, bookId);
+        close(conn);
+        return bookSeq;
+    }
 
     public int getAllBookCount () {
         Connection conn = getConnection();
