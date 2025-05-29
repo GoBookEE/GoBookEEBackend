@@ -1,34 +1,35 @@
-package com.gobookee.place.model.dto;
+package com.gobookee.search.model.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 @Builder
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PlaceListResponse {
+@Getter
+public class SearchPlace {
     private Long placeSeq;
     private String placeTitle;
     private String placeContents;
     private String placeAddress;
-    private Long placeRecCount;
-    private Long placeNonRecCount;
-    private String placeThumbnail;
+    private Integer placeRecCount;
+    private Integer placeNonRecCount;
+    private String photoRenamedName;
 
-    public static PlaceListResponse from(ResultSet rs) throws SQLException {
-        return PlaceListResponse.builder()
+    public static SearchPlace from(ResultSet rs) throws SQLException {
+        return SearchPlace.builder()
                 .placeSeq(rs.getLong("PLACE_SEQ"))
                 .placeTitle(rs.getString("PLACE_TITLE"))
                 .placeContents(rs.getString("PLACE_CONTENTS"))
                 .placeAddress(rs.getString("PLACE_ADDRESS"))
-                .placeRecCount(rs.getLong("RECOMMEND_COUNT"))
-                .placeNonRecCount(rs.getLong("NON_RECOMMEND_COUNT"))
+                .placeRecCount(rs.getInt("REC_COUNT"))
+                .placeNonRecCount(rs.getInt("NON_REC_COUNT"))
+                .photoRenamedName(rs.getString("PHOTO_RENAMED_NAME"))
                 .build();
     }
 }

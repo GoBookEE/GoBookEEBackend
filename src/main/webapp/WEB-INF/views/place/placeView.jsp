@@ -162,19 +162,19 @@
                 if (loginUser != null) {
             %>
             <button
-                    class="btn-recommend-action btn-sm text-success d-flex align-items-center p-0 border-0 bg-transparent"
+                    class="btn-recommend-action btn-sm d-flex align-items-center p-0 border-0 bg-transparent"
                     data-type="PLACE" data-seq="<%=place.getPlaceSeq()%>"
                     data-rec="0">
-                <i class="bi bi-hand-thumbs-up-fill me-1"
+                <i class="bi bi-hand-thumbs-up me-1"
                    style="font-size: 0.9rem;"></i> <span class="count"><%=place.getPlaceRecCount()%></span>
             </button>
 
             <!-- 비추천 버튼 -->
             <button
-                    class="btn-recommend-action btn-sm text-danger d-flex align-items-center p-0 border-0 bg-transparent"
+                    class="btn-recommend-action btn-sm d-flex align-items-center p-0 border-0 bg-transparent"
                     data-type="PLACE" data-seq="<%=place.getPlaceSeq()%>"
                     data-rec="1">
-                <i class="bi bi-hand-thumbs-down-fill me-1"
+                <i class="bi bi-hand-thumbs-down me-1"
                    style="font-size: 0.9rem;"></i> <span class="count"><%=place.getPlaceNonRecCount()%></span>
             </button>
             <%
