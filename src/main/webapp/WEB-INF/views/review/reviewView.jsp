@@ -225,7 +225,7 @@ List<CommentsViewResponse> comments = review.getComments();
 								%>
 								<li>
 									<button class="dropdown-item text-danger"
-										onclick="reportPost(<%=review.getReviewSeq()%>,'COMMENTS')">댓글
+										onclick="reportPost(<%=c.getCommentsSeq()%>,'COMMENTS')">댓글
 										신고</button>
 								</li>
 								<%
@@ -323,7 +323,7 @@ List<CommentsViewResponse> comments = review.getComments();
 										%>
 										<li>
 											<button class="dropdown-item text-danger"
-												onclick="reportPost(<%=review.getReviewSeq()%>,'COMMENTS')">댓글
+												onclick="reportPost(<%=child.getCommentsSeq()%>,'COMMENTS')">댓글
 												신고</button>
 										</li>
 										<%
@@ -381,7 +381,7 @@ $(document).ready(function () {
 
 	    $target.slideToggle(200, function () {
 	      const isShown = $target.is(":visible");
-	      $(`button[data-comment-id='${id}']`).text(isShown ? "답글 닫기" : "답글");
+	      $(`button[data-comment-id='\${id}']`).text(isShown ? "답글 닫기" : "답글");
 	    });
 	  });
 	});
