@@ -44,6 +44,39 @@
     .search-result {
         margin-top: 20px;
     }
+
+    .search-result .list-group-item,
+    .search-result .card {
+        border: 1px solid #dee2e6;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .search-result .list-group-item:hover,
+    .search-result .card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-result .card img,
+    .search-result .list-group-item img {
+        border-radius: 6px;
+    }
+
+    .search-result h5,
+    .search-result .card-title,
+    .search-result strong {
+        font-weight: 600;
+        color: #343a40;
+    }
+
+    .search-result .text-muted {
+        color: #6c757d !important;
+    }
 </style>
 
 <main class="container py-4" style="max-width: 600px;">
@@ -199,7 +232,7 @@
                     if (currentTab === "review") {
                         html = `
                 <div class="list-group-item list-group-item-action d-flex gap-3 py-3 align-items-start position-relative"
-                    	     onclick="location.assign('<%=request.getContextPath()%>/review/reviewseq?seq=\${item.reviewSeq}')">
+                    	     onclick="location.assign('<%=request.getContextPath()%>/review/view?seq=\${item.reviewSeq}')">
 
 
                     	  <div style="flex-shrink: 0; width: 120px; height: 150px;">
