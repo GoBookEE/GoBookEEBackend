@@ -105,7 +105,7 @@
         <button type="button" class="tab-btn active" data-target="review">리뷰 검색</button>
         <button type="button" class="tab-btn" data-target="book">책 검색</button>
         <button type="button" class="tab-btn" data-target="study">스터디 검색</button>
-        <button type="button" class="tab-btn" data-target="place">공간 검색</button>
+        <button type="button" class="tab-btn" data-target="place">장소 검색</button>
     </div>
 
     <div class="dropdown-filter d-flex align-items-center gap-2">
@@ -182,7 +182,7 @@
             {value: "nickname", label: "작성자 닉네임"}
         ],
         place: [
-            {value: "placeTitle", label: "공간 제목"},
+            {value: "placeTitle", label: "장소 제목"},
             {value: "location", label: "위치"}
         ]
     };
