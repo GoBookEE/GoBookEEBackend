@@ -10,12 +10,14 @@ import java.sql.Connection;
 
 import com.gobookee.review.model.dao.CommentsDAO;
 import com.gobookee.review.model.dto.Comments;
+import com.gobookee.users.model.dao.UserDAO;
 
 public class CommentsService {
 
 	private static final CommentsService SERVICE = new CommentsService();
 
 	private CommentsDAO cdao = commentsDao();
+	private UserDAO udao = UserDAO.userDao();
 
 	private CommentsService() {
 	}
@@ -28,6 +30,7 @@ public class CommentsService {
 		Connection conn = getConnection();
 		int result = cdao.insertComment(conn, dto);
 		if (result > 0) {
+			udao.updateUserSpeed(conn, dto.getUserSeq(), 1);
 			commit(conn);
 		} else {
 			rollback(conn);
