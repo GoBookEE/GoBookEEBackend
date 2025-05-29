@@ -132,7 +132,7 @@
             <img src="<%=CommonPathTemplate.getUploadPath(request,FileType.USER,place.getUserProfileImage())%>"
                  class="rounded-circle me-3"
                  width="50" height="50" alt="프로필"
-                 onerror="this.src='<%=request.getContextPath()%>/resources/images/default.jpg'">
+                 onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
             <div>
                 <div class="fw-bold"><%=place.getUserNickname()%>
                 </div>

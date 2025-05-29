@@ -28,7 +28,7 @@ $("header").html(
 	    		String profile = studyview.getUserProfile();
 	    		if (profile == null || profile.trim().isEmpty()) {
 			%>
-			<img src="<%=request.getContextPath()%>/resources/images/default.jpg">
+			<img src="<%=request.getContextPath()%>/resources/images/default.png">
 			<%}else{ %>
 			<img src="<%=request.getContextPath()%>/resources/upload/study/<%=studyview.getUserProfile() %>">
 			<%} %>
@@ -111,7 +111,7 @@ $("header").html(
 				String users = studyviewuser.get(0).getUserProfile();
     			if (profile == null || profile.trim().isEmpty()) {
 				%>
-					<img src="<%=request.getContextPath()%>/resources/images/default.jpg">
+					<img src="<%=request.getContextPath()%>/resources/images/default.png">
 				<%}else{ %>
 					<img src="<%=request.getContextPath()%>/resources/upload/study/<%=studyviewuser.get(0).getUserProfile() %>">
 				<%} %>
