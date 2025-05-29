@@ -1,9 +1,9 @@
 package com.gobookee.search.controller;
 
-import com.gobookee.book.model.dto.Book;
 import com.gobookee.common.AjaxPageBarTemplate;
 import com.gobookee.common.JsonConvertTemplate;
 import com.gobookee.place.model.dto.Place;
+import com.gobookee.search.model.dto.BookReview;
 import com.gobookee.search.model.dto.Search;
 import com.gobookee.search.model.dto.SearchReview;
 import com.gobookee.search.service.SearchService;
@@ -33,17 +33,18 @@ public class SearchAjaxHandlerServlet extends HttpServlet {
 
         Object resultList = searchService.search(search);
         HashMap result = new HashMap();
+        int totalData = searchService.getTotalCount(search);
 
         if ("review".equals(search.getTab())) {
             result.put("list", (List<SearchReview>) resultList);
         } else if ("book".equals(search.getTab())) {
-            result.put("list", (List<Book>) resultList);
+            result.put("list", (List<BookReview>) resultList);
         } else if ("place".equals(search.getTab())) {
             result.put("list", (List<Place>) resultList);
         } else if ("study".equals(search.getTab())) {
             result.put("list", (List<Study>) resultList);
         }
-        int totalData = ((List) resultList).size();
+
 
         result.put("tab", search.getTab());
         result.put(
