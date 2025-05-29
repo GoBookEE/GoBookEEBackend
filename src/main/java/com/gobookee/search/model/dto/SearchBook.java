@@ -13,7 +13,7 @@ import java.sql.SQLException;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class BookReview {
+public class SearchBook {
     private Long bookSeq;
     private String bookTitle;
     private String bookAuthor;
@@ -24,8 +24,8 @@ public class BookReview {
     private Double reviewRateAvg;
     private Integer reviewCount;
 
-    public static BookReview from(ResultSet rs) throws SQLException {
-        return BookReview.builder()
+    public static SearchBook from(ResultSet rs) throws SQLException {
+        return SearchBook.builder()
                 .bookSeq(rs.getLong("BOOK_SEQ"))
                 .bookTitle(rs.getString("BOOK_TITLE"))
                 .bookAuthor(rs.getString("BOOK_AUTHOR"))

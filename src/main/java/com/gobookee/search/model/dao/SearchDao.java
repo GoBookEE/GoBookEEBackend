@@ -2,10 +2,10 @@ package com.gobookee.search.model.dao;
 
 import com.gobookee.common.JDBCTemplate;
 import com.gobookee.place.model.dto.Place;
-import com.gobookee.search.model.dto.BookReview;
+import com.gobookee.search.model.dto.SearchBook;
 import com.gobookee.search.model.dto.Search;
 import com.gobookee.search.model.dto.SearchReview;
-import com.gobookee.study.model.dto.Study;
+import com.gobookee.search.model.dto.SearchStudy;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -79,7 +79,7 @@ public class SearchDao {
         }
         sql.append(" GROUP BY RV.REVIEW_SEQ, RV.REVIEW_TITLE, RV.REVIEW_CONTENTS, RV.REVIEW_CREATE_TIME, ")
                 .append("RV.REVIEW_RATE, RV.REVIEW_EDIT_TIME, RV.REVIEW_IS_PUBLIC, RV.USER_SEQ, RV.BOOK_SEQ, ")
-                .append("BK.BOOK_TITLE, BK.BOOK_COVER ")
+                .append("BK.BOOK_TITLE, BK.BOOK_COVER, U.USER_NICKNAME ")
                 .append("ORDER BY RV.REVIEW_CREATE_TIME DESC")
                 .append(") R ) WHERE RNUM BETWEEN ? AND ?");
 
@@ -98,9 +98,9 @@ public class SearchDao {
         return list;
     }
 
-    private List<BookReview> searchBook(Connection conn, Search search) {
+    private List<SearchBook> searchBook(Connection conn, Search search) {
         long numPerPage = 5;
-        List<BookReview> list = new ArrayList<>();
+        List<SearchBook> list = new ArrayList<>();
         pstmt = null;
         rs = null;
 
@@ -138,7 +138,7 @@ public class SearchDao {
 
             rs = pstmt.executeQuery();
             while (rs.next()) {
-                list.add(BookReview.from(rs));
+                list.add(SearchBook.from(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -151,10 +151,49 @@ public class SearchDao {
     }
 
 
-    private List<Study> searchStudy(Connection conn, Search search) {
-        // TODO: 스터디 검색 구현
-        return null;
+    private List<SearchStudy> searchStudy(Connection conn, Search search) {
+        long numPerPage = 5;
+        List<SearchStudy> list = new ArrayList<>();
+        pstmt = null;
+        rs = null;
+
+        StringBuilder sql = new StringBuilder(sqlProp.getProperty("searchStudyBase"));
+        String keyword = "%" + search.getKeyword().toLowerCase() + "%";
+
+        switch (search.getFilter()) {
+            case "studyTitle":
+                sql.insert(sql.indexOf("ORDER BY"), " AND LOWER(S.STUDY_TITLE) LIKE ? ");
+                break;
+            case "studyPlace":
+                sql.insert(sql.indexOf("ORDER BY"), " AND LOWER(S.STUDY_ADDRESS) LIKE ? ");
+                break;
+            case "nickname":
+                // 닉네임 검색은 JOIN 필요: STUDY ← USER
+                sql.insert(sql.indexOf("ORDER BY"), " AND LOWER(U.USER_NICKNAME) LIKE ? ");
+                break;
+        }
+
+        try {
+            pstmt = conn.prepareStatement(sql.toString());
+            int idx = 1;
+
+            pstmt.setString(idx++, keyword);
+            pstmt.setLong(idx++, (search.getCPage() - 1) * numPerPage + 1);
+            pstmt.setLong(idx++, search.getCPage() * numPerPage);
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                list.add(SearchStudy.from(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTemplate.close(rs);
+            JDBCTemplate.close(pstmt);
+        }
+        return list;
     }
+
 
     private List<Place> searchPlace(Connection conn, Search search) {
         // TODO: 공간 검색 구현
@@ -244,6 +283,38 @@ public class SearchDao {
     }
 
     public int getStudyTotalCount(Connection conn, Search search) {
-        return 0;
+        int total = 0;
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT COUNT(*) ");
+        sql.append("FROM STUDY S ");
+        sql.append("LEFT JOIN GO_USER U ON S.USER_SEQ = U.USER_SEQ ");
+        sql.append("WHERE S.STUDY_DELETE_TIME IS NULL ");
+        sql.append("AND S.STUDY_IS_PUBLIC = 'Y' ");
+
+        String keyword = "%" + search.getKeyword().toLowerCase() + "%";
+
+        switch (search.getFilter()) {
+            case "studyTitle":
+                sql.append(" AND LOWER(S.STUDY_TITLE) LIKE ? ");
+                break;
+            case "studyPlace":
+                sql.append(" AND LOWER(S.STUDY_ADDRESS) LIKE ? ");
+                break;
+            case "nickname":
+                sql.append(" AND LOWER(U.USER_NICKNAME) LIKE ? ");
+                break;
+        }
+        try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+            pstmt.setString(1, keyword);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    total = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
     }
+
 }
