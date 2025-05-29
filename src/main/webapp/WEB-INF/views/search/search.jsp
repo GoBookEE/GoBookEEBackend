@@ -7,6 +7,19 @@
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 
 <style>
+    .line-clamp {
+        display: -webkit-box;
+        -webkit-line-clamp: 1; /* 보이는 줄 수 조절 */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        /* 추가: 긴 단어 줄바꿈 처리 */
+        word-break: break-word;
+        overflow-wrap: break-word;
+        line-height: 1.4;
+        max-height: calc(1.4em * 1); /* line-height × 줄 수 */
+    }
+
     header, footer {
         display: none !important;
     }
@@ -243,6 +256,7 @@
                     	  <div class="d-flex flex-column flex-grow-1">
                     	    <strong class="mb-1">\${item.reviewTitle}</strong>
                     	    <small class="text-muted line-clamp mb-1">\${item.reviewContents}</small>
+                    	    <strong class="mb-1">작성자:\${item.userNickname}</strong>
                     	    <br>
                     	    <small class="text-muted">\${item.bookTitle}</small>
                     	  </div>
@@ -260,7 +274,7 @@
                     } else if (currentTab === "book") {
                         html = `
                         <div class="card mb-3 shadow-sm border-0" style="border-radius: 20px; cursor: pointer;"
-                             onclick="location.assign('<%=request.getContextPath()%>/book/bookdetail?bookSeq=\${item.bookSeq}')">
+                             onclick="location.assign('<%=request.getContextPath()%>/books/bookdetail?bookSeq=\${item.bookSeq}')">
                           <div class="row g-0">
                             <div class="col-4 d-flex align-items-center justify-content-center p-3">
                               <img src="\${item.bookCover}"
@@ -288,14 +302,40 @@
                         </div>`;
                     } else if (currentTab === "study") {
                         html = `
-                <div class="card mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title">\${item.studyTitle}</h5>
-                        <p class="card-text">장소: \${item.studyPlace}</p>
-                        <p class="card-text">작성자: \${item.nickname}</p>
-                        <p class="card-text"><small class="text-muted">일정: \${item.studySchedule}</small></p>
-                    </div>
-                </div>`;
+                            <div class="card mb-3 shadow-sm border-0" style="border-radius: 20px; cursor: pointer;"
+                             onclick="location.assign('<%=request.getContextPath()%>/study/view?studySeq=\${item.studySeq}')">
+                            <div class="row g-0">
+                            <div class="col-4 d-flex align-items-center justify-content-center p-3">
+                              <img src="<%=request.getContextPath()%>/upload/photo/\${item.photoName}"
+                                   class="img-fluid rounded shadow-sm" alt="스터디 썸네일"
+                                   style="max-height: 160px; object-fit: cover;"
+                                   onerror="this.src='<%=request.getContextPath()%>/resources/images/default.jpg'">
+                            </div>
+                            <div class="col-8 p-3">
+                              <div class="d-flex flex-column h-100 justify-content-between">
+                                <div>
+                                  <h6 class="fw-bold mb-1">\${item.studyTitle}</h6>
+                                  <div class="text-secondary small mb-1">
+                                    <i class="bi bi-geo-alt-fill me-1"></i>\${item.studyAddress ? item.studyAddress : '미정'}
+                                  </div>
+                                  <div class="text-secondary small mb-1">
+                                    <i class="bi bi-calendar-check me-1"></i>\${item.studyDate ? item.studyDate : '미정'}
+                                  </div>
+                                  <div class="text-secondary small mb-1">
+                                    <i class="bi bi-people-fill me-1"></i>\${item.confirmCount} / \${item.studyMemberLimit}명
+                                  </div>
+                                  <div class="text-secondary small mb-1">
+                                    <i class="bi bi-tag me-1"></i>작성자: \${item.nickname}
+                                  </div>
+                                </div>
+                                <div class="d-flex gap-3 text-muted small mt-2">
+                                  <span><i class="bi bi-hand-thumbs-up me-1"></i>\${item.likeCount}</span>
+                                  <span><i class="bi bi-hand-thumbs-down me-1"></i>\${item.dislikeCount}</span>
+                                </div>
+                              </div>
+                            </div>
+                            </div>
+                            </div>`;
                     } else if (currentTab === "place") {
                         html = `
                 <div class="card mb-3 d-flex flex-row p-2">
