@@ -25,7 +25,7 @@
 <header>
     <div class="container d-flex justify-content-between align-items-center text-center small">
         <div class="col-2">
-            <img height="70" src="https://avatars.githubusercontent.com/u/206787080">
+            <img height="70" src="<%=request.getContextPath()%>/resources/images/logo.png">
         </div>
         <div class="col-2">
             <i class="bi bi-search fs-1" onclick="location.assign('<%=request.getContextPath()%>/search/page')"></i>
