@@ -67,19 +67,6 @@ body {
 			<div id="reviewContainer" class="list-group"></div>
 
 			<div id="pageBar"></div>
-			<!-- Floating Action Button -->
-			<%-- <div class="fab-container">
-				<button class="fab-main" id="fabToggle">
-					<i class="bi bi-plus-lg"></i>
-				</button>
-				<div class="fab-menu" id="fabMenu">
-					<a href="<%=request.getContextPath()%>/review/insertpage"
-						class="fab-item"> <i class="bi bi-pencil"></i> 리뷰 쓰기
-					</a> <a href="<%=request.getContextPath()%>/books/searchaladin"
-						class="fab-item"> <i class="bi bi-book"></i> 책 등록하기
-					</a>
-				</div>
-			</div> --%>
 		</div>
 	</div>
 	<style>

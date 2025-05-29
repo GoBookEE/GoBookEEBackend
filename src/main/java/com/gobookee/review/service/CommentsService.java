@@ -7,9 +7,11 @@ import static com.gobookee.common.JDBCTemplate.rollback;
 import static com.gobookee.review.model.dao.CommentsDAO.commentsDao;
 
 import java.sql.Connection;
+import java.util.List;
 
 import com.gobookee.review.model.dao.CommentsDAO;
 import com.gobookee.review.model.dto.Comments;
+import com.gobookee.review.model.dto.CommentsViewResponse;
 import com.gobookee.users.model.dao.UserDAO;
 
 public class CommentsService {
@@ -61,6 +63,20 @@ public class CommentsService {
 		}
 		close(conn);
 		return result;
+	}
+
+	public List<CommentsViewResponse> getAllCommentsByUser(Long userSeq, int cPage, int numPerPage) {
+		Connection conn = getConnection();
+		List<CommentsViewResponse> comments = cdao.getAllCommentsByUser(conn, userSeq, cPage, numPerPage);
+		close(conn);
+		return comments;
+	}
+
+	public int countByUser(Long userSeq) {
+		Connection conn = getConnection();
+		int totalData = cdao.countByUser(conn, userSeq);
+		close(conn);
+		return totalData;
 	}
 
 }

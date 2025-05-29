@@ -1,131 +1,193 @@
-<%@ page import="com.gobookee.common.CommonPathTemplate" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
-
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<%@ page import="com.gobookee.common.CommonPathTemplate"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page import="com.gobookee.users.model.dto.User,com.gobookee.review.model.dto.*,java.util.List" %>
+<%@ include file="/WEB-INF/views/common/header.jsp"%>
+<%
+User loginUser = (User) session.getAttribute("loginUser");
+%>
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+	rel="stylesheet" />
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css"
+	rel="stylesheet">
+<script
+	src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <style>
-    header, footer {
-        display: none !important;
-    }
+header, footer {
+	display: none !important;
+}
 
-    body {
-        background-color: #f8f9fa;
-    }
-    
-    .search-tab {
-        border-bottom: 2px solid #dee2e6;
-        display: flex;
-        justify-content: space-around;
-        margin-bottom: 20px;
-    }
+body {
+	background-color: #f8f9fa;
+}
 
-    .search-tab button {
-        flex: 1;
-        border: none;
-        background: none;
-        padding: 12px;
-        font-weight: bold;
-        border-bottom: 3px solid transparent;
-        color: #6c757d;
-    }
+.search-tab {
+	border-bottom: 2px solid #dee2e6;
+	display: flex;
+	justify-content: space-around;
+	margin-bottom: 20px;
+}
 
-    .search-tab button.active {
-        color: #28a745;
-        border-bottom-color: #28a745;
-    }
+.search-tab button {
+	flex: 1;
+	border: none;
+	background: none;
+	padding: 12px;
+	font-weight: bold;
+	border-bottom: 3px solid transparent;
+	color: #6c757d;
+}
 
-    .dropdown-filter {
-        margin-bottom: 15px;
-    }
+.search-tab button.active {
+	color: #28a745;
+	border-bottom-color: #28a745;
+}
 
-    .search-result {
-        margin-top: 20px;
-    }
+.dropdown-filter {
+	margin-bottom: 15px;
+}
 
-    .search-result .list-group-item,
-    .search-result .card {
-        border: 1px solid #dee2e6;
-        border-radius: 10px;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        background-color: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
+.search-result {
+	margin-top: 20px;
+}
 
-    .search-result .list-group-item:hover,
-    .search-result .card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
+.search-result .list-group-item, .search-result .card {
+	border: 1px solid #dee2e6;
+	border-radius: 10px;
+	padding: 1rem;
+	margin-bottom: 1rem;
+	background-color: #fff;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
 
-    .search-result .card img,
-    .search-result .list-group-item img {
-        border-radius: 6px;
-    }
+.search-result .list-group-item:hover, .search-result .card:hover {
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
 
-    .search-result h5,
-    .search-result .card-title,
-    .search-result strong {
-        font-weight: 600;
-        color: #343a40;
-    }
+.search-result .card img, .search-result .list-group-item img {
+	border-radius: 6px;
+}
 
-    .search-result .text-muted {
-        color: #6c757d !important;
-    }
+.search-result h5, .search-result .card-title, .search-result strong {
+	font-weight: 600;
+	color: #343a40;
+}
+
+.search-result .text-muted {
+	color: #6c757d !important;
+}
 </style>
 
 
 <main class="container py-4" style="max-width: 600px;">
-    <div class="d-flex align-items-center mb-4">
-        <button class="btn btn-link text-dark text-decoration-none me-2" onclick="history.back()">
-            <i class="bi bi-arrow-left"></i>
-        </button>
-        <h5 class="fw-bold mb-0">내가 쓴 글 목록</h5>
-    </div>
+	<div class="d-flex align-items-center mb-4">
+		<button class="btn btn-link text-dark text-decoration-none me-2"
+			onclick="history.back()">
+			<i class="bi bi-arrow-left"></i>
+		</button>
+		<h5 class="fw-bold mb-0">내가 쓴 글 목록</h5>
+	</div>
 
-    <!-- 탭 -->
-    <div class="search-tab">
-        <button type="button" class="tab-btn active" data-tab="review">리뷰</button>
-        <button type="button" class="tab-btn" data-tab="comment">댓글</button>
-        <button type="button" class="tab-btn" data-tab="place">공간</button>
-    </div>
-
-    <!-- AJAX로 바뀌는 부분 -->
-    <div id="searchResults" class="search-result"></div>
+	<!-- 탭 -->
+	<div class="search-tab">
+		<button type="button" class="tab-btn active" data-tab="review">리뷰</button>
+		<button type="button" class="tab-btn" data-tab="comment">댓글</button>
+		<%if (loginUser != null && "1".equals(loginUser.getUserType().toString())) { %>
+		<button type="button" class="tab-btn" data-tab="place">공간</button>
+		<%} %>
+	</div>
+	
+	<!-- AJAX로 바뀌는 부분 -->
+	<div id="searchResults" class="search-result"></div>
+	<div id="pageBar" class="mt-4"></div>
 </main>
 
 <script>
-    function loadTab(tab) {
-        $.ajax({
-            url: "<%=request.getContextPath()%>/myboard/ajax",
-            method: "GET",
-            data: { tab: tab },
-            success: function (html) {
-                $("#searchResults").html(html);
-            },
-            error: function () {
-                $("#searchResults").html("<p class='text-muted'>불러오기 실패</p>");
+let currentTab = "review";
+// 탭 클릭 이벤트
+$(".tab-btn").on("click", function () {
+   $(".tab-btn").removeClass("active");
+   $(this).addClass("active");
+   currentTab = $(this).data("tab");
+   loadMyPosts(currentTab);});
+
+$(document).ready(function () {
+   loadMyPosts(currentTab); // 최초 리뷰 탭 로딩
+});
+
+//페이지바 클릭 이벤트
+$(document).on("click", "#pageBar a.go-page-link", function (e) {
+ e.preventDefault();
+ const page = $(this).data("page");
+ if (page) {
+     loadMyPosts(currentTab, page);
+ }
+});
+
+function loadMyPosts(tab, cPage = 1) {
+    $.ajax({
+        url: "<%=request.getContextPath()%>/myboard/ajax",
+        method: "GET",
+        data: {
+            tab: tab,
+            cPage: cPage
+        },
+        dataType: "json",
+        success: function (res) {
+            const container = $("#searchResults").empty();
+            const pageBar = $("#pageBar").empty();
+			console.log(res);
+            if (!res.list || res.list.length === 0) {
+                container.append("<p class='text-muted text-center'>작성한 글이 없습니다.</p>");
+                return;
             }
-        });
-    }
 
-    // 탭 클릭 이벤트
-    $(".tab-btn").click(function () {
-        $(".tab-btn").removeClass("active");
-        $(this).addClass("active");
-        const tab = $(this).data("tab");
-        loadTab(tab);
-    });
+            res.list.forEach(item => {
+                let html = "";
+                if (tab === "review") {
+                    html = `
+                        <div class="card mb-3" onclick="location.assign('<%=request.getContextPath()%>/review/view?seq=\${item.reviewSeq}')">
+                            <div class="card-body">
+                                <h6 class="fw-bold">\${item.reviewTitle}</h6>
+                                <p class="text-muted line-clamp">\${item.reviewContents}</p>
+                                <div class="text-end text-muted small">\${item.reviewCreateTime}</div>
+                            </div>
+                        </div>`;
+                } else if (tab === "comment") {
+                    html = `
+                        <div class="card mb-3" onclick="location.assign('<%=request.getContextPath()%>/review/view?seq=\${item.reviewSeq}')">
+                            <div class="card-body">
+                                <p class="mb-2">\${item.commentsContents}</p>
+                                <div class="text-end text-muted small">\${item.commentsCreateTime}</div>
+                            </div>
+                        </div>`;
+                } else if (tab === "place") {
+                    html = `
+                        <div class="card mb-3" onclick="location.assign('<%=request.getContextPath()%>/place/view?seq=\${item.placeSeq}')">
+                            <div class="card-body">
+                                <h6 class="fw-bold">\${item.placeTitle}</h6>
+                                <p class="text-muted line-clamp">\${item.placeContents}</p>
+                                <div class="text-end text-muted small">\${item.placeCreateTime}</div>
+                            </div>
+                        </div>`;
+                }
+                container.append(html);
+            });
 
-    // 초기 로딩 시 리뷰 탭
-    $(document).ready(function () {
-        loadTab("review");
+            pageBar.html(res.pageBar);
+        },
+        error: function () {
+            alert("내 글 목록 불러오기 실패");
+        }
     });
+}
+
+
+
 </script>
 
 
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+<%@ include file="/WEB-INF/views/common/footer.jsp"%>

@@ -49,6 +49,20 @@ public class ReviewService {
 		return reviews;
 	}
 
+	public List<ReviewListResponse> getAllReviewsByUser(Long userSeq, int cPage, int numPerPage) {
+		Connection conn = getConnection();
+		List<ReviewListResponse> reviews = dao.getAllReviewsByUser(conn, userSeq, cPage, numPerPage);
+		close(conn);
+		return reviews;
+	}
+	
+	public int countByUser(Long userSeq) {
+		Connection conn = getConnection();
+		int totalData = dao.countByUser(conn, userSeq);
+		close(conn);
+		return totalData;
+	}
+	
 	public int reviewCount() {
 		Connection conn = getConnection();
 		int totalData = dao.reviewCount(conn);
