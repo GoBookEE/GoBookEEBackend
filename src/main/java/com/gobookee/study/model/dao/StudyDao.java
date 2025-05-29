@@ -255,6 +255,7 @@ public class StudyDao {
     
     private StudyView getStudyViewUsers(ResultSet rs)throws SQLException{
     	return StudyView.builder()
+    			.userSeq(rs.getLong("user_seq"))
     			.userNickName(rs.getString("user_nickname"))
     			.userProfile(rs.getString("user_profile"))
     			.userSpeed(rs.getLong("user_speed"))
