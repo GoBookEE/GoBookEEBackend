@@ -24,6 +24,7 @@ public class SearchReview {
     private String bookCover;
     private Integer recommendCount;
     private Integer commentsCount;
+    private String userNickname;
 
     public static SearchReview from(ResultSet rs) throws SQLException {
         return SearchReview.builder()
@@ -37,6 +38,7 @@ public class SearchReview {
                 .bookCover(rs.getString("BOOK_COVER"))
                 .recommendCount(rs.getInt("RECOMMEND_COUNT"))
                 .commentsCount(rs.getInt("COMMENTS_COUNT"))
+                .userNickname(rs.getString("USER_NICKNAME"))
                 .build();
     }
 }

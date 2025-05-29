@@ -3,7 +3,7 @@ package com.gobookee.search.controller;
 import com.gobookee.common.AjaxPageBarTemplate;
 import com.gobookee.common.JsonConvertTemplate;
 import com.gobookee.place.model.dto.Place;
-import com.gobookee.search.model.dto.BookReview;
+import com.gobookee.search.model.dto.SearchBook;
 import com.gobookee.search.model.dto.Search;
 import com.gobookee.search.model.dto.SearchReview;
 import com.gobookee.search.service.SearchService;
@@ -38,7 +38,7 @@ public class SearchAjaxHandlerServlet extends HttpServlet {
         if ("review".equals(search.getTab())) {
             result.put("list", (List<SearchReview>) resultList);
         } else if ("book".equals(search.getTab())) {
-            result.put("list", (List<BookReview>) resultList);
+            result.put("list", (List<SearchBook>) resultList);
         } else if ("place".equals(search.getTab())) {
             result.put("list", (List<Place>) resultList);
         } else if ("study".equals(search.getTab())) {
