@@ -5,5 +5,18 @@
          version="4.0">
 
     <!--프로젝트에 대한 설정을 하는 파일 (배포 서술자)-->
-    
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/views/error/404.jsp</location>
+    </error-page>
+
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/views/error/500.jsp</location>
+    </error-page>
+
+    <error-page>
+        <exception-type>java.lang.Throwable</exception-type>
+        <location>/WEB-INF/views/error/default.jsp</location>
+    </error-page>
 </web-app>
