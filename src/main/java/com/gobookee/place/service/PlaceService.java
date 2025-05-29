@@ -6,6 +6,7 @@ import com.gobookee.place.model.dao.PlaceDao;
 import com.gobookee.place.model.dto.Place;
 import com.gobookee.place.model.dto.PlaceListResponse;
 import com.gobookee.place.model.dto.PlaceViewResponse;
+import com.gobookee.users.model.dao.UserDAO;
 
 import java.sql.Connection;
 import java.util.HashMap;
@@ -16,8 +17,9 @@ import static com.gobookee.common.JDBCTemplate.*;
 public class PlaceService {
     private static PlaceService placeService;
     private static PhotoDao photoDao = PhotoDao.photoDao();
-    private Connection conn;
     private PlaceDao placeDao = PlaceDao.placeDao();
+    private UserDAO userDAO = UserDAO.userDao();
+    private Connection conn;
 
     private PlaceService() {
     }
@@ -56,6 +58,9 @@ public class PlaceService {
                 rollback(conn);
                 return false;
             }
+
+            userDAO.updateUserSpeed(conn, place.getUserSeq(), 3);
+
             isSuccess = true;
             commit(conn);
         } catch (Exception e) {

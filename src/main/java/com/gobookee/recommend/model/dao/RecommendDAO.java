@@ -1,5 +1,8 @@
 package com.gobookee.recommend.model.dao;
 
+import com.gobookee.common.JDBCTemplate;
+import com.gobookee.recommend.model.dto.Recommend;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -7,9 +10,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
-
-import com.gobookee.common.JDBCTemplate;
-import com.gobookee.recommend.model.dto.Recommend;
 
 public class RecommendDAO {
 
@@ -92,19 +92,6 @@ public class RecommendDAO {
 			pstmt.setLong(4, userSeq); // INSERT
 			pstmt.setLong(5, boardSeq); // INSERT
 			pstmt.setString(6, recType); // INSERT
-			pstmt.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			JDBCTemplate.close(pstmt);
-		}
-	}
-
-	public void updateUserSpeed(Connection conn, Long userSeq, int change) {
-		try {
-			pstmt = conn.prepareStatement(sqlProp.getProperty("updateUserSpeed"));
-			pstmt.setInt(1, change);
-			pstmt.setLong(2, userSeq);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
