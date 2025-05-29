@@ -1,6 +1,5 @@
 package com.gobookee.search.service;
 
-import com.gobookee.review.model.dao.ReviewDAO;
 import com.gobookee.search.model.dao.SearchDao;
 import com.gobookee.search.model.dto.Search;
 
@@ -14,7 +13,6 @@ public class SearchService {
     private static SearchService searchService;
     private Connection conn;
     private SearchDao searchDao = SearchDao.searchDao();
-    private ReviewDAO reviewDAO = ReviewDAO.reviewDao();
 
     private SearchService() {
     }
@@ -32,5 +30,26 @@ public class SearchService {
         List<?> searchList = searchDao.search(conn, search);
         close(conn);
         return searchList;
+    }
+
+    public int getTotalCount(Search search) {
+        Connection conn = getConnection();
+        int result = 0;
+        switch (search.getTab()) {
+            case "review":
+                result = searchDao.getReviewTotalCount(conn, search);
+                break;
+            case "book":
+                result = searchDao.getBookTotalCount(conn, search);
+                break;
+            case "place":
+                result = searchDao.getPlaceTotalCount(conn, search);
+                break;
+            case "study":
+                result = searchDao.getStudyTotalCount(conn, search);
+                break;
+        }
+        close(conn);
+        return result;
     }
 }

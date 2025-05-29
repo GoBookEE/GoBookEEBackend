@@ -259,21 +259,33 @@
                     	</div>`;
                     } else if (currentTab === "book") {
                         html = `
-                <div class="card mb-3">
-                    <div class="row g-0">
-                        <div class="col-3">
-                            <img src="<%=request.getContextPath()%><%=CommonPathTemplate.BASIC_UPLOAD_PATH%>book/\${item.bookCover}" class="img-fluid rounded-start"
-                            onerror="this.src='<%=request.getContextPath()%>/resources/images/default.jpg'">
-                        </div>
-                        <div class="col-9">
-                            <div class="card-body">
-                                <h5 class="card-title">\${item.bookTitle}</h5>
-                                <p class="card-text">저자: \${item.bookAuthor}</p>
-                                <p class="card-text">출판사: \${item.bookPublisher}</p>
+                        <div class="card mb-3 shadow-sm border-0" style="border-radius: 20px; cursor: pointer;"
+                             onclick="location.assign('<%=request.getContextPath()%>/book/bookdetail?bookSeq=\${item.bookSeq}')">
+                          <div class="row g-0">
+                            <div class="col-4 d-flex align-items-center justify-content-center p-3">
+                              <img src="\${item.bookCover}"
+                                   class="img-fluid rounded shadow-sm" alt="book cover"
+                                   style="max-height: 180px; object-fit: contain;"
+                                   onerror="this.src='<%=request.getContextPath()%>/resources/images/default.jpg'">
                             </div>
-                        </div>
-                    </div>
-                </div>`;
+                            <div class="col-8 p-3">
+                              <div class="d-flex flex-column h-100 justify-content-between">
+                                <div>
+                                  <h6 class="fw-bold mb-1">\${item.bookTitle}</h6>
+                                  <p class="text-muted small line-clamp mb-2">\${item.bookDescription}</p>
+                                  <div class="text-secondary small mb-1">\${item.bookAuthor}</div>
+                                  <div class="text-secondary small mb-1">\${item.bookPublisher} | \${item.bookPubDate}</div>
+                                </div>
+                                <div class="mt-2 d-flex align-items-center gap-2 small">
+                                  <span class="text-muted">리뷰 \${item.reviewCount}개</span>
+                                  <span class="text-success d-flex align-items-center">
+                                    <i class="bi bi-star-fill me-1 text-success" style="font-size: 0.9rem;"></i> \${item.reviewRateAvg}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>`;
                     } else if (currentTab === "study") {
                         html = `
                 <div class="card mb-3">

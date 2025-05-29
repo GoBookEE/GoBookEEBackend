@@ -1,7 +1,8 @@
 package com.gobookee.search.model.dao;
 
-import com.gobookee.book.model.dto.Book;
+import com.gobookee.common.JDBCTemplate;
 import com.gobookee.place.model.dto.Place;
+import com.gobookee.search.model.dto.BookReview;
 import com.gobookee.search.model.dto.Search;
 import com.gobookee.search.model.dto.SearchReview;
 import com.gobookee.study.model.dto.Study;
@@ -97,10 +98,58 @@ public class SearchDao {
         return list;
     }
 
-    private List<Book> searchBook(Connection conn, Search search) {
-        // TODO: 책 검색 구현
-        return null;
+    private List<BookReview> searchBook(Connection conn, Search search) {
+        long numPerPage = 5;
+        List<BookReview> list = new ArrayList<>();
+        pstmt = null;
+        rs = null;
+
+        StringBuilder sql = new StringBuilder(sqlProp.getProperty("searchBookBase"));
+        String keyword = "%" + search.getKeyword().toLowerCase() + "%";
+
+        // 동적 필터 조건 추가
+        switch (search.getFilter()) {
+            case "bookTitle":
+                sql.insert(sql.indexOf("ORDER BY"), " AND LOWER(B.BOOK_TITLE) LIKE ? ");
+                break;
+            case "publisher":
+                sql.insert(sql.indexOf("ORDER BY"), " AND LOWER(B.BOOK_PUBLISHER) LIKE ? ");
+                break;
+            case "author":
+                sql.insert(sql.indexOf("ORDER BY"), " AND LOWER(B.BOOK_AUTHOR) LIKE ? ");
+                break;
+            case "titleContent":
+                sql.insert(sql.indexOf("ORDER BY"), " AND (LOWER(B.BOOK_TITLE) LIKE ? OR LOWER(B.BOOK_DESCRIPTION) LIKE ?) ");
+                break;
+        }
+
+        try {
+            pstmt = conn.prepareStatement(sql.toString());
+
+            int idx = 1;
+
+            pstmt.setString(idx++, keyword);
+            if ("titleContent".equals(search.getFilter())) {
+                pstmt.setString(idx++, keyword); // description도 한 번 더
+            }
+
+            pstmt.setLong(idx++, (search.getCPage() - 1) * numPerPage + 1);
+            pstmt.setLong(idx++, search.getCPage() * numPerPage);
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                list.add(BookReview.from(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTemplate.close(rs);
+            JDBCTemplate.close(pstmt);
+        }
+
+        return list;
     }
+
 
     private List<Study> searchStudy(Connection conn, Search search) {
         // TODO: 스터디 검색 구현
@@ -110,5 +159,91 @@ public class SearchDao {
     private List<Place> searchPlace(Connection conn, Search search) {
         // TODO: 공간 검색 구현
         return null;
+    }
+
+    public int getReviewTotalCount(Connection conn, Search search) {
+        int total = 0;
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT COUNT(*) FROM REVIEW RV ");
+        sql.append("LEFT JOIN GO_USER U ON RV.USER_SEQ = U.USER_SEQ ");
+        sql.append("LEFT JOIN BOOK BK ON RV.BOOK_SEQ = BK.BOOK_SEQ ");
+        sql.append("WHERE RV.REVIEW_DELETE_TIME IS NULL ");
+        sql.append("AND RV.REVIEW_IS_PUBLIC = 'Y' ");
+
+        String keyword = "%" + search.getKeyword().toLowerCase() + "%";
+
+        switch (search.getFilter()) {
+            case "title":
+                sql.append(" AND LOWER(RV.REVIEW_TITLE) LIKE ? ");
+                break;
+            case "writer":
+                sql.append(" AND LOWER(U.USER_NICKNAME) LIKE ? ");
+                break;
+            case "content":
+                sql.append(" AND LOWER(RV.REVIEW_CONTENTS) LIKE ? ");
+                break;
+            case "bookTitle":
+                sql.append(" AND LOWER(BK.BOOK_TITLE) LIKE ? ");
+                break;
+        }
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+            pstmt.setString(1, keyword);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    total = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return total;
+    }
+
+    public int getBookTotalCount(Connection conn, Search search) {
+        int total = 0;
+        StringBuilder sql = new StringBuilder("SELECT COUNT(*) FROM BOOK B WHERE 1=1 ");
+        String keyword = "%" + search.getKeyword().toLowerCase() + "%";
+
+        switch (search.getFilter()) {
+            case "bookTitle":
+                sql.append(" AND LOWER(B.BOOK_TITLE) LIKE ? ");
+                break;
+            case "publisher":
+                sql.append(" AND LOWER(B.BOOK_PUBLISHER) LIKE ? ");
+                break;
+            case "author":
+                sql.append(" AND LOWER(B.BOOK_AUTHOR) LIKE ? ");
+                break;
+            case "titleContent":
+                sql.append(" AND (LOWER(B.BOOK_TITLE) LIKE ? OR LOWER(B.BOOK_DESCRIPTION) LIKE ?) ");
+                break;
+        }
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql.toString())) {
+            int idx = 1;
+            pstmt.setString(idx++, keyword);
+            if ("titleContent".equals(search.getFilter())) {
+                pstmt.setString(idx++, keyword);
+            }
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    total = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return total;
+    }
+
+    public int getPlaceTotalCount(Connection conn, Search search) {
+        return 0;
+    }
+
+    public int getStudyTotalCount(Connection conn, Search search) {
+        return 0;
     }
 }
