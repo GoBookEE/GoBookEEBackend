@@ -329,8 +329,8 @@
                                   </div>
                                 </div>
                                 <div class="d-flex gap-3 text-muted small mt-2">
-                                  <span><i class="bi bi-hand-thumbs-up me-1"></i>\${item.likeCount}</span>
-                                  <span><i class="bi bi-hand-thumbs-down me-1"></i>\${item.dislikeCount}</span>
+                                  <span><i class="bi bi-hand-thumbs-up me-1" style="font-size: 0.9rem;"></i>\${item.likeCount}</span>
+                                  <span><i class="bi bi-hand-thumbs-down me-1" style="font-size: 0.9rem;"></i>\${item.dislikeCount}</span>
                                 </div>
                               </div>
                             </div>
@@ -338,7 +338,7 @@
                             </div>`;
                     } else if (currentTab === "place") {
                         html = `
-                <div class="card mb-3 d-flex flex-row p-2">
+                <div class="card mb-3 d-flex flex-row p-2" onclick="location.assign('<%=request.getContextPath()%>/place/view?placeSeq=\${item.placeSeq}')">
                     <img src="<%=request.getContextPath()%><%=CommonPathTemplate.BASIC_UPLOAD_PATH%>place/\${item.placeThumbnail}" class="rounded me-3" style="width: 100px; height: 100px; object-fit: cover;"
                     onerror="this.src='<%=request.getContextPath()%>/resources/images/default.jpg'">
                     <div class="flex-grow-1">
@@ -346,8 +346,8 @@
                         <p class="mb-1">\${item.placeAddress}</p>
                         <p class="text-muted small mb-1">\${item.placeContents}</p>
                         <div>
-                            <span class="text-success"><i class="bi bi-hand-thumbs-up"></i> \${item.placeRecCount}</span>
-                            <span class="text-danger ms-2"><i class="bi bi-hand-thumbs-down"></i> \${item.placeNonRecCount}</span>
+                            <span><i class="bi bi-hand-thumbs-up me-1" style="font-size: 0.9rem;"></i> \${item.placeRecCount}</span>
+                            <span><i class="bi bi-hand-thumbs-down me-1" style="font-size: 0.9rem;"></i> \${item.placeNonRecCount}</span>
                         </div>
                     </div>
                 </div>`;
