@@ -50,7 +50,7 @@
 	
 	  <!-- 주소 및 좌표 -->
 	  <input type="button" onclick="sample5_execDaumPostcode()" value="주소 검색"><br>
-	  <input type="text" name="studyAddress" id="studyAddress" placeholder="주소" readonly>주소나 날짜를 입력하시면 공간연동을 할 수 없습니다.
+	  <input type="text" name="studyAddress" id="studyAddress" placeholder="주소" readonly>주소나 날짜를 입력하시면 장소연동을 할 수 없습니다.
 	  <br><br>
 	  <input type="hidden" name="studyLatitude" id="studyLatitude">
 	  <input type="hidden" name="studyLongitude" id="studyLongitude">
