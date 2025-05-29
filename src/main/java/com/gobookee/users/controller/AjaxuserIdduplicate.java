@@ -1,17 +1,16 @@
 package com.gobookee.users.controller;
 
-import java.io.IOException;
-import java.util.Map;
+import com.gobookee.users.model.dto.User;
+import com.gobookee.users.service.UserService;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.gobookee.users.model.dto.User;
-import com.gobookee.users.service.UserService;
-import com.google.gson.Gson;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * Servlet implementation class AjaxuserIdduplicate
@@ -37,7 +36,7 @@ public class AjaxuserIdduplicate extends HttpServlet {
 		
 		User u = UserService.userService().searchUserById(userId);
 		
-		response.setContentType("applicateion/json;charset=utf-8");
+		response.setContentType("application/json;charset=utf-8");
 		new Gson().toJson(Map.of("result",u==null),response.getWriter());
 	}
 
