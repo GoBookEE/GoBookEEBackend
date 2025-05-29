@@ -75,7 +75,13 @@
 
         <!--   build시 플러그인 설정하기     -->
         <!--   자바 버전 설정     -->
+
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <version>3.3.2</version> <!-- 최신 안정 버전 -->
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
