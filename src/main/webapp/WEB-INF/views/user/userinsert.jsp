@@ -41,6 +41,10 @@
     height: 80px;
   }
   
+ .input-group i {
+  	display:felx;
+  }
+  
  .input-group input {
 	border:0px;
   	border-radius: 50px;
