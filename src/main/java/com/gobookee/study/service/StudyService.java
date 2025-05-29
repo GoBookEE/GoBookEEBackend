@@ -6,6 +6,7 @@ import static com.gobookee.common.JDBCTemplate.getConnection;
 import static com.gobookee.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.gobookee.common.JDBCTemplate;
@@ -93,9 +94,9 @@ public class StudyService {
         return isSuccess;
     }
     
-    public List<StudyView> getStudyView (Long studySeq){
+    public StudyView getStudyView (Long studySeq){
     	conn = getConnection();
-    	List<StudyView> studyview = dao.getStudyView(conn, studySeq);
+    	StudyView studyview = dao.getStudyView(conn, studySeq);
     	close(conn);
     	return studyview;
     }
@@ -105,6 +106,25 @@ public class StudyService {
     	List<StudyView> studyviewuser = dao.getStudyViewUser(conn, studySeq);
     	close(conn);
     	return studyviewuser;
+    }
+    
+    public List<StudyView> getStudyNotConfirmedUser (Long studySeq){
+    	conn = getConnection();
+    	List<StudyView> studyviewuser = dao.getStudyNotConfirmedUser(conn, studySeq);
+    	close(conn);
+    	return studyviewuser;
+    }
+    
+    public int insertStudyRequest(Long studySeq, Long userSeq, String requestMsg) {
+        try (Connection conn = getConnection()) {
+            int result = dao.insertStudyRequest(conn, studySeq, userSeq, requestMsg);
+            if(result > 0) commit(conn);
+            else rollback(conn);
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
     }
     
 }

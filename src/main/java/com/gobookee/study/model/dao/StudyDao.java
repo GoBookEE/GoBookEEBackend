@@ -190,17 +190,16 @@ public class StudyDao {
                 .build();
     }
     
-    public List<StudyView> getStudyView(Connection conn, Long studySeq){
+    public StudyView getStudyView(Connection conn, Long studySeq){
         pstmt = null;
         rs = null;
-        List<StudyView> list = new ArrayList<>();
-        try {
+        StudyView studyView = null;
+        try{
         	pstmt = conn.prepareStatement(sql.getProperty("studyView"));
         	pstmt.setLong(1, studySeq);
         	rs = pstmt.executeQuery();
-        	while(rs.next()) {
-        		StudyView s = getStudyViews(rs);
-        		list.add(s);
+        	if(rs.next()) {
+        		studyView = getStudyViews(rs);
         	}
         }catch (SQLException e){
         	e.printStackTrace();
@@ -208,11 +207,12 @@ public class StudyDao {
         	close(rs);
         	close(pstmt);
         }
-        return list;
+        return studyView;
     }
     
     private StudyView getStudyViews(ResultSet rs) throws SQLException{
     	return StudyView.builder()
+    			.studySeq(rs.getLong("study_seq"))
     			.userSeq(rs.getLong("user_seq"))
     			.studyTitle(rs.getString("study_title"))
     			.studyDate(rs.getDate("study_date"))
@@ -237,7 +237,7 @@ public class StudyDao {
         rs = null;
         List<StudyView> list = new ArrayList<>();
         try {
-        	pstmt = conn.prepareStatement(sql.getProperty("studyViewUsers"));
+        	pstmt = conn.prepareStatement(sql.getProperty("studyConfirmedUsers"));
         	pstmt.setLong(1, studySeq);
         	rs = pstmt.executeQuery();
         	while(rs.next()) {
@@ -258,8 +258,46 @@ public class StudyDao {
     			.userNickName(rs.getString("user_nickname"))
     			.userProfile(rs.getString("user_profile"))
     			.userSpeed(rs.getLong("user_speed"))
-    			
     			.build();
+    }
+    
+    public List<StudyView> getStudyNotConfirmedUser(Connection conn, Long studySeq){
+        pstmt = null;
+        rs = null;
+        List<StudyView> list = new ArrayList<>();
+        try {
+        	System.out.println(sql.getProperty("studyNotConfirmedUsers"));
+        	pstmt = conn.prepareStatement(sql.getProperty("studyNotConfirmedUsers"));
+        	pstmt.setLong(1, studySeq);
+        	rs = pstmt.executeQuery();
+        	while(rs.next()) {
+        		StudyView s = getstudyNotConfirmedUsers(rs);
+        		list.add(s);
+        	}
+        }catch (SQLException e){
+        	e.printStackTrace();
+        }finally {
+        	close(rs);
+        	close(pstmt);
+        }
+        return list;
+    }
+    
+    private StudyView getstudyNotConfirmedUsers(ResultSet rs)throws SQLException{
+    	return StudyView.builder()
+    			.userSeq(rs.getLong("user_seq"))
+    			.requestConfirm(rs.getString("request_confirm"))
+    			.build();
+    }
+    
+    public int insertStudyRequest(Connection conn, Long studySeq, Long userSeq, String requestMsg) throws SQLException {
+    	String sql = this.sql.getProperty("insertStudyRequest");
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, studySeq);
+            pstmt.setLong(2, userSeq);
+            pstmt.setString(3, requestMsg);
+            return pstmt.executeUpdate();
+        }
     }
     
 }
