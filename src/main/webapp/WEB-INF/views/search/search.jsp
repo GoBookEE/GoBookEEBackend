@@ -260,7 +260,7 @@
                     } else if (currentTab === "book") {
                         html = `
                         <div class="card mb-3 shadow-sm border-0" style="border-radius: 20px; cursor: pointer;"
-                             onclick="location.assign('<%=request.getContextPath()%>/book/bookdetail?bookSeq=\${item.bookSeq}')">
+                             onclick="location.assign('<%=request.getContextPath()%>/books/bookdetail?bookSeq=\${item.bookSeq}')">
                           <div class="row g-0">
                             <div class="col-4 d-flex align-items-center justify-content-center p-3">
                               <img src="\${item.bookCover}"
