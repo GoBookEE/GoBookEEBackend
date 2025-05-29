@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.gobookee.review.service.ReviewService;
 
-@WebServlet("/review/reviewseq")
+@WebServlet("/review/view")
 public class ReviewViewServlet extends HttpServlet {
 	private ReviewService service = ReviewService.reviewService();
 	private static final long serialVersionUID = 1L;
@@ -21,7 +21,6 @@ public class ReviewViewServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		Long seq = Long.valueOf(request.getParameter("seq"));
-		System.out.println(service.getReviewBySeq(seq));
 		request.setAttribute("review", service.getReviewBySeq(seq));
 
 		request.getRequestDispatcher("/WEB-INF/views/review/reviewView.jsp").forward(request, response);

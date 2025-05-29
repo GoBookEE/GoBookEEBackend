@@ -55,6 +55,15 @@ public class StudyGroupListServlet extends HttpServlet {
 			list=StudyGroupService.studyGroupService().getGroupStudiesByTime(userseq, cPage, numPerPage);
 		}
 		
+        for (StudyList s : list) {
+            if (s.getStudyAddress() == null || s.getStudyAddress().isBlank()) {
+                s.setStudyAddress("주소미입력");
+            }
+            if (s.getPhotoRenamedName() == null || s.getPhotoRenamedName().isBlank()) {
+                s.setPhotoRenamedName("default.png");
+            }
+        }
+		
 		Gson gson = new Gson();
 		Map<String, Object> result = new HashMap<>();
 		result.put("studygroups", list);

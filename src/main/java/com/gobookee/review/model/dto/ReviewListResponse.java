@@ -24,13 +24,9 @@ public class ReviewListResponse {
 	private Timestamp reviewEditTime;
 
 	private String bookTitle;
-	private String bookAuthor;
-	private String bookPublisher;
 	private String bookCover;
 
 	private Integer recommendCount;
-	private Integer bookReviewCount;
-	private Double bookAvgRate;
 	private Integer commentsCount;
 
 }

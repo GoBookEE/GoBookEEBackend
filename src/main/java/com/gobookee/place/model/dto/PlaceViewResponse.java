@@ -23,6 +23,7 @@ public class PlaceViewResponse {
     Long placeRecCount;
     Long placeNonRecCount;
     Long userSeq;
+    String userProfileImage;
 
     public static PlaceViewResponse from(ResultSet rs) throws SQLException {
         return PlaceViewResponse.builder()
@@ -37,6 +38,7 @@ public class PlaceViewResponse {
                 .placeTitle(rs.getString("PLACE_TITLE"))
                 .placeContents(rs.getString("PLACE_CONTENTS"))
                 .userSeq(rs.getLong("USER_SEQ"))
+                .userProfileImage(rs.getString("USER_PROFILE"))
                 .build();
     }
 }

@@ -226,9 +226,7 @@ public class ReviewDAO {
 				.reviewTitle(rs.getString("REVIEW_TITLE")).reviewContents(rs.getString("REVIEW_CONTENTS"))
 				.reviewCreateTime(rs.getTimestamp("REVIEW_CREATE_TIME")).reviewRate(rs.getInt("REVIEW_RATE"))
 				.reviewEditTime(rs.getTimestamp("REVIEW_EDIT_TIME")).bookTitle(rs.getString("BOOK_TITLE"))
-				.bookAuthor(rs.getString("BOOK_AUTHOR")).bookPublisher(rs.getString("BOOK_PUBLISHER"))
-				.bookCover(rs.getString("BOOK_COVER")).bookReviewCount(rs.getInt("BOOK_REVIEW_COUNT"))
-				.bookAvgRate(rs.getDouble("BOOK_AVG_RATE")).recommendCount(rs.getInt("RECOMMEND_COUNT"))
+				.bookCover(rs.getString("BOOK_COVER")).recommendCount(rs.getInt("RECOMMEND_COUNT"))
 				.commentsCount(rs.getInt("COMMENTS_COUNT")).build();
 	}
 
@@ -242,8 +240,8 @@ public class ReviewDAO {
 				.bookReviewCount(rs.getInt("BOOK_REVIEW_COUNT")).bookAvgRate(rs.getDouble("BOOK_AVG_RATE"))
 				.recommendCount(rs.getInt("RECOMMEND_COUNT")).nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT"))
 				.userNickName(rs.getString("USER_NICKNAME")).userProfile(rs.getString("USER_PROFILE"))
-				.bookDescription(rs.getString("BOOK_DESCRIPTION"))
-				.userSeq(rs.getLong("USER_SEQ")).bookSeq(rs.getLong("BOOK_SEQ")).build();
+				.bookDescription(rs.getString("BOOK_DESCRIPTION")).userSeq(rs.getLong("USER_SEQ"))
+				.bookSeq(rs.getLong("BOOK_SEQ")).build();
 	}
 
 }

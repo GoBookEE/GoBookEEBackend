@@ -1,16 +1,22 @@
 package com.gobookee.study.model.dao;
 
-import com.gobookee.study.model.dto.SearchStudyResponse;
-import com.gobookee.study.model.dto.StudyList;
+import static com.gobookee.common.JDBCTemplate.close;
 
 import java.io.FileReader;
 import java.io.IOException;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-import static com.gobookee.common.JDBCTemplate.close;
+import com.gobookee.study.model.dto.SearchStudyResponse;
+import com.gobookee.study.model.dto.StudyInsert;
+import com.gobookee.study.model.dto.StudyList;
+import com.gobookee.study.model.dto.StudyView;
 
 public class StudyDao {
 
@@ -114,15 +120,146 @@ public class StudyDao {
         return studyList;
     }
 
+    
+    public int insertStudyAndReturnId(Connection conn, StudyInsert studyinsert){
+    	int generatedId = getNextBoardSeq(conn);
+    	if(generatedId == -1) {
+    		return -1;
+    	}
+    	int result = insertStudy(conn, studyinsert, generatedId);
+    	return result > 0 ? generatedId : -1;
+    }
+    
+    private int getNextBoardSeq(Connection conn) {
+        int seq = -1;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("getNextBoardSeq"));
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                seq = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return seq;
+    }
+    
+
+    
+    public int insertStudy(Connection conn, StudyInsert studyinsert, int seq) {
+    	int result = 0;
+    	pstmt = null;
+    	rs = null;
+    	List<StudyInsert> studylist = new ArrayList<>();
+    	try {
+    		pstmt = conn.prepareStatement(sql.getProperty("insertStudy"));
+    		pstmt.setLong(1, seq);
+    		pstmt.setString(2, studyinsert.getStudyTitle());
+    		pstmt.setString(3, studyinsert.getStudyContent());
+    		pstmt.setDate(4, studyinsert.getStudyDate());
+    		pstmt.setLong(5, studyinsert.getStudyMemberLimit());
+    		pstmt.setString(6, studyinsert.getStudyAddress());
+    		pstmt.setObject(7, studyinsert.getStudyLatitude(), java.sql.Types.DOUBLE);
+    		pstmt.setObject(8, studyinsert.getStudyLongitude(), java.sql.Types.DOUBLE);
+    		pstmt.setString(9, studyinsert.getStudyCategory());
+    		pstmt.setLong(10, studyinsert.getUserSeq());
+    		result = pstmt.executeUpdate();
+    	}catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
+
+    
     private StudyList getStudyList(ResultSet rs) throws SQLException {
         return StudyList.builder()
                 .studySeq(rs.getLong("study_seq"))
                 .studyTitle(rs.getString("study_title"))
-                .studyDate(rs.getTimestamp("study_date"))
+                .studyDate(rs.getDate("study_date"))
                 .studyMemberLimit(rs.getInt("study_member_limit"))
-                .studyPlace(rs.getString("study_place"))
+                .studyAddress(rs.getString("study_address"))
                 .confirmedCount(rs.getInt("confirmed_count"))
                 .photoRenamedName(rs.getString("photo_name"))
+			    .likeCount(rs.getInt("like_count"))
+			    .dislikeCount(rs.getInt("dislike_count"))
                 .build();
     }
+    
+    public List<StudyView> getStudyView(Connection conn, Long studySeq){
+        pstmt = null;
+        rs = null;
+        List<StudyView> list = new ArrayList<>();
+        try {
+        	pstmt = conn.prepareStatement(sql.getProperty("studyView"));
+        	pstmt.setLong(1, studySeq);
+        	rs = pstmt.executeQuery();
+        	while(rs.next()) {
+        		StudyView s = getStudyViews(rs);
+        		list.add(s);
+        	}
+        }catch (SQLException e){
+        	e.printStackTrace();
+        }finally {
+        	close(rs);
+        	close(pstmt);
+        }
+        return list;
+    }
+    
+    private StudyView getStudyViews(ResultSet rs) throws SQLException{
+    	return StudyView.builder()
+    			.userSeq(rs.getLong("user_seq"))
+    			.studyTitle(rs.getString("study_title"))
+    			.studyDate(rs.getDate("study_date"))
+    			.studyContent(rs.getString("study_content"))
+    			.studyMemberLimit(rs.getLong("study_member_limit"))
+    			.studyAddress(rs.getString("study_address"))
+    			.studyLatitude(rs.getDouble("study_latitude"))
+    			.studyLongitude(rs.getDouble("study_longitude"))
+    			.userNickName(rs.getString("user_nickname"))
+    			.userSpeed(rs.getLong("user_speed"))
+    			.userProfile(rs.getString("user_profile"))
+    			.studyCategory(rs.getString("study_category"))
+    			.photoName(rs.getString("photo_name"))
+    			.confirmedCount(rs.getLong("confirmed_count"))
+    			.likeCount(rs.getLong("like_count"))
+    			.dislikeCount(rs.getLong("dislike_count"))
+    			.build();
+    }
+    
+    public List<StudyView> getStudyViewUser(Connection conn, Long studySeq){
+        pstmt = null;
+        rs = null;
+        List<StudyView> list = new ArrayList<>();
+        try {
+        	pstmt = conn.prepareStatement(sql.getProperty("studyViewUsers"));
+        	pstmt.setLong(1, studySeq);
+        	rs = pstmt.executeQuery();
+        	while(rs.next()) {
+        		StudyView s = getStudyViewUsers(rs);
+        		list.add(s);
+        	}
+        }catch (SQLException e){
+        	e.printStackTrace();
+        }finally {
+        	close(rs);
+        	close(pstmt);
+        }
+        return list;
+    }
+    
+    private StudyView getStudyViewUsers(ResultSet rs)throws SQLException{
+    	return StudyView.builder()
+    			.userNickName(rs.getString("user_nickname"))
+    			.userProfile(rs.getString("user_profile"))
+    			.userSpeed(rs.getLong("user_speed"))
+    			
+    			.build();
+    }
+    
 }
