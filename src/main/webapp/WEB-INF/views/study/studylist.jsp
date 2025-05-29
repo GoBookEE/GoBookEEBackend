@@ -75,9 +75,9 @@
 							                    </div>
 							                    <div id="studyAddress">\${b.studyAddress}</div>
 							                    &nbsp;&nbsp;&nbsp;
-							                    <i class="bi bi-hand-thumbs-up-fill"></i>
+							                    <span><i class="bi bi-hand-thumbs-up me-1" style="font-size: 0.9rem;"></i>
 							                    <span>\${b.likeCount}</span>
-							                    <i class="bi bi-hand-thumbs-down-fill"></i>
+							                    <span><i class="bi bi-hand-thumbs-down me-1" style="font-size: 0.9rem;"></i>
 							                    <span>\${b.dislikeCount}</span>
 							                </div>
 							            </div>
