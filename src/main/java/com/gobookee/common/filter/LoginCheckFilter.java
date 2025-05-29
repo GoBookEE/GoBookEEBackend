@@ -22,7 +22,9 @@ public class LoginCheckFilter implements Filter {
         String contextPath = req.getContextPath();
 
         // 로그인 없이 허용되는 경로
-        boolean isPublic = uri.equals(contextPath + "/") || uri.startsWith(contextPath + "/loginpage") || uri.startsWith(contextPath + "/signuppage") || uri.startsWith(contextPath + "/resources/");
+        boolean isPublic = uri.equals(contextPath + "/") || uri.startsWith(contextPath + "/login") || uri.startsWith(contextPath + "/signup") ||
+                uri.startsWith(contextPath + "/resources/") || uri.startsWith(contextPath + "/findidpwdpage") || uri.startsWith(contextPath + "/ajaxnicknameduplicate")
+                || uri.startsWith(contextPath + "/ajaxuseridduplicate");
 
         boolean loggedIn = session != null && session.getAttribute("loginUser") != null;
 
