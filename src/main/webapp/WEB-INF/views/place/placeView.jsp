@@ -19,7 +19,7 @@
     }
 
     .container {
-        padding-top: 10px !important;
+        padding-top: 20px !important;
         padding-bottom: 10px !important;
         margin: 0 auto !important;
     }
@@ -63,49 +63,53 @@
 %>
 
 <main class="container">
-    <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-        <button class="btn btn-link text-dark text-decoration-none"
-                onclick="history.back()">
-            <i class="bi bi-arrow-left"></i>
-        </button>
-
-        <script>
-            console.log(<%=loginUser%>)
-        </script>
-        <div class="dropdown">
-            <button class="btn btn-link text-dark" id="moreMenu"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-three-dots-vertical"></i>
+    <!-- ✅ 콘텐츠 너비에 맞춰 wrapping -->
+    <div class="container" style="max-width: 600px;">
+        <div class="d-flex justify-content-between align-items-center border-bottom mb-3"
+             style="position: fixed; top:0; left:30%; right: 30%; z-index: 1030; background-color: #fff;">
+            <button class="btn btn-link text-dark text-decoration-none"
+                    onclick="history.back()">
+                <i class="bi bi-arrow-left"></i>
             </button>
-            <form id="deleteForm" action="<%=request.getContextPath()%>/place/delete" method="post"
-                  style="display:none;">
-                <input type="hidden" name="placeSeq" id="deletePlaceSeq">
-            </form>
-            <ul class="dropdown-menu dropdown-menu-end"
-                aria-labelledby="moreMenu">
-                <%
-                    if (loginUser != null && loginUser.getUserSeq().equals(place.getUserSeq())) {
-                %>
-                <li><a class="dropdown-item"
-                       href="<%=request.getContextPath()%>/place/updatepage?placeSeq=<%=place.getPlaceSeq()%>">게시물
-                    수정</a></li>
-                <li><a class="dropdown-item text-danger" href="#"
-                       onclick="return confirmDeleteReview(<%=place.getPlaceSeq()%>);">게시물 삭제 </a></li>
-                <%
-                } else {
-                %>
-                <li>
-                    <button class="dropdown-item text-danger"
-                            onclick="reportPost(<%=place.getPlaceSeq()%>,'PLACE')">장소글 신고
-                    </button>
-                </li>
-                <%
-                    }
-                %>
-            </ul>
-        </div>
 
+            <div class="dropdown">
+                <button class="btn btn-link text-dark" id="moreMenu"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <form id="deleteForm" action="<%=request.getContextPath()%>/place/delete" method="post"
+                      style="display:none;">
+                    <input type="hidden" name="placeSeq" id="deletePlaceSeq">
+                </form>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreMenu">
+                    <%
+                        if (loginUser != null && loginUser.getUserSeq().equals(place.getUserSeq())) {
+                    %>
+                    <li>
+                        <a class="dropdown-item"
+                           href="<%=request.getContextPath()%>/place/updatepage?placeSeq=<%=place.getPlaceSeq()%>">게시물
+                            수정</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item text-danger" href="#"
+                           onclick="return confirmDeleteReview(<%=place.getPlaceSeq()%>);">게시물 삭제</a>
+                    </li>
+                    <%
+                    } else {
+                    %>
+                    <li>
+                        <button class="dropdown-item text-danger"
+                                onclick="reportPost(<%=place.getPlaceSeq()%>,'PLACE')">장소글 신고
+                        </button>
+                    </li>
+                    <%
+                        }
+                    %>
+                </ul>
+            </div>
+        </div>
     </div>
+
     <div class="container" style="max-width: 600px;">
         <!-- 🖼️ 이미지 Carousel -->
         <div id="placeImageCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
@@ -113,7 +117,8 @@
                 <% for (int i = 0; i < place.getPhotoNames().size(); i++) { %>
                 <div class="carousel-item <%= i == 0 ? "active" : "" %>">
                     <img src="<%=CommonPathTemplate.getUploadPath(request,FileType.PLACE,place.getPhotoNames().get(i))%>"
-                         class="d-block w-100" alt="이미지<%=i+1%>"   onerror="this.onerror=null; this.src='<%=request.getContextPath()%>/resources/images/default.png'; this.classList.remove('w-100'); this.style.width='100px'; this.style.height='100px';">
+                         class="d-block w-100" alt="이미지<%=i+1%>"
+                         onerror="this.onerror=null; this.src='<%=request.getContextPath()%>/resources/images/default.png'; this.classList.remove('w-100'); this.style.width='100px'; this.style.height='100px';">
                 </div>
                 <% } %>
             </div>
