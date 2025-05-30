@@ -303,7 +303,7 @@
                     } else if (currentTab === "study") {
                         html = `
                             <div class="card mb-3 shadow-sm border-0" style="border-radius: 20px; cursor: pointer;"
-                             onclick="location.assign('<%=request.getContextPath()%>/study/view?studySeq=\${item.studySeq}')">
+                             onclick="location.assign('<%=request.getContextPath()%>/study/view?seq=\${item.seq}')">
                             <div class="row g-0">
                             <div class="col-4 d-flex align-items-center justify-content-center p-3">
                               <img src="<%=request.getContextPath()%>/upload/photo/\${item.photoName}"

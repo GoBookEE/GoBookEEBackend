@@ -32,6 +32,7 @@ public class PlaceDeleteHandlerServlet extends HttpServlet {
             MessageRedirectTemplate.builder()
                     .msg("매장 삭제에 실패했습니다.")
                     .loc("/place/listpage")
+                    .error("error")
                     .request(request)
                     .response(response)
                     .build().forward();
