@@ -200,7 +200,7 @@
                     const itemHtml = `
                     <div class="place-card" onclick="location.href='<%=request.getContextPath()%>/place/view?placeSeq=\${place.placeSeq}'">
                         <img src='<%=request.getContextPath()%><%=CommonPathTemplate.BASIC_UPLOAD_PATH%>place/\${place.placeThumbnail}' class="place-image" alt="썸네일"
-                        onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
+                        onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'; this.style.width='100px !important'; this.style.height='100px !important';">
                         <div class="flex-grow-1">
                             <div class="place-title">\${place.placeTitle}</div>
                             <div class="place-address">\${place.placeAddress}</div>

@@ -21,7 +21,6 @@ public class SearchReservationAjaxHandlerServlet extends HttpServlet {
         Long placeSeq = Long.valueOf(request.getParameter("placeSeq"));
         Date date = Date.valueOf(stringDate);
         List<ScheduleReserve> scheduleList = scheduleService.getStudyListPlaceSeqAndDate(placeSeq, date);
-        System.out.println(scheduleList.size());
         JsonConvertTemplate.toJson(scheduleList, response);
     }
 

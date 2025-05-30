@@ -93,6 +93,7 @@ public class UserInsertServlet extends HttpServlet {
             MessageRedirectTemplate.builder()
                     .request(request)
                     .msg("회원가입에 실패했습니다.")
+                    .error("error")
                     .loc(url)
                     .response(response)
                     .build().forward();

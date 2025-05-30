@@ -20,7 +20,7 @@ import java.io.IOException;
 public class MessageRedirectTemplate {
     private String msg;
     private String loc;
-    private String close;
+    private String error;
     private ServletRequest request;
     private ServletResponse response;
     private static final String PATH = CommonPathTemplate.getViewPath("/common/msg");
@@ -28,6 +28,7 @@ public class MessageRedirectTemplate {
     public void forward() throws ServletException, IOException {
         request.setAttribute("msg", msg);
         request.setAttribute("loc", loc);
+        request.setAttribute("error", error);
         request.getRequestDispatcher(PATH).forward(request, response);
     }
 }
