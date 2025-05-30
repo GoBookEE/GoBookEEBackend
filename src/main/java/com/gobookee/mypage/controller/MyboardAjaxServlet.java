@@ -26,39 +26,40 @@ public class MyboardAjaxServlet extends HttpServlet {
 	private CommentsService commentsService = CommentsService.commentsService();
 	private PlaceService placeService = PlaceService.placeService();
 	private static final long serialVersionUID = 1L;
-       
-    public MyboardAjaxServlet() {
-        super();
-    }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public MyboardAjaxServlet() {
+		super();
+	}
+
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		User loginUser = (User) request.getSession().getAttribute("loginUser");
 		Long userSeq = loginUser.getUserSeq();
-        String tab = request.getParameter("tab");
-        int cPage = Integer.parseInt(request.getParameter("cPage"));
-        int numPerPage = 5;
-        
-        List<?> list = new ArrayList<>();
-        int totalCount = 0;
+		String tab = request.getParameter("tab");
+		int cPage = Integer.parseInt(request.getParameter("cPage"));
+		int numPerPage = 5;
 
-        switch (tab) {
-            case "review":
-                list = reviewService.getAllReviewsByUser(userSeq, cPage, numPerPage);
-                totalCount = reviewService.countByUser(userSeq);
-                break;
-            case "comment":
-                list = commentsService.getAllCommentsByUser(userSeq, cPage, numPerPage);
-                totalCount = commentsService.countByUser(userSeq);
-                break;
-            case "place":
-                list = placeService.getAllPlaceByUser(userSeq, cPage, numPerPage);
-                totalCount = placeService.countByUser(userSeq);
-                break;
-        }
-		
-        AjaxPageBarTemplate pb = new AjaxPageBarTemplate(cPage, numPerPage, totalCount);
-        
-        Gson gson = new Gson();
+		List<?> list = new ArrayList<>();
+		int totalCount = 0;
+
+		switch (tab) {
+		case "review":
+			list = reviewService.getAllReviewsByUser(userSeq, cPage, numPerPage);
+			totalCount = reviewService.countByUser(userSeq);
+			break;
+		case "comment":
+			list = commentsService.getAllCommentsByUser(userSeq, cPage, numPerPage);
+			totalCount = commentsService.countByUser(userSeq);
+			break;
+		case "place":
+			list = placeService.getAllPlaceByUser(userSeq, cPage, numPerPage);
+			totalCount = placeService.countByUser(userSeq);
+			break;
+		}
+
+		AjaxPageBarTemplate pb = new AjaxPageBarTemplate(cPage, numPerPage, totalCount);
+
+		Gson gson = new Gson();
 		response.setContentType("application/json;charset=UTF-8");
 
 		Map<String, Object> result = new HashMap<>();
@@ -66,11 +67,11 @@ public class MyboardAjaxServlet extends HttpServlet {
 		result.put("pageBar", pb.makePageBar(request));
 
 		gson.toJson(result, response.getWriter());
-        
+
 	}
 
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
 	}
 

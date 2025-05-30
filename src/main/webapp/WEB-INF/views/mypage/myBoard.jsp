@@ -1,6 +1,7 @@
 <%@ page import="com.gobookee.common.CommonPathTemplate"%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
-<%@ page import="com.gobookee.users.model.dto.User,com.gobookee.review.model.dto.*,java.util.List" %>
+<%@ page
+	import="com.gobookee.users.model.dto.User,com.gobookee.review.model.dto.*,java.util.List"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
 User loginUser = (User) session.getAttribute("loginUser");
@@ -99,7 +100,7 @@ body {
 		<button type="button" class="tab-btn" data-tab="place">공간</button>
 		<%} %>
 	</div>
-	
+
 	<!-- AJAX로 바뀌는 부분 -->
 	<div id="searchResults" class="search-result"></div>
 	<div id="pageBar" class="mt-4"></div>
@@ -149,30 +150,56 @@ function loadMyPosts(tab, cPage = 1) {
                 let html = "";
                 if (tab === "review") {
                     html = `
-                        <div class="card mb-3" onclick="location.assign('<%=request.getContextPath()%>/review/view?seq=\${item.reviewSeq}')">
-                            <div class="card-body">
-                                <h6 class="fw-bold">\${item.reviewTitle}</h6>
-                                <p class="text-muted line-clamp">\${item.reviewContents}</p>
-                                <div class="text-end text-muted small">\${item.reviewCreateTime}</div>
-                            </div>
-                        </div>`;
+                    	<div class="list-group-item list-group-item-action d-flex gap-3 py-3 align-items-start position-relative"
+               	     onclick="location.assign('<%=request.getContextPath()%>/review/view?seq=\${item.reviewSeq}')">
+
+               	
+               	  <div style="flex-shrink: 0; width: 120px; height: 150px;">
+               	    <img src='\${item.bookCover}' alt='book cover' class='rounded w-100 h-100 object-fit-cover'>
+               	  </div>
+
+               	
+               	  <div class="d-flex flex-column flex-grow-1">
+               	    <strong class="mb-1">\${item.reviewTitle}</strong>
+               	    <small class="text-muted line-clamp mb-1">\${item.reviewContents}</small>
+               	    <br>
+               	    <small class="text-muted">\${item.bookTitle}</small>
+               	  </div>
+					
+               	 
+               	  <div class="position-absolute bottom-0 end-0 me-2 mb-2 d-flex align-items-center gap-3">
+               	    <div class="d-flex align-items-center gap-1 text-muted">
+               	      <i class="bi bi-heart" style="font-size: 0.9rem;"></i> \${item.recommendCount}
+               	    </div>
+               	    <div class="d-flex align-items-center gap-1 text-muted">
+               	      <i class="bi bi-chat" style="font-size: 0.9rem;"></i> \${item.commentsCount}
+               	    </div>
+               	  </div>
+               	</div>`;
                 } else if (tab === "comment") {
                     html = `
                         <div class="card mb-3" onclick="location.assign('<%=request.getContextPath()%>/review/view?seq=\${item.reviewSeq}')">
                             <div class="card-body">
                                 <p class="mb-2">\${item.commentsContents}</p>
+                                <div class="text-end text-muted small">게시글 제목: \${item.reviewTitle}</div>
                                 <div class="text-end text-muted small">\${item.commentsCreateTime}</div>
                             </div>
                         </div>`;
                 } else if (tab === "place") {
                     html = `
-                        <div class="card mb-3" onclick="location.assign('<%=request.getContextPath()%>/place/view?seq=\${item.placeSeq}')">
-                            <div class="card-body">
-                                <h6 class="fw-bold">\${item.placeTitle}</h6>
-                                <p class="text-muted line-clamp">\${item.placeContents}</p>
-                                <div class="text-end text-muted small">\${item.placeCreateTime}</div>
+                    	<div class="card mb-3 d-flex flex-row p-2" onclick="location.assign('<%=request.getContextPath()%>/place/view?placeSeq=\${item.placeSeq}')">
+                        <img src="<%=request.getContextPath()%><%=CommonPathTemplate.BASIC_UPLOAD_PATH%>place/\${item.placeThumbnail}" class="rounded me-3" style="width: 100px; height: 100px; object-fit: cover;"
+                        onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
+                        <div class="flex-grow-1">
+                            <h5 class="mb-1">\${item.placeTitle}</h5>
+                            <p class="mb-1">\${item.placeAddress}</p>
+                            <p class="text-muted small mb-1">\${item.placeContents}</p>
+                            <div>
+                                <span><i class="bi bi-hand-thumbs-up me-1" style="font-size: 0.9rem;"></i> \${item.placeRecCount}</span>
+                                <span><i class="bi bi-hand-thumbs-down me-1" style="font-size: 0.9rem;"></i> \${item.placeNonRecCount}</span>
                             </div>
-                        </div>`;
+                        </div>
+                    </div>`;
                 }
                 container.append(html);
             });
