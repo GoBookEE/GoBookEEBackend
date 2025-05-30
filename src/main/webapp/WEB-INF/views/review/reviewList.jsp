@@ -24,6 +24,59 @@ body {
 	font-size: 0.85rem;
 	color: #6c757d;
 }
+
+.sort-pill-select {
+	width: auto;
+	border: none;
+	border-radius: 999px;
+	padding: 0.375rem 2.5rem 0.375rem 1.25rem; /* 오른쪽 padding을 넉넉히 */
+	background-color: #6fcf97;
+	color: white;
+	font-weight: 500;
+	appearance: none;
+	background-image:
+		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6 6 6-6'/%3E%3C/svg%3E");
+	background-repeat: no-repeat;
+	background-position: right 1rem center; /* 화살표를 오른쪽으로 이동 */
+	background-size: 12px;
+	margin-bottom: 20px;
+}
+
+.sort-pill-select:focus {
+	outline: none;
+	box-shadow: 0 0 0 0.2rem rgba(111, 207, 151, 0.4);
+}
+
+.card-text {
+	display: -webkit-box;
+	-webkit-line-clamp: 3; /* 최대 줄 수 */
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.line-clamp {
+	display: -webkit-box;
+	-webkit-line-clamp: 1; /* 보이는 줄 수 조절 */
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	/* 추가: 긴 단어 줄바꿈 처리 */
+	word-break: break-word;
+	overflow-wrap: break-word;
+	line-height: 1.4;
+	max-height: calc(1.4em * 1); /* line-height × 줄 수 */
+}
+
+.review-meta {
+	font-size: 0.9rem;
+	color: #6c757d;
+}
+
+.review-meta i.bi {
+	font-size: 1rem;
+	vertical-align: middle;
+}
 </style>
 <main>
 	<div class="container py-4">
@@ -67,128 +120,10 @@ body {
 			<div id="reviewContainer" class="list-group"></div>
 
 			<div id="pageBar"></div>
-			<!-- Floating Action Button -->
-			<%-- <div class="fab-container">
-				<button class="fab-main" id="fabToggle">
-					<i class="bi bi-plus-lg"></i>
-				</button>
-				<div class="fab-menu" id="fabMenu">
-					<a href="<%=request.getContextPath()%>/review/insertpage"
-						class="fab-item"> <i class="bi bi-pencil"></i> 리뷰 쓰기
-					</a> <a href="<%=request.getContextPath()%>/books/searchaladin"
-						class="fab-item"> <i class="bi bi-book"></i> 책 등록하기
-					</a>
-				</div>
-			</div> --%>
 		</div>
 	</div>
-	<style>
-.sort-pill-select {
-	width: auto;
-	border: none;
-	border-radius: 999px;
-	padding: 0.375rem 2.5rem 0.375rem 1.25rem; /* 오른쪽 padding을 넉넉히 */
-	background-color: #6fcf97;
-	color: white;
-	font-weight: 500;
-	appearance: none;
-	background-image:
-		url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 16 16'%3E%3Cpath d='M1.5 5.5l6 6 6-6'/%3E%3C/svg%3E");
-	background-repeat: no-repeat;
-	background-position: right 1rem center; /* 화살표를 오른쪽으로 이동 */
-	background-size: 12px;
-	margin-bottom: 20px;
-}
-
-.sort-pill-select:focus {
-	outline: none;
-	box-shadow: 0 0 0 0.2rem rgba(111, 207, 151, 0.4);
-}
-
-.fab-container {
-	position: fixed;
-	bottom: 80px; /* 푸터 위로 띄우기 */
-	right: 24px;
-	z-index: 999;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
-}
-
-.fab-main {
-	width: 60px;
-	height: 60px;
-	border-radius: 50%;
-	background-color: #198754;
-	color: white;
-	border: none;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-	font-size: 24px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	transition: transform 0.3s ease;
-}
-
-.fab-menu {
-	display: none;
-	flex-direction: column;
-	margin-bottom: 10px;
-}
-
-.fab-item {
-	background-color: #198754;
-	color: white;
-	text-decoration: none;
-	padding: 8px 16px;
-	border-radius: 16px;
-	margin-bottom: 10px;
-	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-	font-size: 14px;
-	display: flex;
-	align-items: center;
-	gap: 8px;
-}
-
-.fab-item:hover {
-	background-color: #157347;
-}
-
-.card-text {
-	display: -webkit-box;
-	-webkit-line-clamp: 3; /* 최대 줄 수 */
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
-}
-
-.line-clamp {
-	display: -webkit-box;
-	-webkit-line-clamp: 1; /* 보이는 줄 수 조절 */
-	-webkit-box-orient: vertical;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	/* 추가: 긴 단어 줄바꿈 처리 */
-	word-break: break-word;
-	overflow-wrap: break-word;
-	line-height: 1.4;
-	max-height: calc(1.4em * 1); /* line-height × 줄 수 */
-}
-
-.review-meta {
-	font-size: 0.9rem;
-	color: #6c757d;
-}
-
-.review-meta i.bi {
-	font-size: 1rem;
-	vertical-align: middle;
-}
-</style>
-
-
-
-	<script>
+</main>
+<script>
 let currentSort = "latest"; // 현재 정렬 기준 기억
 
 //정렬 드롭다운 이벤트
@@ -286,7 +221,5 @@ document.addEventListener("DOMContentLoaded", function () {
 	});
 });
 </script>
-
-</main>
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

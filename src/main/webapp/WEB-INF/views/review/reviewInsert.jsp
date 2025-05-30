@@ -153,7 +153,7 @@ function searchBooks() {
 							<div class="book-card-content col-7">
 								<div class="book-card-title fw-bold">\${book.bookTitle}</div>
 								<div class="mb-1 text-muted">\${book.bookAuthor}</div>
-								<div class="mb-1 text-muted">\${book.bookPublisher} | \${book.publishDate}</div>
+								<div class="mb-1 text-muted">\${book.bookPublisher}</div>
 							</div>
 						</div>
 					`;

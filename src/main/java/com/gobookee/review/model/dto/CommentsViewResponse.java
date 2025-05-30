@@ -19,7 +19,9 @@ public class CommentsViewResponse {
 	private Timestamp commentsEditTime;
 	private String userNickName;
 	private Long userSeq;
+	private Long reviewSeq;
 	private Long commentsParentSeq;
 	private Integer recommendCount;
 	private Integer nonRecommendCount;
+	private String reviewTitle;
 }
