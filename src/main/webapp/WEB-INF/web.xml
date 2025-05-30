@@ -5,5 +5,7 @@
          version="4.0">
 
     <!--프로젝트에 대한 설정을 하는 파일 (배포 서술자)-->
-    
+    <welcome-file-list>
+        <welcome-file>home</welcome-file>
+    </welcome-file-list>
 </web-app>
