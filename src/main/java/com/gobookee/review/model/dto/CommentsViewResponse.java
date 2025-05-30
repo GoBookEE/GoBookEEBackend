@@ -23,4 +23,5 @@ public class CommentsViewResponse {
 	private Long commentsParentSeq;
 	private Integer recommendCount;
 	private Integer nonRecommendCount;
+	private String reviewTitle;
 }

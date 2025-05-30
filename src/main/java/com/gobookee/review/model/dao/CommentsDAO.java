@@ -71,7 +71,7 @@ public class CommentsDAO {
 						.commentsEditTime(rs.getTimestamp("COMMENTS_EDIT_TIME"))
 						.userNickName(rs.getString("USER_NICKNAME")).recommendCount(rs.getInt("RECOMMEND_COUNT"))
 						.nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT")).userSeq(rs.getLong("USER_SEQ"))
-						.reviewSeq(rs.getLong("REVIEW_SEQ")).build();
+						.reviewSeq(rs.getLong("REVIEW_SEQ")).reviewTitle(rs.getString("REVIEW_TITLE")).build();
 				comments.add(dto);
 			}
 		} catch (SQLException e) {
