@@ -97,7 +97,7 @@ public class ReviewDAO {
 		}
 		return reviews;
 	}
-	
+
 	public int countByUser(Connection conn, Long userSeq) {
 		int result = 0;
 		try {
@@ -114,7 +114,7 @@ public class ReviewDAO {
 		}
 		return result;
 	}
-	
+
 	public int reviewCount(Connection conn) {
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -278,7 +278,7 @@ public class ReviewDAO {
 				.recommendCount(rs.getInt("RECOMMEND_COUNT")).nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT"))
 				.userNickName(rs.getString("USER_NICKNAME")).userProfile(rs.getString("USER_PROFILE"))
 				.bookDescription(rs.getString("BOOK_DESCRIPTION")).userSeq(rs.getLong("USER_SEQ"))
-				.bookSeq(rs.getLong("BOOK_SEQ")).build();
+				.bookSeq(rs.getLong("BOOK_SEQ")).userSpeed(rs.getLong("USER_SPEED")).build();
 	}
 
 }
