@@ -113,7 +113,7 @@
                 <% for (int i = 0; i < place.getPhotoNames().size(); i++) { %>
                 <div class="carousel-item <%= i == 0 ? "active" : "" %>">
                     <img src="<%=CommonPathTemplate.getUploadPath(request,FileType.PLACE,place.getPhotoNames().get(i))%>"
-                         class="d-block w-100" alt="이미지 <%=i+1%>">
+                         class="d-block w-100" alt="이미지<%=i+1%>"   onerror="this.onerror=null; this.src='<%=request.getContextPath()%>/resources/images/default.png'; this.classList.remove('w-100'); this.style.width='100px'; this.style.height='100px';">
                 </div>
                 <% } %>
             </div>

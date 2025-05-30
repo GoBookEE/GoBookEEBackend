@@ -36,6 +36,7 @@ public class LoginCheckFilter implements Filter {
                     .msg("로그인 후 이용가능합니다.")
                     .loc("/loginpage")
                     .response(response)
+                    .error("error")
                     .request(request)
                     .build().forward();
         }

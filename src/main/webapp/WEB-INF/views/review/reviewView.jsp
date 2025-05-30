@@ -69,7 +69,7 @@ List<CommentsViewResponse> comments = review.getComments();
 			<div class="d-flex align-items-center mb-3">
 				<img src="<%=CommonPathTemplate.getUploadPath(request,FileType.USER,review.getUserProfile())%>"
 					class="rounded-circle me-2" alt="user" width="40" height="40"
-					onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
+					 onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
 				<div>
 					<div class="fw-semibold"><%=review.getUserNickName()%></div>
 					<small class="text-muted"><%=DateTimeFormatUtil.format(review.getReviewCreateTime())%></small>

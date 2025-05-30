@@ -60,7 +60,7 @@
 							                <div class="book-card-img col col-5">
 							                
 							                <img src="<%=request.getContextPath()%>/resources/upload/study/\${b.photoRenamedName}"
-							                onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'"
+							                onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'; this.style.width='100px !important'; this.style.height='100px !important';"
 							                alt="스터디 이미지">
 							                
 							                </div>
