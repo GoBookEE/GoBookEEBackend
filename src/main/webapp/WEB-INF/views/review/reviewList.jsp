@@ -4,7 +4,7 @@
 	import="java.sql.Timestamp,java.util.List,com.gobookee.review.model.dto.*,com.gobookee.common.DateTimeFormatUtil"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
-List<ReviewListResponse> reviews = (List<ReviewListResponse>) request.getAttribute("list");
+List<ReviewListResponse> reviews = (List<ReviewListResponse>)request.getAttribute("list");
 %>
 <style>
 body {
@@ -97,9 +97,9 @@ body {
 						<p class="card-text small line-clamp"><%=b.getReviewContents()%></p>
 					</div>
 					<div class="card-footer bg-white border-top-0">
-						<small class="review-meta"><i class="bi bi-heart"
-							style="font-size: 0.9rem;"></i> <%=b.getRecommendCount()%> | <i
-							class="bi bi-chat"></i> <%=b.getCommentsCount()%></small>
+						<small class="review-meta"> 
+						<i class="bi bi-hand-thumbs-up me-1"></i> <%=b.getRecommendCount()%> | 	
+						<i class="bi bi-chat"></i> <%=b.getCommentsCount()%></small>
 					</div>
 				</div>
 			</div>
@@ -188,7 +188,7 @@ function loadReviews(sortType,cPage = 1) {
                     	 
                     	  <div class="position-absolute bottom-0 end-0 me-2 mb-2 d-flex align-items-center gap-3">
                     	    <div class="d-flex align-items-center gap-1 text-muted">
-                    	      <i class="bi bi-heart" style="font-size: 0.9rem;"></i> \${b.recommendCount}
+                    	    <i class="bi bi-hand-thumbs-up me-1" style="font-size: 0.9rem;"></i> \${b.recommendCount}
                     	    </div>
                     	    <div class="d-flex align-items-center gap-1 text-muted">
                     	      <i class="bi bi-chat" style="font-size: 0.9rem;"></i> \${b.commentsCount}

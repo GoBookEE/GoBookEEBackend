@@ -45,9 +45,11 @@ public class ReviewUpdateServlet extends HttpServlet {
 		if (result > 0) {
 			msg = "리뷰 수정 성공";
 			loc = "/review/view?seq=" + reviewSeq;
+			request.setAttribute("error", "success");
 		} else {
 			msg = "리뷰 수정 실패";
 			loc = "review/updatepage";
+			request.setAttribute("error", "error");
 		}
 		request.setAttribute("msg", msg);
 		request.setAttribute("loc", loc);

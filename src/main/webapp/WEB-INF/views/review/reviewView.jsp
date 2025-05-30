@@ -124,7 +124,7 @@ header, footer {
 			      ☆
 			    <% } %>
   			</span>
-			<p class="text-muted mb-1 review-content" style="font-size: 1.5rem;"><%=review.getReviewContents()%></p>
+			<p class="text-muted mb-1 review-content" style="font-size: 1.2rem;"><%=review.getReviewContents()%></p>
 			
 			<!-- 추천/비추천 버튼 -->
 			<div class="d-flex align-items-center gap-3 mb-3">

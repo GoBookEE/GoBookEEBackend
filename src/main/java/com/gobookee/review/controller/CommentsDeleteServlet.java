@@ -35,9 +35,11 @@ public class CommentsDeleteServlet extends HttpServlet {
 		if (result > 0) {
 			msg = "댓글 삭제 성공";
 			loc = "/review/view?seq=" + reviewSeq;
+			request.setAttribute("error", "success");
 		} else {
 			msg = "댓글 삭제 실패";
 			loc = "/review/view?seq=" + reviewSeq;
+			request.setAttribute("error", "error");
 		}
 		request.setAttribute("msg", msg);
 		request.setAttribute("loc", loc);
