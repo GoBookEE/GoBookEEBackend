@@ -37,5 +37,7 @@ public class User {
     private Timestamp UserCreateTime;
 
     private Timestamp UserDeleteTime;
+
+    private Integer UserSpeed;
 }
 
