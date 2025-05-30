@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 public class StudyView {
+	private Long studySeq;
 	private Long userSeq;
 	private String studyTitle;
 	private Date studyDate;
@@ -29,5 +30,6 @@ public class StudyView {
 	private Long confirmedCount;
 	private Long likeCount;
 	private Long dislikeCount;
-
+	private String requestConfirm;
+	private String requestMsg;
 }

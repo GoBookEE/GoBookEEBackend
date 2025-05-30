@@ -1,11 +1,7 @@
 package com.gobookee.search.model.dao;
 
 import com.gobookee.common.JDBCTemplate;
-import com.gobookee.place.model.dto.Place;
-import com.gobookee.search.model.dto.SearchBook;
-import com.gobookee.search.model.dto.Search;
-import com.gobookee.search.model.dto.SearchReview;
-import com.gobookee.search.model.dto.SearchStudy;
+import com.gobookee.search.model.dto.*;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -195,10 +191,47 @@ public class SearchDao {
     }
 
 
-    private List<Place> searchPlace(Connection conn, Search search) {
-        // TODO: 공간 검색 구현
-        return null;
+    private List<SearchPlace> searchPlace(Connection conn, Search search) {
+        long numPerPage = 5;
+        List<SearchPlace> list = new ArrayList<>();
+        pstmt = null;
+        rs = null;
+
+        StringBuilder sql = new StringBuilder(sqlProp.getProperty("searchPlaceBase"));
+        String keyword = "%" + search.getKeyword().toLowerCase() + "%";
+
+        // 필터에 따른 WHERE 조건 추가
+        switch (search.getFilter()) {
+            case "placeTitle":
+                sql.insert(sql.indexOf("ORDER BY"), " AND LOWER(P.PLACE_TITLE) LIKE ? ");
+                break;
+            case "location":
+                sql.insert(sql.indexOf("ORDER BY"), " AND LOWER(P.PLACE_ADDRESS) LIKE ? ");
+                break;
+        }
+
+        try {
+            pstmt = conn.prepareStatement(sql.toString());
+            int idx = 1;
+
+            pstmt.setString(idx++, keyword);
+            pstmt.setLong(idx++, (search.getCPage() - 1) * numPerPage + 1);
+            pstmt.setLong(idx++, search.getCPage() * numPerPage);
+
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                list.add(SearchPlace.from(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTemplate.close(rs);
+            JDBCTemplate.close(pstmt);
+        }
+
+        return list;
     }
+
 
     public int getReviewTotalCount(Connection conn, Search search) {
         int total = 0;
@@ -279,8 +312,39 @@ public class SearchDao {
     }
 
     public int getPlaceTotalCount(Connection conn, Search search) {
-        return 0;
+        int total = 0;
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        String baseSql = "SELECT COUNT(*) AS CNT FROM PLACE P WHERE P.PLACE_IS_PUBLIC = 'Y' AND P.PLACE_DELETE_TIME IS NULL";
+
+        String keyword = "%" + search.getKeyword().toLowerCase() + "%";
+
+        // 조건 추가
+        switch (search.getFilter()) {
+            case "placeTitle":
+                baseSql += " AND LOWER(P.PLACE_TITLE) LIKE ?";
+                break;
+            case "location":
+                baseSql += " AND LOWER(P.PLACE_ADDRESS) LIKE ?";
+                break;
+        }
+        try {
+            pstmt = conn.prepareStatement(baseSql);
+            pstmt.setString(1, keyword);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                total = rs.getInt("CNT");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            JDBCTemplate.close(rs);
+            JDBCTemplate.close(pstmt);
+        }
+        return total;
     }
+
 
     public int getStudyTotalCount(Connection conn, Search search) {
         int total = 0;

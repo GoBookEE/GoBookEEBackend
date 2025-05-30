@@ -37,4 +37,8 @@ bin/
 Scripts
 
 *.png
+!default.png
+!error.png
+!logo.png
 *.jpg
+*.war

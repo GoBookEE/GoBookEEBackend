@@ -200,14 +200,14 @@
                     const itemHtml = `
                     <div class="place-card" onclick="location.href='<%=request.getContextPath()%>/place/view?placeSeq=\${place.placeSeq}'">
                         <img src='<%=request.getContextPath()%><%=CommonPathTemplate.BASIC_UPLOAD_PATH%>place/\${place.placeThumbnail}' class="place-image" alt="썸네일"
-                        onerror="this.src='<%=request.getContextPath()%>/resources/images/default.jpg'">
+                        onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
                         <div class="flex-grow-1">
                             <div class="place-title">\${place.placeTitle}</div>
                             <div class="place-address">\${place.placeAddress}</div>
                             <div class="place-content">\${place.placeContents}</div>
                             <div class="place-icons">
-                                <span class="text-success"><i class="bi bi-hand-thumbs-up"></i> \${place.placeRecCount}</span>
-                                <span class="text-danger"><i class="bi bi-hand-thumbs-down"></i> \${place.placeNonRecCount}</span>
+                                <span><i class="bi bi-hand-thumbs-up me-1" style="font-size: 0.9rem;"></i> \${place.placeRecCount}</span>
+                                <span><i class="bi bi-hand-thumbs-down me-1" style="font-size: 0.9rem;"></i> \${place.placeNonRecCount}</span>
                             </div>
                         </div>
                     </div>
