@@ -127,45 +127,6 @@ public class PlaceDao {
 		return placeList;
 	}
 
-	public List<PlaceListResponse> getAllPlaceByUser(Connection conn, Long userSeq, int cPage, int numPerPage) {
-		pstmt = null;
-		rs = null;
-		List<PlaceListResponse> placeList = new ArrayList<>();
-		try {
-			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllPlaceByUser"));
-			pstmt.setLong(1, userSeq);
-			pstmt.setInt(2, (cPage - 1) * numPerPage + 1);
-			pstmt.setInt(3, cPage * numPerPage);
-			rs = pstmt.executeQuery();
-			while (rs.next()) {
-				placeList.add(PlaceListResponse.from(rs));
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(rs);
-			close(pstmt);
-		}
-		return placeList;
-	}
-
-	public int countByUser(Connection conn, Long userSeq) {
-		int result = 0;
-		try {
-			pstmt = conn.prepareStatement(sqlProp.getProperty("placeCountByUser"));
-			pstmt.setLong(1, userSeq);
-			rs = pstmt.executeQuery();
-			if (rs.next())
-				result = rs.getInt(1);
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(rs);
-			close(pstmt);
-		}
-		return result;
-	}
-
 	public List<PlaceListResponse> getAllPlaceListByRec(Connection conn, HashMap requestParam) {
 		pstmt = null;
 		rs = null;
@@ -262,5 +223,83 @@ public class PlaceDao {
 			close(pstmt);
 		}
 		return placeAddress;
+	}
+
+	public List<PlaceListResponse> getAllPlaceByUser(Connection conn, Long userSeq, int cPage, int numPerPage) {
+		pstmt = null;
+		rs = null;
+		List<PlaceListResponse> placeList = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllPlaceByUser"));
+			pstmt.setLong(1, userSeq);
+			pstmt.setInt(2, (cPage - 1) * numPerPage + 1);
+			pstmt.setInt(3, cPage * numPerPage);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				placeList.add(PlaceListResponse.from(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return placeList;
+	}
+
+	public int countByUser(Connection conn, Long userSeq) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("placeCountByUser"));
+			pstmt.setLong(1, userSeq);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public List<PlaceListResponse> getAllPlacesRecByUser(Connection conn, Long userSeq, int cPage, int numPerPage) {
+		pstmt = null;
+		rs = null;
+		List<PlaceListResponse> placeList = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllPlacesRecByUser"));
+			pstmt.setLong(1, userSeq);
+			pstmt.setInt(2, (cPage - 1) * numPerPage + 1);
+			pstmt.setInt(3, cPage * numPerPage);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				placeList.add(PlaceListResponse.from(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return placeList;
+	}
+
+	public int placeCountRecByUser(Connection conn, Long userSeq) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("placeCountRecByUser"));
+			pstmt.setLong(1, userSeq);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rs);
+			close(pstmt);
+		}
+		return result;
 	}
 }
