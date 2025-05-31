@@ -78,6 +78,43 @@ public class ReviewDAO {
 		return reviews;
 	}
 
+	public List<ReviewListResponse> getAllReviewsByUser(Connection conn, Long userSeq, int cPage, int numPerPage) {
+		List<ReviewListResponse> reviews = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllReviewsByUser"));
+			pstmt.setLong(1, userSeq);
+			pstmt.setInt(2, (cPage - 1) * numPerPage + 1);
+			pstmt.setInt(3, cPage * numPerPage);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+				reviews.add(getReviewListResponse(rs));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return reviews;
+	}
+
+	public int countByUser(Connection conn, Long userSeq) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("countByUser"));
+			pstmt.setLong(1, userSeq);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
 	public int reviewCount(Connection conn) {
 		Statement stmt = null;
 		ResultSet rs = null;
@@ -241,7 +278,7 @@ public class ReviewDAO {
 				.recommendCount(rs.getInt("RECOMMEND_COUNT")).nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT"))
 				.userNickName(rs.getString("USER_NICKNAME")).userProfile(rs.getString("USER_PROFILE"))
 				.bookDescription(rs.getString("BOOK_DESCRIPTION")).userSeq(rs.getLong("USER_SEQ"))
-				.bookSeq(rs.getLong("BOOK_SEQ")).build();
+				.bookSeq(rs.getLong("BOOK_SEQ")).userSpeed(rs.getLong("USER_SPEED")).build();
 	}
 
 }

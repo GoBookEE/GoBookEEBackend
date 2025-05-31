@@ -280,7 +280,7 @@
                               <img src="\${item.bookCover}"
                                    class="img-fluid rounded shadow-sm" alt="book cover"
                                    style="max-height: 180px; object-fit: contain;"
-                                   onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
+                                   onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'; this.style.width='100px !important'; this.style.height='100px !important';">
                             </div>
                             <div class="col-8 p-3">
                               <div class="d-flex flex-column h-100 justify-content-between">
@@ -303,13 +303,13 @@
                     } else if (currentTab === "study") {
                         html = `
                             <div class="card mb-3 shadow-sm border-0" style="border-radius: 20px; cursor: pointer;"
-                             onclick="location.assign('<%=request.getContextPath()%>/study/view?studySeq=\${item.studySeq}')">
+                             onclick="location.assign('<%=request.getContextPath()%>/study/view?seq=\${item.seq}')">
                             <div class="row g-0">
                             <div class="col-4 d-flex align-items-center justify-content-center p-3">
                               <img src="<%=request.getContextPath()%>/upload/photo/\${item.photoName}"
                                    class="img-fluid rounded shadow-sm" alt="스터디 썸네일"
                                    style="max-height: 160px; object-fit: cover;"
-                                   onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
+                                   onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'; this.style.width='100px !important'; this.style.height='100px !important';">
                             </div>
                             <div class="col-8 p-3">
                               <div class="d-flex flex-column h-100 justify-content-between">
@@ -340,7 +340,7 @@
                         html = `
                 <div class="card mb-3 d-flex flex-row p-2" onclick="location.assign('<%=request.getContextPath()%>/place/view?placeSeq=\${item.placeSeq}')">
                     <img src="<%=request.getContextPath()%><%=CommonPathTemplate.BASIC_UPLOAD_PATH%>place/\${item.placeThumbnail}" class="rounded me-3" style="width: 100px; height: 100px; object-fit: cover;"
-                    onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
+                    onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'; this.style.width='100px !important'; this.style.height='100px !important';">
                     <div class="flex-grow-1">
                         <h5 class="mb-1">\${item.placeTitle}</h5>
                         <p class="mb-1">\${item.placeAddress}</p>

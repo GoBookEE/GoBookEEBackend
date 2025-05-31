@@ -43,6 +43,7 @@ public class InsertScheduleHandlerServlet extends HttpServlet {
             MessageRedirectTemplate.builder()
                     .msg("매장 예약 실패")
                     .loc("/place/view?placeSeq=" + placeSeq)
+                    .error("error")
                     .request(request)
                     .response(response)
                     .build().forward();

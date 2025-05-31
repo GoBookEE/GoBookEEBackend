@@ -39,6 +39,6 @@ public class ReviewViewResponse {
 
 	private String userNickName;
 	private String userProfile;
-	
+	private Long userSpeed;
 
 }
