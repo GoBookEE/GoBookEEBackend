@@ -80,7 +80,7 @@
     <section style="text-align:center;">
         <div class="userBtn">
             <button type="button" class="btn btn-dark btn-lg" onclick="location.assign('<%=request.getContextPath()%>/findidpage')">아이디 찾기</button>
-            <button type="button" class="btn btn-dark btn-lg">비밀번호 찾기</button>
+            <button type="button" class="btn btn-dark btn-lg" onclick="location.assign('<%=request.getContextPath()%>/findpwdpage')">비밀번호 찾기</button>
         </div>
     </section>
     <section style="text-align:center; margin-top: 140px;">

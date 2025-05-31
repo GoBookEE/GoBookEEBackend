@@ -24,7 +24,7 @@ public class SendEmailServlet extends HttpServlet {
         session.setAttribute("authCode", authCode);
         session.setAttribute("authCodeTime", createTime);
 
-        String subject = "[GoBookE] 회원가입 인증번호";
+        String subject = "[GoBookE] 인증번호";
         String content = "인증번호는 [" + authCode + "] 입니다. 5분 이내에 입력해주세요.";
 
         boolean result = MailSenderUtil.sendEmail(toEmail, subject, content);

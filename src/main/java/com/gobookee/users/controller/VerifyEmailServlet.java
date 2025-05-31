@@ -1,5 +1,7 @@
 package com.gobookee.users.controller;
 
+import com.gobookee.common.JsonConvertTemplate;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -29,7 +31,6 @@ public class VerifyEmailServlet extends HttpServlet {
                 session.removeAttribute("authCodeTime");
             }
         }
-        response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write("{\"result\": " + isValid + "}");
+        JsonConvertTemplate.toJson(isValid, response);
     }
 }

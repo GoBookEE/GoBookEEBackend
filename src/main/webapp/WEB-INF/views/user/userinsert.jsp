@@ -277,7 +277,7 @@
             }
 
             $.post("<%=request.getContextPath()%>/verifycode", {code: code}, function (res) {
-                if (res.result) {
+                if (res === true) {
                     alert("이메일 인증 성공!");
 
                     clearTimeout(timerInterval);

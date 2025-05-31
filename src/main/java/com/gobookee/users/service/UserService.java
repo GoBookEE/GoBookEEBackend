@@ -52,4 +52,18 @@ public class UserService {
         close(conn);
         return idList;
     }
+
+    public boolean searchUserByIdAndEmail(String userId, String email) {
+        Connection conn = getConnection();
+        int result = userDao().searchUserByIdAndEmail(conn, userId, email);
+        close(conn);
+        return result == 1;
+    }
+
+    public boolean changePwd(String userId, String newPassword) {
+        Connection conn = getConnection();
+        int result = userDao().changePwd(conn, userId, newPassword);
+        close(conn);
+        return result == 1;
+    }
 }

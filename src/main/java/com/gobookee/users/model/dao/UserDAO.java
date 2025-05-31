@@ -132,6 +132,46 @@ public class UserDAO {
         return idList;
     }
 
+    public int searchUserByIdAndEmail(Connection conn, String userId, String email) {
+        int result = 0;
+        pstmt = null;
+        rs = null;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("searchUserByIdAndEmail"));
+            pstmt.setString(1, userId);
+            pstmt.setString(2, email);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                result = 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+    }
+
+    public int changePwd(Connection conn, String userId, String newPassword) {
+        int result = 0;
+        pstmt = null;
+        rs = null;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("changePwd"));
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, userId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                result = 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
     //resultset의 결과를 유저DTO로 변환해주는 기능
     private User getUser(ResultSet rs) throws SQLException {
         return User.builder()
