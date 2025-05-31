@@ -1,6 +1,6 @@
 <%@ page language="java" pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-<section>
+<main>
 <br><br><br><br>
 	<select id="studygroupsortby">
 			<option value="latest">최신순</option>
@@ -10,7 +10,7 @@
 	<button onclick="location.assign('<%=request.getContextPath()%>/studygroup/listpage/end')">완료됨</button>
 	<div id="studyGroupListContainer"></div>
 	<div id="studyGroupPageBar"></div>
-</section>
+</main>
 <script>
 	let select="latest"
 	

@@ -19,4 +19,9 @@ public class StudyRequest {
 	private Timestamp requestDeleteTime;
 	private Long userSeq;
 	private Long studySeq;
+	
+	private String userProfile;
+	private String userNickName;
+	private Long userSpeed;
+	private Long hostSeq;
 }
