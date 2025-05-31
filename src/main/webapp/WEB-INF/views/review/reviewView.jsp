@@ -114,7 +114,7 @@ body {
 					<p class="mb-1 text-muted small"><%=review.getBookDescription()%></p>
 					<div class="text-muted small"><%=review.getBookAuthor()%></div>
 					<div class="review-meta mt-2">
-						리뷰 <strong><%=review.getRecommendCount()%></strong>개 | 평점 <strong
+						리뷰 <strong><%=review.getBookReviewCount()%></strong>개 | 평점 <strong
 							class="text-success">★ <%=review.getBookAvgRate()%></strong>
 					</div>
 				</div>
