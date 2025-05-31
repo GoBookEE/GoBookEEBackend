@@ -79,4 +79,18 @@ public class CommentsService {
 		return totalData;
 	}
 
+	public List<CommentsViewResponse> getAllCommentsRecByUser(Long userSeq, int cPage, int numPerPage) {
+		Connection conn = getConnection();
+		List<CommentsViewResponse> comments = cdao.getAllCommentsRecByUser(conn, userSeq, cPage, numPerPage);
+		close(conn);
+		return comments;
+	}
+
+	public int countCommentsRecByUser(Long userSeq) {
+		Connection conn = getConnection();
+		int totalData = cdao.countCommentsRecByUser(conn, userSeq);
+		close(conn);
+		return totalData;
+	}
+
 }
