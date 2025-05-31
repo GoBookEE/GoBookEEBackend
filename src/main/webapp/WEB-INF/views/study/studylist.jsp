@@ -10,12 +10,15 @@
         margin-bottom: 5px;
     }
 </style>
+<main class="flex-fill">
 <div>
-    <select id="studysortby">
-        <option value="latest">최신순</option>
-        <option value="recommend">추천순</option>
-    </select>
-    <div id="studyListContainer" style="padding-top: 40px"></div>
+	<div class="d-inline-block" style="padding-top: 20px; padding-left: 1rem;">
+	    <select id="studysortby" class="form-select study-select-style">
+	      <option value="latest">최신순</option>
+	      <option value="recommend">추천순</option>
+	    </select>
+  </div>
+    <div id="studyListContainer"></div>
     <div id="studyPageBar" style="padding-bottom:80px"></div>
     <script>
         let select = "latest"
@@ -57,13 +60,12 @@
                             const itemHtml = `
 							        <div class="p-4 book-card" onclick="location.assign('<%=request.getContextPath()%>/study/view?seq=\${b.studySeq}')">
 							            <div class="row book-card-row">
-							                <div class="book-card-img col col-5">
-							                
-							                <img src="<%=request.getContextPath()%>/resources/upload/study/\${b.photoRenamedName}"
-							                onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'; this.style.width='100px !important'; this.style.height='100px !important';"
-							                alt="스터디 이미지">
-							                
-							                </div>
+							            <div class="book-card-img col col-5" style="height: 180px; overflow: hidden; display: flex; align-items: center; justify-content: center;">
+							            <img src="<%=request.getContextPath()%>/resources/upload/study/\${b.photoRenamedName}" 
+							                 onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png';"
+							                 style="height: 100%; width: auto; object-fit: contain;"
+							                 alt="스터디 이미지">
+							          </div>
 							                <div class="book-card-content col col-7" >
 							                    <div class="book-card-title">\${b.studyTitle}</div>
 							                    <div class="book-card-desc">\${b.studyDate}</div>
@@ -95,7 +97,6 @@
         }
     </script>
 </div>
-<div id="studyAddress">${b.studyAddress}</div>
 
 <script>
     const addr = document.getElementById("studyAddress");
@@ -120,6 +121,22 @@
         border-radius: 0;
     }
 
-
+.study-select-style {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #4CAF50; /* 초록색 */
+  color: white;
+  padding: 0.375rem 2.5rem 0.375rem 1rem; /* 오른쪽 패딩 여유 */
+  border: none;
+  border-radius: 999px; /* pill 형태 */
+  background-image: url("data:image/svg+xml;charset=UTF-8,<svg xmlns='http://www.w3.org/2000/svg' fill='white' viewBox='0 0 16 16'><path d='M1.5 5.5l6 6 6-6'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 12px;
+  font-weight: 500;
+}
 </style>
+
+</main>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
