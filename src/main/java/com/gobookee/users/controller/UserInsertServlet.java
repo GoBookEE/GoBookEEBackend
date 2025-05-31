@@ -20,42 +20,38 @@ import java.io.IOException;
 public class UserInsertServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
     public UserInsertServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
-    /**
-     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        String emailVerified = request.getParameter("emailVerified");
+        if (emailVerified == null || !emailVerified.equals("true")) {
+            MessageRedirectTemplate.builder()
+                    .request(request)
+                    .msg("이메일 인증이 완료되지 않았습니다.")
+                    .error("error")
+                    .loc("/signuppage?userType=" + request.getParameter("userType"))
+                    .response(response)
+                    .build().forward();
+            return;
+        }
 
         String gender = request.getParameter("userGender");
         Gender userGender = null;
-
-        if (gender != null) {
-//			'm'.'f' => 'M','F' 필요시 toUpperCase
-            try {
-                userGender = Gender.valueOf(gender.toUpperCase()); // 필요시 toUpperCase
-            } catch (IllegalArgumentException e) {
-                // 유효하지 않은 값 처리
-                System.out.println("gender value: " + gender);
-            }
+        try {
+            userGender = Gender.valueOf(gender.toUpperCase());
+        } catch (IllegalArgumentException | NullPointerException e) {
+            e.printStackTrace();
         }
 
         String type = request.getParameter("userType");
         UserType userType = null;
-
-        if (type != null) {
-            try {
-                userType = UserType.valueOf(type);
-            } catch (IllegalArgumentException e) {
-                // 유효하지 않은 값 처리
-                System.out.println("gender value: " + type);
-            }
+        try {
+            userType = UserType.valueOf(type);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            e.printStackTrace();
         }
 
         String userNickname = request.getParameter("userNickname");
@@ -78,8 +74,8 @@ public class UserInsertServlet extends HttpServlet {
                 .build();
 
         int result = UserService.userService().insertUser(newUser);
+        String url;
 
-        String url = "";
         if (result > 0) {
             url = "/loginpage";
             MessageRedirectTemplate.builder()
@@ -100,12 +96,7 @@ public class UserInsertServlet extends HttpServlet {
         }
     }
 
-    /**
-     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // TODO Auto-generated method stub
         doGet(request, response);
     }
-
 }

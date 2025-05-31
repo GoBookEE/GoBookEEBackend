@@ -1,6 +1,5 @@
 package com.gobookee.users.model.dao;
 
-import com.gobookee.common.JDBCTemplate;
 import com.gobookee.users.model.dto.Gender;
 import com.gobookee.users.model.dto.User;
 import com.gobookee.users.model.dto.UserType;
@@ -11,7 +10,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
+
+import static com.gobookee.common.JDBCTemplate.close;
 
 
 public class UserDAO {
@@ -57,7 +60,7 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCTemplate.close(pstmt);
+            close(pstmt);
         }
 
         return result;
@@ -73,8 +76,8 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCTemplate.close(rs);
-            JDBCTemplate.close(pstmt);
+            close(rs);
+            close(pstmt);
         }
         return u;
     }
@@ -89,8 +92,8 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCTemplate.close(rs);
-            JDBCTemplate.close(pstmt);
+            close(rs);
+            close(pstmt);
         }
         return u;
     }
@@ -104,8 +107,69 @@ public class UserDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-            JDBCTemplate.close(pstmt);
+            close(pstmt);
         }
+    }
+
+
+    public List<String> searchUserIdByEmail(Connection conn, String email) {
+        pstmt = null;
+        rs = null;
+        List<String> idList = new ArrayList<>();
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("findUserIdByUserEmail"));
+            pstmt.setString(1, email);
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
+                idList.add(rs.getString(1));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return idList;
+    }
+
+    public int searchUserByIdAndEmail(Connection conn, String userId, String email) {
+        int result = 0;
+        pstmt = null;
+        rs = null;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("searchUserByIdAndEmail"));
+            pstmt.setString(1, userId);
+            pstmt.setString(2, email);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                result = 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+        return result;
+    }
+
+    public int changePwd(Connection conn, String userId, String newPassword) {
+        int result = 0;
+        pstmt = null;
+        rs = null;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("changePwd"));
+            pstmt.setString(1, newPassword);
+            pstmt.setString(2, userId);
+            rs = pstmt.executeQuery();
+            if (rs.next()) {
+                result = 1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return result;
     }
 
     //resultset의 결과를 유저DTO로 변환해주는 기능
@@ -149,6 +213,5 @@ public class UserDAO {
                 throw new IllegalArgumentException("TYPE : " + value);
         }
     }
-
 
 }

@@ -189,19 +189,22 @@
             <div class="input-group input-group-custom">
                 <input type="email" class="form-control" name="userEmail" id="userEmail" placeholder="이메일을 입력하세요">
                 <span class="input-group-text">
-                <button type="button" class="go-inner-btn btn btn-dark">인증요청</button>
+                <button type="button" class="go-inner-btn btn btn-dark" id="sendEmail">인증요청</button>
             </span>
             </div>
 
             <!-- 인증번호 -->
             <label class="form-label text-green">인증번호 <span style="color:#50A65D">*</span></label>
-            <div class="input-group input-group-custom">
+            <div class="input-group input-group-custom align-items-center">
                 <input type="text" class="form-control" name="userEmailCheckNum" id="userEmailCheckNum"
                        placeholder="인증번호를 입력하세요">
                 <span class="input-group-text">
-                <button class="go-inner-btn btn btn-dark">확인</button>
-            </span>
+        <button type="button" class="go-inner-btn btn btn-dark" id="verifyEmail">확인</button></span>
+                <span class="ms-2" id="timer" style="font-weight: 600; color: #dc3545;"></span>
             </div>
+
+            <!-- 이메일 인증 여부를 서버로 전송할 hidden input -->
+            <input type="hidden" name="emailVerified" id="emailVerified" value="false">
 
             <!-- 휴대폰 번호 -->
             <label class="form-label text-green">휴대폰 번호 <span style="color:#50A65D">*</span></label>
@@ -247,6 +250,80 @@
     </div>
 
     <script>
+        // 인증 요청
+        $("#sendEmail").on("click", function () {
+            const email = $("#userEmail").val();
+            if (!email) {
+                alert("이메일을 입력하세요.");
+                return;
+            }
+
+            $.post("<%=request.getContextPath()%>/sendemail", {email: email}, function (res) {
+                if (res === true) {
+                    alert("인증번호가 전송되었습니다.");
+                    startTimer(); // 타이머 시작
+                } else {
+                    alert("이메일 전송 실패");
+                }
+            }, "json");
+        });
+
+        // 인증번호 확인
+        $("#verifyEmail").on("click", function () {
+            const code = $("#userEmailCheckNum").val();
+            if (!code) {
+                alert("인증번호를 입력하세요.");
+                return;
+            }
+
+            $.post("<%=request.getContextPath()%>/verifycode", {code: code}, function (res) {
+                if (res === true) {
+                    alert("이메일 인증 성공!");
+
+                    clearTimeout(timerInterval);
+                    $("#timer").text("인증 완료").css("color", "#28a745");
+
+
+                    // 인증번호 확인 성공 후
+                    $("#userEmail").prop("readonly", true);
+                    $("#sendEmail").prop("disabled", true);
+                    $("#userEmailCheckNum").prop("readonly", true);
+                    $("#verifyEmail").prop("disabled", true);
+
+                    // 인증 여부 hidden input 값 변경
+                    $("#emailVerified").val("true");
+                } else {
+                    alert("인증번호가 일치하지 않습니다.");
+                }
+            }, "json");
+        });
+
+        let timerInterval;
+        let timeLeft = 300; // 5분 = 300초
+
+        function startTimer() {
+            clearInterval(timerInterval); // 기존 타이머 제거
+            timeLeft = 300;
+            updateTimerDisplay();
+
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                updateTimerDisplay();
+
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    $("#timer").text("만료됨");
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const minutes = String(Math.floor(timeLeft / 60)).padStart(2, '0');
+            const seconds = String(timeLeft % 60).padStart(2, '0');
+            $("#timer").text(`\${minutes}:\${seconds}`);
+        }
+
+
         $("#userId").on("change", function () {
             $("#idDuplicateFlag").val("false");
         });
