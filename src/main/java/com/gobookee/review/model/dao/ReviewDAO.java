@@ -41,6 +41,8 @@ public class ReviewDAO {
 	}
 
 	public List<ReviewListResponse> getAllReviewsByDate(Connection conn, int cPage, int numPerPage) {
+		pstmt = null;
+		rs = null;
 		List<ReviewListResponse> reviews = new ArrayList<>();
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllReviews"));
@@ -60,6 +62,8 @@ public class ReviewDAO {
 	}
 
 	public List<ReviewListResponse> getAllReviewsByRec(Connection conn, int cPage, int numPerPage) {
+		pstmt = null;
+		rs = null;
 		List<ReviewListResponse> reviews = new ArrayList<>();
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllReviewsByRec"));
@@ -79,6 +83,8 @@ public class ReviewDAO {
 	}
 
 	public List<ReviewListResponse> getAllReviewsByUser(Connection conn, Long userSeq, int cPage, int numPerPage) {
+		pstmt = null;
+		rs = null;
 		List<ReviewListResponse> reviews = new ArrayList<>();
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllReviewsByUser"));
@@ -99,6 +105,8 @@ public class ReviewDAO {
 	}
 
 	public int countByUser(Connection conn, Long userSeq) {
+		pstmt = null;
+		rs = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("countByUser"));
@@ -116,6 +124,8 @@ public class ReviewDAO {
 	}
 
 	public List<ReviewListResponse> getAllReviewsRecByUser(Connection conn, Long userSeq, int cPage, int numPerPage) {
+		pstmt = null;
+		rs = null;
 		List<ReviewListResponse> reviews = new ArrayList<>();
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllReviewsRecByUser"));
@@ -136,6 +146,8 @@ public class ReviewDAO {
 	}
 
 	public int countReviewsRecByUser(Connection conn, Long userSeq) {
+		pstmt = null;
+		rs = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("countReviewsRecByUser"));
@@ -172,6 +184,8 @@ public class ReviewDAO {
 	}
 
 	public List<ReviewListResponse> getBestReviews(Connection conn) {
+		pstmt = null;
+		rs = null;
 		List<ReviewListResponse> reviews = new ArrayList<>();
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("getBestReviews"));
@@ -189,6 +203,8 @@ public class ReviewDAO {
 	}
 
 	public ReviewViewResponse getReviewBySeq(Connection conn, Long reviewSeq) {
+		pstmt = null;
+		rs = null;
 		ReviewViewResponse dto = new ReviewViewResponse();
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("getReviewBySeq"));
@@ -206,6 +222,7 @@ public class ReviewDAO {
 	}
 
 	public int insertReview(Connection conn, Review dto) {
+		pstmt = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("insertReview"));
@@ -225,6 +242,7 @@ public class ReviewDAO {
 	}
 
 	public int updateReview(Connection conn, Review dto) {
+		pstmt = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("updateReview"));
@@ -245,6 +263,7 @@ public class ReviewDAO {
 	}
 
 	public int deleteReview(Connection conn, Long reviewSeq, Long userSeq) {
+		pstmt = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("deleteReview"));
@@ -261,6 +280,8 @@ public class ReviewDAO {
 	}
 
 	public List<BookReviewResponse> searchBooks(Connection conn, String keyword) {
+		pstmt = null;
+		rs = null;
 		List<BookReviewResponse> list = new ArrayList<>();
 
 		try {
@@ -269,7 +290,7 @@ public class ReviewDAO {
 			pstmt.setString(1, search);
 			pstmt.setString(2, search);
 
-			ResultSet rs = pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				BookReviewResponse book = BookReviewResponse.builder().bookSeq(rs.getLong("BOOK_SEQ"))
 						.bookTitle(rs.getString("BOOK_TITLE")).bookAuthor(rs.getString("BOOK_AUTHOR"))

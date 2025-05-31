@@ -9,11 +9,16 @@ List<ReviewListResponse> reviews = (List<ReviewListResponse>)request.getAttribut
 <style>
 body {
 	background-color: #f8f9fa;
+	font-size: 1.15rem;
 }
 
 .nav-tabs .nav-link.active {
 	color: #198754;
 	border-bottom: 2px solid #198754;
+}
+
+.review-card {
+	cursor: pointer;
 }
 
 .review-card img {
@@ -181,8 +186,8 @@ function loadReviews(sortType,cPage = 1) {
                     	  <div class="d-flex flex-column flex-grow-1">
                     	    <strong class="mb-1">\${b.reviewTitle}</strong>
                     	    <small class="text-muted line-clamp mb-1">\${b.reviewContents}</small>
-                    	    <br>
-                    	    <small class="text-muted">\${b.bookTitle}</small>
+                   			<hr>
+                    	    <small class="text-muted line-clamp">\${b.bookTitle}</small>
                     	  </div>
 						
                     	 
