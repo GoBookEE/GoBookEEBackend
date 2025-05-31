@@ -19,6 +19,7 @@ public class StudyRequest {
 	private Timestamp requestDeleteTime;
 	private Long userSeq;
 	private Long studySeq;
+	private Long studyMemberLimit;
 	
 	private String userProfile;
 	private String userNickName;
