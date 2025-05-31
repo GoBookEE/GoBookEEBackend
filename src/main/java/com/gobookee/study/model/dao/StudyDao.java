@@ -16,6 +16,7 @@ import java.util.Properties;
 import com.gobookee.study.model.dto.SearchStudyResponse;
 import com.gobookee.study.model.dto.StudyInsert;
 import com.gobookee.study.model.dto.StudyList;
+import com.gobookee.study.model.dto.StudyRequest;
 import com.gobookee.study.model.dto.StudyView;
 
 public class StudyDao {
@@ -299,6 +300,61 @@ public class StudyDao {
             pstmt.setString(3, requestMsg);
             return pstmt.executeUpdate();
         }
+    }
+    
+    public List<StudyRequest> getStudyRequests(Connection conn, Long studySeq) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<StudyRequest> studyrequest = new ArrayList<>();
+
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("studyRequests"));
+            pstmt.setLong(1, studySeq);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                studyrequest.add(getStudyRequest(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+
+        return studyrequest;
+    }
+    
+    private StudyRequest getStudyRequest(ResultSet rs)throws SQLException{
+    	return StudyRequest.builder()
+    			.studySeq(rs.getLong("study_seq"))
+    			.userSeq(rs.getLong("user_seq"))
+    			.userProfile(rs.getString("user_profile"))
+    			.userNickName(rs.getString("user_nickname"))
+    			.userSpeed(rs.getLong("user_speed"))
+    			.requestConfirm(rs.getString("request_confirm"))
+    			.requestMsg(rs.getString("request_msg"))
+    			.hostSeq(rs.getLong("host_seq"))
+    			.build();
+    }
+    
+    public int updateRequestConfirm(Connection conn, Long userSeq, Long studySeq, String confirmStatus) {
+        PreparedStatement pstmt = null;
+        
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("updateRequestConfirm"));
+            pstmt.setString(1, confirmStatus);
+            pstmt.setLong(2, studySeq);
+            pstmt.setLong(3, userSeq);
+            result = pstmt.executeUpdate();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return result;
     }
     
 }

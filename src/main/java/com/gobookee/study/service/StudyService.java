@@ -16,6 +16,7 @@ import com.gobookee.study.model.dao.StudyDao;
 import com.gobookee.study.model.dto.SearchStudyResponse;
 import com.gobookee.study.model.dto.StudyInsert;
 import com.gobookee.study.model.dto.StudyList;
+import com.gobookee.study.model.dto.StudyRequest;
 import com.gobookee.study.model.dto.StudyView;
 
 public class StudyService {
@@ -125,6 +126,31 @@ public class StudyService {
             e.printStackTrace();
             return 0;
         }
+    }
+    
+    public List<StudyRequest> getStudyRequests(Long studySeq) {
+        Connection conn = null;
+        List<StudyRequest> studyRequest = null;
+
+        try {
+            conn = getConnection();
+            studyRequest = dao.getStudyRequests(conn, studySeq);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(conn);
+        }
+
+        return studyRequest;
+    }
+    
+    public int updateRequestConfirm(Long userSeq, Long studySeq, String confirmStatus) {
+        Connection conn = getConnection();
+        int result = dao.updateRequestConfirm(conn, userSeq, studySeq, confirmStatus);
+        if (result > 0) commit(conn);
+        else rollback(conn);
+        close(conn);
+        return result;
     }
     
 }

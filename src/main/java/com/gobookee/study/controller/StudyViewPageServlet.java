@@ -1,7 +1,6 @@
 package com.gobookee.study.controller;
 
 import java.io.IOException;
-import java.sql.PreparedStatement;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.gobookee.common.CommonPathTemplate;
 import com.gobookee.common.MessageRedirectTemplate;
 import com.gobookee.study.service.StudyService;
-import com.gobookee.users.model.dto.User;
 
 @WebServlet("/study/view")
 public class StudyViewPageServlet extends HttpServlet {
