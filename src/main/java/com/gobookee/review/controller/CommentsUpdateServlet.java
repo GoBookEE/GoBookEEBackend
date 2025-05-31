@@ -29,21 +29,22 @@ public class CommentsUpdateServlet extends HttpServlet {
 			throws ServletException, IOException {
 		long commentSeq = Long.parseLong(request.getParameter("commentSeq"));
 		String newContent = request.getParameter("newContent");
-		long userSeq = ((User)
-		request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자 확인
+		long userSeq = ((User) request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자 확인
 		long reviewSeq = Long.parseLong(request.getParameter("reviewSeq")); // redirect용
 
-        int result = service.updateComment(commentSeq, userSeq, newContent);
-        String msg, loc;
-		if(result>0) {
-			msg="댓글 수정 성공";
-			loc="/review/view?seq=" + reviewSeq;
-		}else {
-			msg="댓글 수정 실패";
-			loc="/review/view?seq=" + reviewSeq; 
+		int result = service.updateComment(commentSeq, userSeq, newContent);
+		String msg, loc;
+		if (result > 0) {
+			msg = "댓글 수정 성공";
+			loc = "/review/view?seq=" + reviewSeq;
+			request.setAttribute("error", "success");
+		} else {
+			msg = "댓글 수정 실패";
+			loc = "/review/view?seq=" + reviewSeq;
+			request.setAttribute("error", "error");
 		}
-		 request.setAttribute("msg", msg);
-		 request.setAttribute("loc", loc);
+		request.setAttribute("msg", msg);
+		request.setAttribute("loc", loc);
 
 		request.getRequestDispatcher(CommonPathTemplate.getViewPath("/common/msg")).forward(request, response);
 	}

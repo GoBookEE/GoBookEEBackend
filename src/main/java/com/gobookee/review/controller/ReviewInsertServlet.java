@@ -45,9 +45,11 @@ public class ReviewInsertServlet extends HttpServlet {
 		if (result > 0) {
 			msg = "리뷰 등록 성공";
 			loc = "/review/listpage";
+			request.setAttribute("error", "success");
 		} else {
 			msg = "리뷰 등록 실패";
 			loc = "review/reviewInsert.jsp?error=fail";
+			request.setAttribute("error", "error");
 		}
 		request.setAttribute("msg", msg);
 		request.setAttribute("loc", loc);

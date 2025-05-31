@@ -87,24 +87,6 @@ public class PlaceService {
 		return placeList;
 	}
 
-	public List<PlaceListResponse> getAllPlaceByUser(Long userSeq, int cPage, int numPerPage) {
-		conn = getConnection();
-		List<PlaceListResponse> placeList = placeDao.getAllPlaceByUser(conn, userSeq, cPage, numPerPage);
-		for (PlaceListResponse placeListResponse : placeList) {
-			String photoName = photoDao.getFirstPhotoNameByBoardSeq(conn, placeListResponse.getPlaceSeq());
-			placeListResponse.setPlaceThumbnail(photoName);
-		}
-		close(conn);
-		return placeList;
-	}
-
-	public int countByUser(Long userSeq) {
-		Connection conn = getConnection();
-		int totalData = placeDao.countByUser(conn, userSeq);
-		close(conn);
-		return totalData;
-	}
-
 	public List<PlaceListResponse> getAllPlaceListByRec(HashMap requestParam) {
 		conn = getConnection();
 		List<PlaceListResponse> placeList = placeDao.getAllPlaceListByRec(conn, requestParam);
@@ -192,5 +174,41 @@ public class PlaceService {
 			insertedPhotos += photoDao.createPhoto(conn, photo);
 		}
 		return insertedPhotos == fileList.size();
+	}
+
+	public List<PlaceListResponse> getAllPlaceByUser(Long userSeq, int cPage, int numPerPage) {
+		conn = getConnection();
+		List<PlaceListResponse> placeList = placeDao.getAllPlaceByUser(conn, userSeq, cPage, numPerPage);
+		for (PlaceListResponse placeListResponse : placeList) {
+			String photoName = photoDao.getFirstPhotoNameByBoardSeq(conn, placeListResponse.getPlaceSeq());
+			placeListResponse.setPlaceThumbnail(photoName);
+		}
+		close(conn);
+		return placeList;
+	}
+
+	public int countByUser(Long userSeq) {
+		Connection conn = getConnection();
+		int totalData = placeDao.countByUser(conn, userSeq);
+		close(conn);
+		return totalData;
+	}
+
+	public List<PlaceListResponse> getAllPlacesRecByUser(Long userSeq, int cPage, int numPerPage) {
+		conn = getConnection();
+		List<PlaceListResponse> placeList = placeDao.getAllPlacesRecByUser(conn, userSeq, cPage, numPerPage);
+		for (PlaceListResponse placeListResponse : placeList) {
+			String photoName = photoDao.getFirstPhotoNameByBoardSeq(conn, placeListResponse.getPlaceSeq());
+			placeListResponse.setPlaceThumbnail(photoName);
+		}
+		close(conn);
+		return placeList;
+	}
+
+	public int placeCountRecByUser(Long userSeq) {
+		Connection conn = getConnection();
+		int totalData = placeDao.placeCountRecByUser(conn, userSeq);
+		close(conn);
+		return totalData;
 	}
 }
