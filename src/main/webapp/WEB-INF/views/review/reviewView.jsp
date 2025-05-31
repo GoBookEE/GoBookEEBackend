@@ -16,6 +16,12 @@ List<CommentsViewResponse> comments = review.getComments();
 header, footer {
 	display: none !important;
 }
+body {
+  font-size: 1.15rem;
+}
+.review-card {
+	cursor: pointer;
+}
 </style>
 <section>
 	<main>
@@ -26,7 +32,7 @@ header, footer {
 				style="position: fixed; top: 0; left: 30%; right: 30%; z-index: 1030; background-color: #fff;">
 
 				<button class="btn btn-link text-dark text-decoration-none"
-					onclick="history.back()">
+					onclick="location.assign('<%=request.getContextPath()%>/review/listpage')">
 					<i class="bi bi-arrow-left" style="font-size: 1.5rem;"></i>
 				</button>
 
@@ -99,7 +105,7 @@ header, footer {
 			</div>
 			<hr>
 			<div
-				class="d-flex border rounded p-3 mb-3 align-items-center bg-light"
+				class="d-flex border rounded p-3 mb-3 align-items-center bg-light review-card"
 				onclick="location.assign('<%=request.getContextPath()%>//books/bookdetail?bookSeq=<%=review.getBookSeq()%>')">
 				<img src="<%=review.getBookCover()%>" alt="book-cover" width="90"
 					height="120" class="me-3 rounded">
@@ -292,7 +298,7 @@ header, footer {
 										data-type="COMMENT" data-seq="<%=child.getCommentsSeq()%>"
 										data-rec="0">
 										<i class="bi bi-hand-thumbs-up me-1"
-											style="font-size: 0.9rem;"></i> <span class="count"><%=c.getRecommendCount()%></span>
+											style="font-size: 0.9rem;"></i> <span class="count"><%=child.getRecommendCount()%></span>
 									</button>
 
 									<!-- 댓글 비추천 버튼 -->
@@ -301,7 +307,7 @@ header, footer {
 										data-type="COMMENT" data-seq="<%=child.getCommentsSeq()%>"
 										data-rec="1">
 										<i class="bi bi-hand-thumbs-down me-1"
-											style="font-size: 0.9rem;"></i> <span class="count"><%=c.getNonRecommendCount()%></span>
+											style="font-size: 0.9rem;"></i> <span class="count"><%=child.getNonRecommendCount()%></span>
 									</button>
 									<%
 									}
