@@ -328,6 +328,7 @@ public class StudyDao {
     private StudyRequest getStudyRequest(ResultSet rs)throws SQLException{
     	return StudyRequest.builder()
     			.studySeq(rs.getLong("study_seq"))
+    			.studyMemberLimit(rs.getLong("study_member_limit"))
     			.userSeq(rs.getLong("user_seq"))
     			.userProfile(rs.getString("user_profile"))
     			.userNickName(rs.getString("user_nickname"))

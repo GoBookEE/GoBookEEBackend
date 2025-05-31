@@ -70,6 +70,7 @@ public class StudyGroupListServlet extends HttpServlet {
 		result.put("pageBar", pb.makePageBar(request));
 		
 		gson.toJson(result, response.getWriter());
+		System.out.println(userseq+"/"+list);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

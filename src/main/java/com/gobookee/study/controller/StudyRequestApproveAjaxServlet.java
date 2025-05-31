@@ -29,9 +29,7 @@ public class StudyRequestApproveAjaxServlet extends HttpServlet {
 	        Long studySeq = Long.parseLong(request.getParameter("studySeq"));
 	        Long userSeq = Long.parseLong(request.getParameter("userSeq"));
 	        String status = request.getParameter("status"); // "Y" or "R"
-
 	        int result = new StudyService().updateRequestConfirm(userSeq, studySeq, status);
-	        System.out.println(result);
 	        response.setContentType("application/json;charset=UTF-8");
 	        response.getWriter().write("{\"success\":" + (result > 0) + "}");
 	    } catch (Exception e) {
