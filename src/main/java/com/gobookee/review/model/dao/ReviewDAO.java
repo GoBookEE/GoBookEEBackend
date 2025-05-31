@@ -115,6 +115,43 @@ public class ReviewDAO {
 		return result;
 	}
 
+	public List<ReviewListResponse> getAllReviewsRecByUser(Connection conn, Long userSeq, int cPage, int numPerPage) {
+		List<ReviewListResponse> reviews = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllReviewsRecByUser"));
+			pstmt.setLong(1, userSeq);
+			pstmt.setInt(2, (cPage - 1) * numPerPage + 1);
+			pstmt.setInt(3, cPage * numPerPage);
+			rs = pstmt.executeQuery();
+			while (rs.next())
+				reviews.add(getReviewListResponse(rs));
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return reviews;
+	}
+
+	public int countReviewsRecByUser(Connection conn, Long userSeq) {
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("countReviewsRecByUser"));
+			pstmt.setLong(1, userSeq);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
 	public int reviewCount(Connection conn) {
 		Statement stmt = null;
 		ResultSet rs = null;
