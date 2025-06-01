@@ -629,6 +629,8 @@
                 validateFlag = false;
             }
 
+            // 하이픈 제거 처리
+            document.getElementById("userPhone").value = userPhone.replace(/-/g, '');
             return validateFlag;
         };
 
