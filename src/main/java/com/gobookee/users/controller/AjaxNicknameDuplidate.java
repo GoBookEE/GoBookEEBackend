@@ -13,16 +13,16 @@ import java.io.IOException;
 import java.util.Map;
 
 /**
- * Servlet implementation class AjaxuserIdduplicate
+ * Servlet implementation class Ajaxnicknameduplidate
  */
-@WebServlet("/ajaxuseridduplicate")
-public class AjaxuserIdduplicate extends HttpServlet {
+@WebServlet("/ajax/nicknameduplicate")
+public class AjaxNicknameDuplidate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AjaxuserIdduplicate() {
+    public AjaxNicknameDuplidate() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,10 +31,10 @@ public class AjaxuserIdduplicate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	
+		String userNickname = request.getParameter("userNickname");
 		
-		String userId = request.getParameter("userId");
-		
-		User u = UserService.userService().searchUserById(userId);
+		User u = UserService.userService().searchUserByNickName(userNickname);
 		
 		response.setContentType("application/json;charset=utf-8");
 		new Gson().toJson(Map.of("result",u==null),response.getWriter());

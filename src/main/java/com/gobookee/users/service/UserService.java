@@ -2,6 +2,7 @@ package com.gobookee.users.service;
 
 import com.gobookee.users.model.dao.UserDAO;
 import com.gobookee.users.model.dto.User;
+import com.gobookee.users.model.dto.UserUpdateProfile;
 
 import java.sql.Connection;
 import java.util.List;
@@ -63,6 +64,13 @@ public class UserService {
     public boolean changePwd(String userId, String newPassword) {
         Connection conn = getConnection();
         int result = userDao().changePwd(conn, userId, newPassword);
+        close(conn);
+        return result == 1;
+    }
+
+    public boolean updateProfile(UserUpdateProfile user) {
+        Connection conn = getConnection();
+        int result = userDao().updateProfile(conn, user);
         close(conn);
         return result == 1;
     }

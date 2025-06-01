@@ -1,24 +1,22 @@
 package com.gobookee.mypage.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.gobookee.common.AjaxPageBarTemplate;
+import com.gobookee.place.service.PlaceService;
+import com.gobookee.review.service.CommentsService;
+import com.gobookee.review.service.ReviewService;
+import com.gobookee.users.model.dto.User;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.gobookee.common.AjaxPageBarTemplate;
-import com.gobookee.place.model.dao.PlaceDao;
-import com.gobookee.place.service.PlaceService;
-import com.gobookee.review.service.CommentsService;
-import com.gobookee.review.service.ReviewService;
-import com.gobookee.users.model.dto.User;
-import com.google.gson.Gson;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @WebServlet("/myboard/ajax")
 public class MyboardAjaxServlet extends HttpServlet {

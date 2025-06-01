@@ -22,9 +22,6 @@ public class StudyViewPageServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Long seq = Long.valueOf(request.getParameter("seq"));
-        System.out.println(seq);
-        System.out.println(service.getStudyView(seq));
-        System.out.println(service.getStudyViewUser(seq));
         request.setAttribute("studyView", service.getStudyView(seq));
         request.setAttribute("studyViewUser", service.getStudyViewUser(seq));
         request.setAttribute("studyNotConfirmedUser", service.getStudyNotConfirmedUser(seq));

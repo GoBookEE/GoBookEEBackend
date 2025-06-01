@@ -352,7 +352,7 @@
         function nickNameDuplicate() {
             const userNickname = $("#userNickname").val();
             if (userNickname.length >= 2) {
-                fetch("<%=request.getContextPath()%>/ajaxnicknameduplicate?userNickname=" + userNickname)
+                fetch("<%=request.getContextPath()%>/ajax/nicknameduplicate?userNickname=" + userNickname)
                     .then(response => {
                         if (response.ok) {
                             return response.json();
@@ -384,7 +384,7 @@
         const idDuplicate = () => {
             const userId = $("#userId").val();
             if (userId.length >= 4) {
-                fetch("<%=request.getContextPath()%>/ajaxuseridduplicate?userId=" + userId)
+                fetch("<%=request.getContextPath()%>/ajax/useridduplicate?userId=" + userId)
                     .then(response => {
                         if (response.ok) {
                             return response.json();
@@ -629,6 +629,8 @@
                 validateFlag = false;
             }
 
+            // 하이픈 제거 처리
+            document.getElementById("userPhone").value = userPhone.replace(/-/g, '');
             return validateFlag;
         };
 

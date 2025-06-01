@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 
-@WebFilter(servletNames = {"userLoginServlet", "userInsertServlet", "updatePwdHandlerServlet"})
+@WebFilter(servletNames = {"userLoginServlet", "userInsertServlet", "updatePwdHandlerServlet", "updateProfileHandlerServlet"})
 public class PasswordEncoderFilter implements Filter {
     public void init(FilterConfig config) throws ServletException {
     }
