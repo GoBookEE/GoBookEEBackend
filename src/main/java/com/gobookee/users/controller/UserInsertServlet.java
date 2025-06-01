@@ -66,14 +66,14 @@ public class UserInsertServlet extends HttpServlet {
         String userPhone = request.getParameter("userPhone");
 
         User newUser = User.builder()
-                .UserAddress(address + " || " + userAddressDetail)
-                .UserGender(userGender)
-                .UserNickName(userNickname)
-                .UserId(userId)
-                .UserPwd(userPwd)
-                .UserType(userType)
-                .UserEmail(userEmail)
-                .UserPhone(userPhone)
+                .userAddress(address + " || " + userAddressDetail)
+                .userGender(userGender)
+                .userNickName(userNickname)
+                .userId(userId)
+                .userPwd(userPwd)
+                .userType(userType)
+                .userEmail(userEmail)
+                .userPhone(userPhone)
                 .build();
 
         int result = UserService.userService().insertUser(newUser);
