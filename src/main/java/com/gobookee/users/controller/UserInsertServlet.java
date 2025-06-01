@@ -53,8 +53,7 @@ public class UserInsertServlet extends HttpServlet {
             try {
                 userType = UserType.valueOf(type);
             } catch (IllegalArgumentException e) {
-                // 유효하지 않은 값 처리
-                System.out.println("gender value: " + type);
+  
             }
         }
 

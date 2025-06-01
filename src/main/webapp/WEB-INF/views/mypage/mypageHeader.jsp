@@ -22,14 +22,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100..900&display=swap" rel="stylesheet">
 </head>
+<style>
+	header {
+		height:70px;
+	}
+</style>
 <header>
-    <div class="container d-flex justify-content-between align-items-center text-center small">
+    <div class="container d-flex justify-content-between align-items-center text-center small" style="margin-top: 15px;">
         <div class="col-2">
             <h2 style="font-size:20px; font-weight:600; margin-top:10px">마이 페이지</h2>
         </div>
         <div class="col-2">
-            <i class="bi bi-search fs-1" onclick="location.assign('<%=request.getContextPath()%>/search/page')"></i>
+            <i class="bi bi-gear-fill" onclick="location.assign('<%=request.getContextPath()%>/')"></i>
         </div>
     </div>
 </header>
 <body class="d-flex flex-column min-vh-100">
+
