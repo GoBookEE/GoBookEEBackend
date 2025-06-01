@@ -34,7 +34,6 @@ public class ReviewUpdateServlet extends HttpServlet {
 		String contents = request.getParameter("reviewContents");
 		int rate = Integer.parseInt(request.getParameter("reviewRate"));
 		Long reviewSeq = Long.parseLong(request.getParameter("reviewSeq"));
-		System.out.println(bookSeq + title + contents + rate);
 		Long userSeq = ((User) request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자
 
 		Review review = Review.builder().bookSeq(bookSeq).userSeq(userSeq).reviewTitle(title).reviewContents(contents)
@@ -45,9 +44,11 @@ public class ReviewUpdateServlet extends HttpServlet {
 		if (result > 0) {
 			msg = "리뷰 수정 성공";
 			loc = "/review/view?seq=" + reviewSeq;
+			request.setAttribute("error", "success");
 		} else {
 			msg = "리뷰 수정 실패";
 			loc = "review/updatepage";
+			request.setAttribute("error", "error");
 		}
 		request.setAttribute("msg", msg);
 		request.setAttribute("loc", loc);

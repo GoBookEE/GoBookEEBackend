@@ -37,4 +37,15 @@ bin/
 Scripts
 
 *.png
+!default.png
+!error.png
+!logo.png
+!sad.png
+!walk.png
+!bike.png
+!car.png
+!train.png
+!airplain.png
+!rocket.png
 *.jpg
+*.war

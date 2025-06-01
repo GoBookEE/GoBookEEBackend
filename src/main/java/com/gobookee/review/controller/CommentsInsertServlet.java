@@ -30,16 +30,14 @@ public class CommentsInsertServlet extends HttpServlet {
 			throws ServletException, IOException {
 		String content = request.getParameter("commentContent");
 		long reviewSeq = Long.parseLong(request.getParameter("reviewSeq"));
-		long userSeq =
-		((User)request.getSession().getAttribute("loginUser")).getUserSeq(); // 예시
+		long userSeq = ((User) request.getSession().getAttribute("loginUser")).getUserSeq(); // 예시
 		long parentSeq = 0;
 
 		if (request.getParameter("parentCommentSeq") != null) {
 			parentSeq = Long.parseLong(request.getParameter("parentCommentSeq"));
 		}
 
-		Comments dto = Comments.builder().commentsContents(content).commentsParentSeq(parentSeq)
-				.userSeq(userSeq)
+		Comments dto = Comments.builder().commentsContents(content).commentsParentSeq(parentSeq).userSeq(userSeq)
 				.reviewSeq(reviewSeq).build();
 
 		int result = service.insertComment(dto);
@@ -47,9 +45,11 @@ public class CommentsInsertServlet extends HttpServlet {
 		if (result > 0) {
 			msg = "댓글 등록 성공";
 			loc = "/review/view?seq=" + reviewSeq;
+			request.setAttribute("error", "success");
 		} else {
 			msg = "댓글 등록 실패";
 			loc = "/review/view?seq=" + reviewSeq;
+			request.setAttribute("error", "error");
 		}
 		request.setAttribute("msg", msg);
 		request.setAttribute("loc", loc);

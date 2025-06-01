@@ -4,7 +4,6 @@ import static com.gobookee.common.JDBCTemplate.close;
 import static com.gobookee.common.JDBCTemplate.commit;
 import static com.gobookee.common.JDBCTemplate.getConnection;
 import static com.gobookee.common.JDBCTemplate.rollback;
-
 import static com.gobookee.review.model.dao.CommentsDAO.commentsDao;
 import static com.gobookee.review.model.dao.ReviewDAO.reviewDao;
 
@@ -19,6 +18,7 @@ import com.gobookee.review.model.dto.CommentsViewResponse;
 import com.gobookee.review.model.dto.Review;
 import com.gobookee.review.model.dto.ReviewListResponse;
 import com.gobookee.review.model.dto.ReviewViewResponse;
+import com.gobookee.users.model.dao.UserDAO;
 
 public class ReviewService {
 
@@ -26,6 +26,7 @@ public class ReviewService {
 
 	private ReviewDAO dao = reviewDao();
 	private CommentsDAO cdao = commentsDao();
+	private UserDAO udao = UserDAO.userDao();
 
 	private ReviewService() {
 	}
@@ -46,6 +47,34 @@ public class ReviewService {
 		List<ReviewListResponse> reviews = dao.getAllReviewsByRec(conn, cPage, numPerPage);
 		close(conn);
 		return reviews;
+	}
+
+	public List<ReviewListResponse> getAllReviewsByUser(Long userSeq, int cPage, int numPerPage) {
+		Connection conn = getConnection();
+		List<ReviewListResponse> reviews = dao.getAllReviewsByUser(conn, userSeq, cPage, numPerPage);
+		close(conn);
+		return reviews;
+	}
+
+	public int countByUser(Long userSeq) {
+		Connection conn = getConnection();
+		int totalData = dao.countByUser(conn, userSeq);
+		close(conn);
+		return totalData;
+	}
+
+	public List<ReviewListResponse> getAllReviewsRecByUser(Long userSeq, int cPage, int numPerPage) {
+		Connection conn = getConnection();
+		List<ReviewListResponse> reviews = dao.getAllReviewsRecByUser(conn, userSeq, cPage, numPerPage);
+		close(conn);
+		return reviews;
+	}
+
+	public int countReviewsRecByUser(Long userSeq) {
+		Connection conn = getConnection();
+		int totalData = dao.countReviewsRecByUser(conn, userSeq);
+		close(conn);
+		return totalData;
 	}
 
 	public int reviewCount() {
@@ -78,6 +107,7 @@ public class ReviewService {
 		Connection conn = getConnection();
 		int result = dao.insertReview(conn, review);
 		if (result > 0) {
+			udao.updateUserSpeed(conn, review.getUserSeq(), 3);
 			commit(conn);
 		} else {
 			rollback(conn);

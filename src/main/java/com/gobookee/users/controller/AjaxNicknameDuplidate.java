@@ -1,29 +1,28 @@
 package com.gobookee.users.controller;
 
-import java.io.IOException;
-import java.util.Map;
+import com.gobookee.users.model.dto.User;
+import com.gobookee.users.service.UserService;
+import com.google.gson.Gson;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.gobookee.users.model.dto.User;
-import com.gobookee.users.service.UserService;
-import com.google.gson.Gson;
+import java.io.IOException;
+import java.util.Map;
 
 /**
  * Servlet implementation class Ajaxnicknameduplidate
  */
-@WebServlet("/ajaxnicknameduplicate")
-public class Ajaxnicknameduplidate extends HttpServlet {
+@WebServlet("/ajax/nicknameduplicate")
+public class AjaxNicknameDuplidate extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public Ajaxnicknameduplidate() {
+    public AjaxNicknameDuplidate() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,7 +36,7 @@ public class Ajaxnicknameduplidate extends HttpServlet {
 		
 		User u = UserService.userService().searchUserByNickName(userNickname);
 		
-		response.setContentType("applicateion/json;charset=utf-8");
+		response.setContentType("application/json;charset=utf-8");
 		new Gson().toJson(Map.of("result",u==null),response.getWriter());
 	}
 

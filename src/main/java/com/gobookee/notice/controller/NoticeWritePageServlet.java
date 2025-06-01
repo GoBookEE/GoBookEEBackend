@@ -1,29 +1,26 @@
-package com.gobookee.users.controller;
+package com.gobookee.notice.controller;
 
 import java.io.IOException;
-import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.gobookee.users.model.dto.User;
-import com.gobookee.users.service.UserService;
-import com.google.gson.Gson;
+import com.gobookee.notice.model.dto.Notice;
+import com.gobookee.notice.model.service.NoticeService;
 
 /**
- * Servlet implementation class AjaxuserIdduplicate
+ * Servlet implementation class NoticeWritePageServlet
  */
-@WebServlet("/ajaxuseridduplicate")
-public class AjaxuserIdduplicate extends HttpServlet {
+@WebServlet("/notice/writepage")
+public class NoticeWritePageServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AjaxuserIdduplicate() {
+    public NoticeWritePageServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,13 +29,17 @@ public class AjaxuserIdduplicate extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		String mode = request.getParameter("mode");
+		request.setAttribute("mode", mode);
+		if("update".equals(mode)) {
+			Long noticeSeq = Long.parseLong(request.getParameter("noticeSeq"));
+			Notice notice = NoticeService.noticeService().noticeBySeq(noticeSeq);
+			request.setAttribute("notice", notice);
+
+		}
 		
-		String userId = request.getParameter("userId");
-		
-		User u = UserService.userService().searchUserById(userId);
-		
-		response.setContentType("applicateion/json;charset=utf-8");
-		new Gson().toJson(Map.of("result",u==null),response.getWriter());
+		request.getRequestDispatcher("/WEB-INF/views/notice/noticewriter.jsp").forward(request, response);
 	}
 
 	/**

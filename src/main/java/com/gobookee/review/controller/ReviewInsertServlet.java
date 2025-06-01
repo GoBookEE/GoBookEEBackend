@@ -34,7 +34,7 @@ public class ReviewInsertServlet extends HttpServlet {
 		String title = request.getParameter("reviewTitle");
 		String contents = request.getParameter("reviewContents");
 		int rate = Integer.parseInt(request.getParameter("reviewRate"));
-		System.out.println(bookSeq + title + contents + rate);
+
 		Long userSeq = ((User) request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자
 
 		Review review = Review.builder().bookSeq(bookSeq).userSeq(userSeq).reviewTitle(title).reviewContents(contents)
@@ -45,9 +45,11 @@ public class ReviewInsertServlet extends HttpServlet {
 		if (result > 0) {
 			msg = "리뷰 등록 성공";
 			loc = "/review/listpage";
+			request.setAttribute("error", "success");
 		} else {
 			msg = "리뷰 등록 실패";
 			loc = "review/reviewInsert.jsp?error=fail";
+			request.setAttribute("error", "error");
 		}
 		request.setAttribute("msg", msg);
 		request.setAttribute("loc", loc);

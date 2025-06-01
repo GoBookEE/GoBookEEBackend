@@ -16,6 +16,7 @@ import java.util.Properties;
 import com.gobookee.study.model.dto.SearchStudyResponse;
 import com.gobookee.study.model.dto.StudyInsert;
 import com.gobookee.study.model.dto.StudyList;
+import com.gobookee.study.model.dto.StudyRequest;
 import com.gobookee.study.model.dto.StudyView;
 
 public class StudyDao {
@@ -190,17 +191,16 @@ public class StudyDao {
                 .build();
     }
     
-    public List<StudyView> getStudyView(Connection conn, Long studySeq){
+    public StudyView getStudyView(Connection conn, Long studySeq){
         pstmt = null;
         rs = null;
-        List<StudyView> list = new ArrayList<>();
-        try {
+        StudyView studyView = null;
+        try{
         	pstmt = conn.prepareStatement(sql.getProperty("studyView"));
         	pstmt.setLong(1, studySeq);
         	rs = pstmt.executeQuery();
-        	while(rs.next()) {
-        		StudyView s = getStudyViews(rs);
-        		list.add(s);
+        	if(rs.next()) {
+        		studyView = getStudyViews(rs);
         	}
         }catch (SQLException e){
         	e.printStackTrace();
@@ -208,11 +208,12 @@ public class StudyDao {
         	close(rs);
         	close(pstmt);
         }
-        return list;
+        return studyView;
     }
     
     private StudyView getStudyViews(ResultSet rs) throws SQLException{
     	return StudyView.builder()
+    			.studySeq(rs.getLong("study_seq"))
     			.userSeq(rs.getLong("user_seq"))
     			.studyTitle(rs.getString("study_title"))
     			.studyDate(rs.getDate("study_date"))
@@ -237,7 +238,7 @@ public class StudyDao {
         rs = null;
         List<StudyView> list = new ArrayList<>();
         try {
-        	pstmt = conn.prepareStatement(sql.getProperty("studyViewUsers"));
+        	pstmt = conn.prepareStatement(sql.getProperty("studyConfirmedUsers"));
         	pstmt.setLong(1, studySeq);
         	rs = pstmt.executeQuery();
         	while(rs.next()) {
@@ -255,11 +256,121 @@ public class StudyDao {
     
     private StudyView getStudyViewUsers(ResultSet rs)throws SQLException{
     	return StudyView.builder()
+    			.userSeq(rs.getLong("user_seq"))
     			.userNickName(rs.getString("user_nickname"))
     			.userProfile(rs.getString("user_profile"))
     			.userSpeed(rs.getLong("user_speed"))
-    			
     			.build();
     }
     
+    public List<StudyView> getStudyNotConfirmedUser(Connection conn, Long studySeq){
+        pstmt = null;
+        rs = null;
+        List<StudyView> list = new ArrayList<>();
+        try {
+        	pstmt = conn.prepareStatement(sql.getProperty("studyNotConfirmedUsers"));
+        	pstmt.setLong(1, studySeq);
+        	rs = pstmt.executeQuery();
+        	while(rs.next()) {
+        		StudyView s = getstudyNotConfirmedUsers(rs);
+        		list.add(s);
+        	}
+        }catch (SQLException e){
+        	e.printStackTrace();
+        }finally {
+        	close(rs);
+        	close(pstmt);
+        }
+        return list;
+    }
+    
+    private StudyView getstudyNotConfirmedUsers(ResultSet rs)throws SQLException{
+    	return StudyView.builder()
+    			.userSeq(rs.getLong("user_seq"))
+    			.requestConfirm(rs.getString("request_confirm"))
+    			.build();
+    }
+    
+    public int insertStudyRequest(Connection conn, Long studySeq, Long userSeq, String requestMsg) throws SQLException {
+    	String sql = this.sql.getProperty("insertStudyRequest");
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setLong(1, studySeq);
+            pstmt.setLong(2, userSeq);
+            pstmt.setString(3, requestMsg);
+            return pstmt.executeUpdate();
+        }
+    }
+    
+    public List<StudyRequest> getStudyRequests(Connection conn, Long studySeq) {
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        List<StudyRequest> studyrequest = new ArrayList<>();
+
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("studyRequests"));
+            pstmt.setLong(1, studySeq);
+            rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                studyrequest.add(getStudyRequest(rs));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(rs);
+            close(pstmt);
+        }
+
+        return studyrequest;
+    }
+    
+    private StudyRequest getStudyRequest(ResultSet rs)throws SQLException{
+    	return StudyRequest.builder()
+    			.studySeq(rs.getLong("study_seq"))
+    			.studyMemberLimit(rs.getLong("study_member_limit"))
+    			.userSeq(rs.getLong("user_seq"))
+    			.userProfile(rs.getString("user_profile"))
+    			.userNickName(rs.getString("user_nickname"))
+    			.userSpeed(rs.getLong("user_speed"))
+    			.requestConfirm(rs.getString("request_confirm"))
+    			.requestMsg(rs.getString("request_msg"))
+    			.hostSeq(rs.getLong("host_seq"))
+    			.build();
+    }
+    
+    public int updateRequestConfirm(Connection conn, Long userSeq, Long studySeq, String confirmStatus) {
+        PreparedStatement pstmt = null;
+        
+        int result = 0;
+        try {
+            pstmt = conn.prepareStatement(sql.getProperty("updateRequestConfirm"));
+            pstmt.setString(1, confirmStatus);
+            pstmt.setLong(2, studySeq);
+            pstmt.setLong(3, userSeq);
+            result = pstmt.executeUpdate();
+            conn.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
+    
+    public int deleteStudy(Connection conn, Long studySeq) {
+        int result = 0;
+        PreparedStatement pstmt = null;
+        System.out.println("스터디시퀀스 :"+studySeq);
+        try {
+        	pstmt = conn.prepareStatement(sql.getProperty("deleteStudy"));
+            pstmt.setLong(1, studySeq);
+            result = pstmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {}
+        }
+        return result;
+    }
 }

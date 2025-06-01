@@ -6,6 +6,7 @@ import static com.gobookee.common.JDBCTemplate.getConnection;
 import static com.gobookee.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import com.gobookee.common.JDBCTemplate;
@@ -15,6 +16,7 @@ import com.gobookee.study.model.dao.StudyDao;
 import com.gobookee.study.model.dto.SearchStudyResponse;
 import com.gobookee.study.model.dto.StudyInsert;
 import com.gobookee.study.model.dto.StudyList;
+import com.gobookee.study.model.dto.StudyRequest;
 import com.gobookee.study.model.dto.StudyView;
 
 public class StudyService {
@@ -93,9 +95,9 @@ public class StudyService {
         return isSuccess;
     }
     
-    public List<StudyView> getStudyView (Long studySeq){
+    public StudyView getStudyView (Long studySeq){
     	conn = getConnection();
-    	List<StudyView> studyview = dao.getStudyView(conn, studySeq);
+    	StudyView studyview = dao.getStudyView(conn, studySeq);
     	close(conn);
     	return studyview;
     }
@@ -107,4 +109,57 @@ public class StudyService {
     	return studyviewuser;
     }
     
+    public List<StudyView> getStudyNotConfirmedUser (Long studySeq){
+    	conn = getConnection();
+    	List<StudyView> studyviewuser = dao.getStudyNotConfirmedUser(conn, studySeq);
+    	close(conn);
+    	return studyviewuser;
+    }
+    
+    public int insertStudyRequest(Long studySeq, Long userSeq, String requestMsg) {
+        try (Connection conn = getConnection()) {
+            int result = dao.insertStudyRequest(conn, studySeq, userSeq, requestMsg);
+            if(result > 0) commit(conn);
+            else rollback(conn);
+            return result;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
+    
+    public List<StudyRequest> getStudyRequests(Long studySeq) {
+        Connection conn = null;
+        List<StudyRequest> studyRequest = null;
+
+        try {
+            conn = getConnection();
+            studyRequest = dao.getStudyRequests(conn, studySeq);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(conn);
+        }
+
+        return studyRequest;
+    }
+    
+    public int updateRequestConfirm(Long userSeq, Long studySeq, String confirmStatus) {
+        Connection conn = getConnection();
+        int result = dao.updateRequestConfirm(conn, userSeq, studySeq, confirmStatus);
+        if (result > 0) commit(conn);
+        else rollback(conn);
+        close(conn);
+        return result;
+    }
+    
+    
+    public int deleteStudy(Long studySeq) {
+        Connection conn = getConnection();
+        int result = dao.deleteStudy(conn, studySeq);
+        if (result > 0) commit(conn);
+        else rollback(conn);
+        close(conn);
+        return result;
+    }
 }

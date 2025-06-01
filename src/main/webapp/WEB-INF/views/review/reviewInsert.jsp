@@ -2,12 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@ page
 	import="com.gobookee.review.model.dto.ReviewViewResponse, com.gobookee.users.model.dto.*"%>
+<%@ page import="com.gobookee.book.model.dto.BookReviewResponse"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
 User loginUser = (User)session.getAttribute("loginUser");
 ReviewViewResponse review = (ReviewViewResponse) request.getAttribute("review");
 String mode = (String) request.getAttribute("mode");
 boolean isUpdate = "update".equals(mode);
+BookReviewResponse selectedBook = (BookReviewResponse) request.getAttribute("selectedBook");
+boolean isInsertWithBook = !isUpdate && selectedBook != null;
 %>
 <style>
 header, footer {
@@ -29,17 +32,23 @@ header, footer {
 
 	<!-- 선택된 도서 카드 -->
 	<div id="selectedBookCard"
-		class="p-3 book-card mb-2 <%= isUpdate ? "" : "d-none" %>">
+		class="p-3 book-card mb-2 <%= isUpdate || isInsertWithBook ? "" : "d-none" %>">
 		<div class="row book-card-row align-items-center">
 			<div class="book-card-img col-5">
 				<img id="selectedBookImg"
-					src="<%= isUpdate ? review.getBookCover() : "" %>" alt="book"
-					width="40"> <i class="bi bi-bookmark-fill"></i>
+					src="<%= isUpdate ? review.getBookCover() : isInsertWithBook ? selectedBook.getBookCover() : "" %>"
+					alt="book" width="40"> <i class="bi bi-bookmark-fill"></i>
 			</div>
 			<div class="book-card-content col-7">
-				<div id="selectedBookTitle" class="book-card-title fw-bold"><%= isUpdate ? review.getBookTitle() : "" %></div>
-				<div id="selectedBookAuthor" class="mb-1 text-muted"><%= isUpdate ? review.getBookAuthor() : "" %></div>
-				<div id="selectedBookPublisher" class="mb-1 text-muted"><%= isUpdate ? review.getBookPublisher() : "" %></div>
+				<div id="selectedBookTitle" class="book-card-title fw-bold">
+					<%= isUpdate ? review.getBookTitle() : isInsertWithBook ? selectedBook.getBookTitle() : "" %>
+				</div>
+				<div id="selectedBookAuthor" class="mb-1 text-muted">
+					<%= isUpdate ? review.getBookAuthor() : isInsertWithBook ? selectedBook.getBookAuthor() : "" %>
+				</div>
+				<div id="selectedBookPublisher" class="mb-1 text-muted">
+					<%= isUpdate ? review.getBookPublisher() : isInsertWithBook ? selectedBook.getBookPublisher() : "" %>
+				</div>
 				<button type="button" class="btn btn-sm btn-outline-danger mt-2"
 					onclick="clearSelectedBook()">X</button>
 			</div>
@@ -144,7 +153,7 @@ function searchBooks() {
 							<div class="book-card-content col-7">
 								<div class="book-card-title fw-bold">\${book.bookTitle}</div>
 								<div class="mb-1 text-muted">\${book.bookAuthor}</div>
-								<div class="mb-1 text-muted">\${book.bookPublisher} | \${book.publishDate}</div>
+								<div class="mb-1 text-muted">\${book.bookPublisher}</div>
 							</div>
 						</div>
 					`;

@@ -1,28 +1,34 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: heebu
-  Date: 2025-05-16
-  Time: 오전 11:44
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <html>
 <head>
-    <title>알림페이지</title>
+    <title>GoBookE 알림</title>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        body {
+            margin: 0;
+            background-color: #ffffff;
+        }
+    </style>
 </head>
 <body>
 <script>
-    alert('<%=request.getAttribute("msg")%>');
+    const message = `<%=request.getAttribute("msg")%>`;
+    const loc = `<%=request.getAttribute("loc")%>`;
+    const error = `<%=request.getAttribute("error")%>`;
 
-    if (<%=request.getAttribute("close")!=null%>) {
-        window.close();
-    }
-
-    if (<%=request.getAttribute("loc")==null%>) {
-        location.replace("<%=request.getContextPath()%>");
-    } else {
-        location.replace("<%=request.getContextPath()%><%=request.getAttribute("loc")%>");
-    }
+    Swal.fire({
+        title: `<span style="color:#4CAF50;">\${message}</span>`,
+        text: error === "error" ? '고북이가 슬퍼해요 🐢' : '고북이가 기뻐해요 🐢',
+        icon: error === "error" ? 'error' : 'success',
+        confirmButtonText: error === "error" ? '슬퍼요 😢' : '좋아요 😄',
+        confirmButtonColor: '#4CAF50'
+    }).then(() => {
+        if (loc === "null") {
+            location.replace("<%=request.getContextPath()%>");
+        } else {
+            location.replace("<%=request.getContextPath()%>" + loc);
+        }
+    });
 </script>
 </body>
 </html>

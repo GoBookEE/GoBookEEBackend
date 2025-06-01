@@ -39,6 +39,8 @@ public class CommentsDAO {
 	}
 
 	public List<CommentsViewResponse> getReviewComments(Connection conn, Long seq) {
+		pstmt = null;
+		rs = null;
 		List<CommentsViewResponse> comments = new ArrayList<>();
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("getReviewComments"));
@@ -56,7 +58,91 @@ public class CommentsDAO {
 		return comments;
 	}
 
+	public List<CommentsViewResponse> getAllCommentsByUser(Connection conn, Long userSeq, int cPage, int numPerPage) {
+		pstmt = null;
+		rs = null;
+		List<CommentsViewResponse> comments = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllCommentsByUser"));
+			pstmt.setLong(1, userSeq);
+			pstmt.setInt(2, (cPage - 1) * numPerPage + 1);
+			pstmt.setInt(3, cPage * numPerPage);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				comments.add(getCommentsViewResponseMyPage(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return comments;
+	}
+
+	public int countByUser(Connection conn, Long userSeq) {
+		pstmt = null;
+		rs = null;
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("commentsCountByUser"));
+			pstmt.setLong(1, userSeq);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
+	public List<CommentsViewResponse> getAllCommentsRecByUser(Connection conn, Long userSeq, int cPage,
+			int numPerPage) {
+		pstmt = null;
+		rs = null;
+		List<CommentsViewResponse> comments = new ArrayList<>();
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllCommentsRecByUser"));
+			pstmt.setLong(1, userSeq);
+			pstmt.setInt(2, (cPage - 1) * numPerPage + 1);
+			pstmt.setInt(3, cPage * numPerPage);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				comments.add(getCommentsViewResponseMyPage(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return comments;
+	}
+
+	public int countCommentsRecByUser(Connection conn, Long userSeq) {
+		pstmt = null;
+		rs = null;
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(sqlProp.getProperty("countCommentsRecByUser"));
+			pstmt.setLong(1, userSeq);
+			rs = pstmt.executeQuery();
+			if (rs.next())
+				result = rs.getInt(1);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			JDBCTemplate.close(rs);
+			JDBCTemplate.close(pstmt);
+		}
+		return result;
+	}
+
 	public int insertComment(Connection conn, Comments dto) {
+		pstmt = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("insertComment"));
@@ -74,6 +160,7 @@ public class CommentsDAO {
 	}
 
 	public int updateComment(Connection conn, long commentSeq, long userSeq, String newContent) {
+		pstmt = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("updateComment"));
@@ -90,6 +177,7 @@ public class CommentsDAO {
 	}
 
 	public int deleteComment(Connection conn, long commentSeq, long userSeq) {
+		pstmt = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("deleteComment"));
@@ -123,6 +211,16 @@ public class CommentsDAO {
 				.commentsEditTime(rs.getTimestamp("COMMENTS_EDIT_TIME")).userNickName(rs.getString("USER_NICKNAME"))
 				.recommendCount(rs.getInt("RECOMMEND_COUNT")).nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT"))
 				.userSeq(rs.getLong("USER_SEQ")).build();
+		return dto;
+	}
+
+	private CommentsViewResponse getCommentsViewResponseMyPage(ResultSet rs) throws SQLException {
+		CommentsViewResponse dto = CommentsViewResponse.builder().commentsContents(rs.getString("COMMENTS_CONTENTS"))
+				.commentsSeq(rs.getLong("COMMENTS_SEQ")).commentsCreateTime(rs.getTimestamp("COMMENTS_CREATE_TIME"))
+				.commentsEditTime(rs.getTimestamp("COMMENTS_EDIT_TIME")).userNickName(rs.getString("USER_NICKNAME"))
+				.recommendCount(rs.getInt("RECOMMEND_COUNT")).nonRecommendCount(rs.getInt("NON_RECOMMEND_COUNT"))
+				.userSeq(rs.getLong("USER_SEQ")).reviewSeq(rs.getLong("REVIEW_SEQ"))
+				.reviewTitle(rs.getString("REVIEW_TITLE")).build();
 		return dto;
 	}
 }

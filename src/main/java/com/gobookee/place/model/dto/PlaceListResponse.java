@@ -17,7 +17,6 @@ public class PlaceListResponse {
     private String placeTitle;
     private String placeContents;
     private String placeAddress;
-    private String userNickname;
     private Long placeRecCount;
     private Long placeNonRecCount;
     private String placeThumbnail;
@@ -28,7 +27,6 @@ public class PlaceListResponse {
                 .placeTitle(rs.getString("PLACE_TITLE"))
                 .placeContents(rs.getString("PLACE_CONTENTS"))
                 .placeAddress(rs.getString("PLACE_ADDRESS"))
-                .userNickname(rs.getString("WRITER_NICKNAME"))
                 .placeRecCount(rs.getLong("RECOMMEND_COUNT"))
                 .placeNonRecCount(rs.getLong("NON_RECOMMEND_COUNT"))
                 .build();

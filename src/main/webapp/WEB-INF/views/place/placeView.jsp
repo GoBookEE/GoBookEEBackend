@@ -19,7 +19,7 @@
     }
 
     .container {
-        padding-top: 10px !important;
+        padding-top: 20px !important;
         padding-bottom: 10px !important;
         margin: 0 auto !important;
     }
@@ -63,46 +63,53 @@
 %>
 
 <main class="container">
-    <div class="d-flex justify-content-between align-items-center border-bottom mb-3">
-        <button class="btn btn-link text-dark text-decoration-none"
-                onclick="history.back()">
-            <i class="bi bi-arrow-left"></i>
-        </button>
-        <%
-            if (loginUser != null && loginUser.getUserSeq().equals(place.getUserSeq())) {
-        %>
-        <script>
-            console.log(<%=loginUser%>)
-        </script>
-        <div class="dropdown">
-            <button class="btn btn-link text-dark" id="moreMenu"
-                    data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="bi bi-three-dots-vertical"></i>
+    <!-- ✅ 콘텐츠 너비에 맞춰 wrapping -->
+    <div class="container" style="max-width: 600px;">
+        <div class="d-flex justify-content-between align-items-center border-bottom mb-3"
+             style="position: fixed; top:0; left:30%; right: 30%; z-index: 1030; background-color: #fff;">
+            <button class="btn btn-link text-dark text-decoration-none"
+                    onclick="history.back()">
+                <i class="bi bi-arrow-left"></i>
             </button>
-            <form id="deleteForm" action="<%=request.getContextPath()%>/place/delete" method="post" style="display:none;">
-                <input type="hidden" name="placeSeq" id="deletePlaceSeq">
-            </form>
-            <ul class="dropdown-menu dropdown-menu-end"
-                aria-labelledby="moreMenu">
-                <li><a class="dropdown-item"
-                       href="<%=request.getContextPath()%>/place/updatepage?placeSeq=<%=place.getPlaceSeq()%>">게시물
-                    수정</a></li>
-                <li><a class="dropdown-item text-danger" href="#"
-                       onclick="return confirmDeleteReview(<%=place.getPlaceSeq()%>);">
-                    게시물 삭제 </a></li>
-            </ul>
+
+            <div class="dropdown">
+                <button class="btn btn-link text-dark" id="moreMenu"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-three-dots-vertical"></i>
+                </button>
+                <form id="deleteForm" action="<%=request.getContextPath()%>/place/delete" method="post"
+                      style="display:none;">
+                    <input type="hidden" name="placeSeq" id="deletePlaceSeq">
+                </form>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="moreMenu">
+                    <%
+                        if (loginUser != null && loginUser.getUserSeq().equals(place.getUserSeq())) {
+                    %>
+                    <li>
+                        <a class="dropdown-item"
+                           href="<%=request.getContextPath()%>/place/updatepage?placeSeq=<%=place.getPlaceSeq()%>">게시물
+                            수정</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item text-danger" href="#"
+                           onclick="return confirmDeleteReview(<%=place.getPlaceSeq()%>);">게시물 삭제</a>
+                    </li>
+                    <%
+                    } else {
+                    %>
+                    <li>
+                        <button class="dropdown-item text-danger"
+                                onclick="reportPost(<%=place.getPlaceSeq()%>,'PLACE')">장소글 신고
+                        </button>
+                    </li>
+                    <%
+                        }
+                    %>
+                </ul>
+            </div>
         </div>
-        <%
-        } else {
-        %>
-        <script>
-            console.log(<%=loginUser%>)
-            console.log(<%=loginUser.getUserSeq().equals(place.getUserSeq())%>)
-        </script>
-        <%
-        }
-        %>
     </div>
+
     <div class="container" style="max-width: 600px;">
         <!-- 🖼️ 이미지 Carousel -->
         <div id="placeImageCarousel" class="carousel slide mb-3" data-bs-ride="carousel">
@@ -110,7 +117,8 @@
                 <% for (int i = 0; i < place.getPhotoNames().size(); i++) { %>
                 <div class="carousel-item <%= i == 0 ? "active" : "" %>">
                     <img src="<%=CommonPathTemplate.getUploadPath(request,FileType.PLACE,place.getPhotoNames().get(i))%>"
-                         class="d-block w-100" alt="이미지 <%=i+1%>">
+                         class="d-block w-100" alt="이미지<%=i+1%>"
+                         onerror="this.onerror=null; this.src='<%=request.getContextPath()%>/resources/images/default.png'; this.classList.remove('w-100'); this.style.width='100px'; this.style.height='100px';">
                 </div>
                 <% } %>
             </div>
@@ -128,7 +136,8 @@
         <div class="d-flex align-items-center mb-3">
             <img src="<%=CommonPathTemplate.getUploadPath(request,FileType.USER,place.getUserProfileImage())%>"
                  class="rounded-circle me-3"
-                 width="50" height="50" alt="프로필" onerror="this.src='<%=request.getContextPath()%>/resources/images/default.jpg'">
+                 width="50" height="50" alt="프로필"
+                 onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
             <div>
                 <div class="fw-bold"><%=place.getUserNickname()%>
                 </div>
@@ -154,15 +163,34 @@
 
         <!-- 👍👎 추천/비추천 -->
         <div class="d-flex justify-content-start align-items-center gap-4 mt-3">
-            <div class="text-success"><i class="bi bi-hand-thumbs-up"></i> <%=place.getPlaceRecCount()%>
-            </div>
-            <div class="text-danger"><i class="bi bi-hand-thumbs-down"></i> <%=place.getPlaceNonRecCount()%>
-            </div>
+            <%
+                if (loginUser != null) {
+            %>
+            <button
+                    class="btn-recommend-action btn-sm d-flex align-items-center p-0 border-0 bg-transparent"
+                    data-type="PLACE" data-seq="<%=place.getPlaceSeq()%>"
+                    data-rec="0">
+                <i class="bi bi-hand-thumbs-up me-1"
+                   style="font-size: 0.9rem;"></i> <span class="count"><%=place.getPlaceRecCount()%></span>
+            </button>
+
+            <!-- 비추천 버튼 -->
+            <button
+                    class="btn-recommend-action btn-sm d-flex align-items-center p-0 border-0 bg-transparent"
+                    data-type="PLACE" data-seq="<%=place.getPlaceSeq()%>"
+                    data-rec="1">
+                <i class="bi bi-hand-thumbs-down me-1"
+                   style="font-size: 0.9rem;"></i> <span class="count"><%=place.getPlaceNonRecCount()%></span>
+            </button>
+            <%
+                }
+            %>
         </div>
     </div>
 
     <div class="text-center">
-        <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#reservationModal" style="width: 200px">예약</button>
+        <button class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#reservationModal" style="width: 200px">예약
+        </button>
     </div>
 
     <div class="modal fade" id="reservationModal" tabindex="-1">
@@ -253,6 +281,9 @@
         calendarInstance = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             selectable: true,
+            validRange: {
+                start: new Date().toISOString().split('T')[0]  // 오늘 날짜부터 가능
+            },
             dateClick: function (info) {
                 selectedDate = info.dateStr;
                 document.getElementById('selectedDateTitle').innerText = `\${info.dateStr} 예약 현황`;
@@ -356,10 +387,21 @@
 
     $(document).on('click', '.group-item', function () {
         selectedGroupId = $(this).data('id');
-        $('#formStudySeq').val(selectedGroupId);
-        $('#confirmInfo').html(`<p>\${selectedDate}에<br><strong>\${$(this).text()}</strong> 그룹으로 예약합니다.</p>`);
-        $('#step-study-select').hide();
-        $('#step-confirm').show();
+
+        // 중복 예약 확인 Ajax
+        $.get(`<%=request.getContextPath()%>/schedule/searchreservation?date=\${selectedDate}&placeSeq=\${placeSeq}`, function (list) {
+            const isDuplicate = list.some(item => item.studySeq === selectedGroupId);
+            if (isDuplicate) {
+                alert("이미 해당 스터디로 이 날짜에 장소를 예약하셨습니다.");
+                return;
+            }
+
+            // 중복 아님 → 예약 확인단계로 이동
+            $('#formStudySeq').val(selectedGroupId);
+            $('#confirmInfo').html(`<p>\${selectedDate}에<br><strong>\${$(this).text()}</strong> 그룹으로 예약합니다.</p>`);
+            $('#step-study-select').hide();
+            $('#step-confirm').show();
+        });
     });
 
     function goBackToCalendar() {
@@ -382,6 +424,71 @@
         }
         return false; // 기본 링크 동작 방지
     }
-</script>
 
+
+    //신고
+    function reportPost(placeSeq, boardType) {
+        const reason = prompt("신고 사유를 입력해주세요.");
+        if (reason === null || reason.trim() === "") {
+            alert("신고 사유가 필요합니다.");
+            return;
+        }
+
+        $.ajax({
+            url: "<%=request.getContextPath()%>/reports/insert",
+            method: "POST",
+            data: {
+                boardSeq: placeSeq,
+                boardType: boardType,
+                reason: reason
+            },
+            success: function (res) {
+                if (res.success) {
+                    alert("신고가 접수되었습니다.");
+                } else {
+                    alert(res.message || "이미 신고하셨습니다.");
+                }
+            },
+            error: function () {
+                alert("신고 처리 중 오류 발생.");
+            }
+        });
+    }
+
+
+    //추천, 비추천
+    $(document).on("click", ".btn-recommend-action", function () {
+        const $btn = $(this);
+        const targetType = $btn.data("type"); // "REVIEW" or "COMMENT"
+        const targetSeq = $btn.data("seq");
+        const recType = $btn.data("rec");     // 0: 추천, 1: 비추천
+
+        $.ajax({
+            url: "<%=request.getContextPath()%>/recommend/insert",
+            type: "POST",
+            data: {
+                boardSeq: targetSeq,
+                recType: recType
+            },
+            success: function (data) {
+                if (data.success) {
+                    // 추천
+                    $(`.btn-recommend-action[data-type='\${targetType}'][data-seq='\${targetSeq}'][data-rec='0']`)
+                        .find(".count")
+                        .text(data.recommendCount);
+
+                    // 비추천
+                    $(`.btn-recommend-action[data-type='\${targetType}'][data-seq='\${targetSeq}'][data-rec='1']`)
+                        .find(".count")
+                        .text(data.nonRecommendCount);
+                } else {
+                    alert(data.message || "이미 처리된 항목입니다.");
+                }
+            },
+            error: function () {
+                alert("추천/비추천 처리 중 오류 발생!");
+            }
+        });
+    });
+</script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
