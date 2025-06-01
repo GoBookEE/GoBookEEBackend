@@ -62,7 +62,6 @@ public class StudyInsertPageServlet extends HttpServlet {
             }
         }
 
-        System.out.println(fileList.size());
 
         String studyTitle = mr.getParameter("studyTitle");
 

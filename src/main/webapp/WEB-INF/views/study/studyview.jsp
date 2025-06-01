@@ -13,16 +13,62 @@
 %>
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2d59386dd09d43d5d2ad8f433a1eb0e3&libraries=services"></script>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
+<style>
+    .center-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        padding: 0;
+        width: 100%;
+    }
+
+    /* 드롭다운 메뉴를 정확히 정렬하기 위한 li 스타일 */
+    .dropdown-menu > li {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 50px; /* 메뉴 항목 높이 고정 */
+        padding: 0;   /* 상하 여백 제거 */
+    }
+</style>
+
+<%
+    String dropdownHtml;
+
+    if (isHost) {
+        dropdownHtml =
+                "<form class='dropdown-menu dropdown-menu-end' action='" + request.getContextPath() + "/study/delete' method='post' onsubmit=\"return confirm('정말 삭제하시겠습니까?');\" style='width: 100%;'>" +
+                    "<input type='hidden' name='studySeq' value='" + studyview.getStudySeq() + "'/>" +
+                    "<button type='submit' class='dropdown-item text-danger center-button'>게시물 삭제</button>" +
+                "</form>" ;
+    } else {
+        dropdownHtml =
+            "<li class='dropdown-menu dropdown-menu-end'>" +
+                "<button class='dropdown-item text-warning center-button' onclick='reportPost(" + studyview.getStudySeq() + ", \"STUDY\")'>게시물 신고</button>" +
+            "</li>";
+    }
+%>
+
 <script>
-    $("header").html(`
-    <div class="container d-flex justify-content-between align-items-center text-center small">
-        <a class="col-1" style="color:black" href="<%=request.getContextPath()%>/study/listpage">
-            <i class="bi bi-x fs-1"></i>
-        </a>
-        <div class="col-1">
-            <i class="bi bi-three-dots-vertical fs-0.5"></i>
-        </div>
-    </div>`);
+    $(document).ready(function () {
+        $("header").html(`
+            <div style="height: 4rem"class="container d-flex justify-content-between align-items-center text-center small position-relative">
+                <a class="col-1" style="color:black" href="<%=request.getContextPath()%>/study/listpage">
+                    <i class="bi bi-x fs-1"></i>
+                </a>
+
+                <div class="dropdown col-1">
+                    <button class="btn btn-link text-dark p-0" id="studyMoreMenu"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-three-dots-vertical fs-0.5"></i>
+                    </button>
+
+                        <%= dropdownHtml %>
+                </div>
+            </div>
+        `);
+    });
 </script>
 <main>
 <div class="text-center" style="width: 100%; max-width: 800px; margin: 0 auto;">
@@ -139,4 +185,4 @@
         position: new kakao.maps.LatLng(<%= studyview.getStudyLatitude()%>, <%= studyview.getStudyLongitude()%>)
     }).setMap(map);
 </script>
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+</html>
