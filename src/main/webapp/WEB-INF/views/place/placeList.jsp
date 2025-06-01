@@ -153,6 +153,8 @@
 </main>
 
 <script>
+    let currentSort = "latest"; // 현재 정렬 기준 기억
+
     //정렬 드롭다운 이벤트
     $(document).ready(function () {
         loadPlaces("latest");
@@ -162,6 +164,15 @@
             loadPlaces(currentSort, 1);
         });
 
+    });
+
+    //페이지바 클릭 이벤트
+    $(document).on("click", "#pageBar a.go-page-link", function (e) {
+        e.preventDefault();
+        const page = $(this).data("page");
+        if (page) {
+            loadPlaces(currentSort, page);
+        }
     });
 
     function loadPlaces(sortType = "latest", cPage = 1) {
