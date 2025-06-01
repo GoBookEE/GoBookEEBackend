@@ -39,6 +39,6 @@ public class User {
     private Timestamp userCreateTime;
 
     private Timestamp userDeleteTime;
-
+  
+    private Integer rnum;
 }
-
