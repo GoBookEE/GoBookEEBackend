@@ -35,7 +35,6 @@ public class UserInsertServlet extends HttpServlet {
                     .loc("/signuppage?userType=" + request.getParameter("userType"))
                     .response(response)
                     .build().forward();
-            return;
         }
 
         String gender = request.getParameter("userGender");
@@ -48,6 +47,10 @@ public class UserInsertServlet extends HttpServlet {
 
         String type = request.getParameter("userType");
         UserType userType = null;
+
+
+        if (type != null) {
+        		
         try {
             userType = UserType.valueOf(type);
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -95,6 +98,8 @@ public class UserInsertServlet extends HttpServlet {
                     .build().forward();
         }
     }
+    }        
+        
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doGet(request, response);

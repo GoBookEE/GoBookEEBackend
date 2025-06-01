@@ -187,6 +187,7 @@ public class UserDAO {
                 .UserEmail(rs.getString("user_email"))
                 .UserCreateTime(rs.getTimestamp("user_create_time"))
                 .UserDeleteTime(rs.getTimestamp("user_delete_time"))
+                .UserSpeed(rs.getLong("user_speed"))
                 .build();
     }
 
