@@ -32,6 +32,8 @@ public class User {
 
     private String UserEmail;
     
+    private Long UserSpeed;
+    
     private String UserAddress;
 
     private Timestamp UserCreateTime;
