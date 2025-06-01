@@ -16,7 +16,7 @@
 	if (userProfile == null || userProfile.trim().isEmpty()) {
 		profileImagePath = request.getContextPath() + "/resources/images/default.png";  // 기본 이미지 경로
 	} else {
-		profileImagePath = request.getContextPath() +"/upload/user/" + userProfile;  // 실제 업로드 경로
+		profileImagePath = request.getContextPath() +"/resources/upload/user/" + userProfile;  // 실제 업로드 경로
 	}
 
 
