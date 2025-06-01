@@ -115,6 +115,16 @@
     }
 
     function saveImageFiles() {
+        if (!$('#placeAddress').val()) {
+            alert("주소를 입력해주세요.");
+            return;
+        }
+
+        if (!coords) {
+            alert("주소 검색을 통해 지도를 확인해주세요.");
+            return;
+        }
+
         const formData = new FormData();
         const files = $('#placeImage')[0].files;
 
@@ -123,6 +133,7 @@
         }
         formData.append("placeTitle", $('#placeTitle').val());
         formData.append("placeContent", $('#placeContent').val());
+
         formData.append("placeAddress", $('#placeAddress').val());
         if (coords) {
             formData.append("placeLatitude", coords.getLat());

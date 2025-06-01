@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.gobookee.common.AjaxPageBarTemplate;
-import com.gobookee.common.CommonPathTemplate;
 import com.gobookee.study.model.dto.StudyList;
 import com.gobookee.study.service.StudyService;
 import com.google.gson.Gson;
