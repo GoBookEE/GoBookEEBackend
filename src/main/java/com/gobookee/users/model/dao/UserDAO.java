@@ -181,7 +181,8 @@ public class UserDAO {
             pstmt.setString(1, user.getUserNickname());
             pstmt.setString(2, user.getUserPwd());
             pstmt.setString(3, user.getUserPhone());
-            pstmt.setLong(4, user.getUserSeq());
+            pstmt.setString(4, user.getProfileImage());
+            pstmt.setLong(5, user.getUserSeq());
             result = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

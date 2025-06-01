@@ -54,7 +54,17 @@ public class UpdateProfileHandlerServlet extends HttpServlet {
 
         boolean result = userService.updateProfile(updateUser);
         if (result) {
-            session.setAttribute("loginUser", updateUser);
+            session.setAttribute("loginUser",
+                    User.builder()
+                            .userSeq(userSeq)
+                            .userNickName(userNickname)
+                            .userPwd(updateUser.getUserPwd())
+                            .userPhone(userPhone)
+                            .userProfile(profileImage)
+                            .userId(updateUser.getUserId())
+                            .userEmail(updateUser.getUserEmail())
+                            .userType(loginUser.getUserType())
+                            .build());
             MessageRedirectTemplate.builder()
                     .request(request)
                     .msg("프로필 수정에 성공했습니다.")
