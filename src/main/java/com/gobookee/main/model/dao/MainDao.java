@@ -1,12 +1,8 @@
 package com.gobookee.main.model.dao;
 
 import com.gobookee.book.model.dto.Book;
-import com.gobookee.place.model.dto.Place;
 import com.gobookee.place.model.dto.PlaceViewResponse;
-import com.gobookee.review.model.dto.Review;
 import com.gobookee.review.model.dto.ReviewListResponse;
-import com.gobookee.study.model.dto.SearchStudyResponse;
-import com.gobookee.study.model.dto.Study;
 import com.gobookee.study.model.dto.StudyList;
 import com.gobookee.users.model.dto.User;
 
@@ -27,107 +23,123 @@ public class MainDao {
     Properties reviewProp = new Properties();
     Properties mainProp = new Properties();
     private static MainDao dao;
+
     public static MainDao mainDao() {
-        if (dao == null) { dao = new MainDao(); }
+        if (dao == null) {
+            dao = new MainDao();
+        }
         return dao;
     }
 
     private MainDao() {
         String mainPath = MainDao.class.getClassLoader().getResource("/config/main-sql.properties").getPath();
-        try (FileReader fr = new FileReader(mainPath)){
+        try (FileReader fr = new FileReader(mainPath)) {
             mainProp.load(fr);
-        }catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public List<ReviewListResponse> getTop3review (Connection conn) {
+    public List<ReviewListResponse> getTop3review(Connection conn) {
         List<ReviewListResponse> list = new ArrayList<>();
-        try{
+        try {
             pstmt = conn.prepareStatement(mainProp.getProperty("getBestReviewsTop3"));
-            rs=pstmt.executeQuery();
-            while (rs.next()){
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
                 list.add(getReviewListResponse(rs));
-            };
-        }catch(SQLException e){
+            }
+            ;
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
-    public List<ReviewListResponse> getRecent10review (Connection conn) {
+
+    public List<ReviewListResponse> getRecent10review(Connection conn) {
         List<ReviewListResponse> list = new ArrayList<>();
-        try{
+        try {
             pstmt = conn.prepareStatement(mainProp.getProperty("getRecent10review"));
-            rs=pstmt.executeQuery();
-            while (rs.next()){
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
                 list.add(getRecentReview(rs));
-            };
-        }catch(SQLException e){
+            }
+            ;
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
-    public List<Book> getHot5book (Connection conn) {
+
+    public List<Book> getHot5book(Connection conn) {
         List<Book> list = new ArrayList<>();
-        try{
+        try {
             pstmt = conn.prepareStatement(mainProp.getProperty("getHot5book"));
-            rs=pstmt.executeQuery();
-            while (rs.next()){
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
                 list.add(getBook(rs));
-            };
-        }catch(SQLException e){
+            }
+            ;
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
-    public List<Book> getTop9book (Connection conn) {
+
+    public List<Book> getTop9book(Connection conn) {
         List<Book> list = new ArrayList<>();
-        try{
+        try {
             pstmt = conn.prepareStatement(mainProp.getProperty("getTop9book"));
-            rs=pstmt.executeQuery();
-            while (rs.next()){
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
                 list.add(getTopbook(rs));
-            };
-        }catch(SQLException e){
+            }
+            ;
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
-    public List<StudyList> getTop9study (Connection conn) {
+
+    public List<StudyList> getTop9study(Connection conn) {
         List<StudyList> list = new ArrayList<>();
-        try{
+        try {
             pstmt = conn.prepareStatement(mainProp.getProperty("getTop9study"));
-            rs=pstmt.executeQuery();
-            while (rs.next()){
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
                 list.add(getTopStudy(rs));
-            };
-        }catch(SQLException e){
+            }
+            ;
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
-    public List<PlaceViewResponse> getRan5place (Connection conn) {
+
+    public List<PlaceViewResponse> getRan5place(Connection conn) {
         List<PlaceViewResponse> list = new ArrayList<>();
-        try{
+        try {
             pstmt = conn.prepareStatement(mainProp.getProperty("getRan5place"));
-            rs=pstmt.executeQuery();
-            while (rs.next()){
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
                 list.add(getRanPlace(rs));
-            };
-        }catch(SQLException e){
+            }
+            ;
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
     }
-    public List<User> getTop3user (Connection conn) {
+
+    public List<User> getTop3user(Connection conn) {
         List<User> list = new ArrayList<>();
-        try{
+        try {
             pstmt = conn.prepareStatement(mainProp.getProperty("getTop3user"));
-            rs=pstmt.executeQuery();
-            while (rs.next()){
+            rs = pstmt.executeQuery();
+            while (rs.next()) {
                 list.add(getUser(rs));
-            };
-        }catch(SQLException e){
+            }
+            ;
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
@@ -181,9 +193,9 @@ public class MainDao {
 
     private User getUser(ResultSet rs) throws SQLException {
         return User.builder()
-                .UserNickName(rs.getString("user_nickname"))
-                .UserProfile(rs.getString("user_profile"))
-                .UserSpeed(rs.getInt("user_speed"))
+                .userNickName(rs.getString("user_nickname"))
+                .userProfile(rs.getString("user_profile"))
+                .userSpeed(rs.getLong("user_speed"))
                 .build();
     }
 
@@ -197,6 +209,7 @@ public class MainDao {
                 .commentsCount(rs.getInt("COMMENTS_COUNT"))
                 .build();
     }
+
     private Book getTopbook(ResultSet rs) throws SQLException {
         return Book.builder()
                 .bookSeq(rs.getLong("BOOK_SEQ"))
@@ -218,6 +231,7 @@ public class MainDao {
                 .photoNames(Collections.singletonList(rs.getString("PHOTO_RENAMED_NAME")))
                 .build();
     }
+
     private StudyList getTopStudy(ResultSet rs) throws SQLException {
         return StudyList.builder()
                 .studySeq(rs.getLong("study_seq"))

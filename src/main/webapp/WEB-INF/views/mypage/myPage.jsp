@@ -262,23 +262,7 @@
             <div class="box" onclick="location.assign(`<%=request.getContextPath()%>/mypage/myboard`)">
                 <i class="bi bi-book-fill icon"></i>
                 <h4>내가 쓴 글 목록</h4>
-                <p><%= request
-                        .
-                        getAttribute
-                                (
-                                        "totalWriteCount"
-                                )
-                        !=
-                        null
-                        ?
-                        request
-                                .
-                                getAttribute
-                                        (
-                                                "totalWriteCount"
-                                        )
-                        :
-                        0 %>
+                <p><%= request.getAttribute("totalWriteCount") != null ? request.getAttribute("totalWriteCount") : 0 %>
                 </p>
             </div>
         </div>
@@ -286,23 +270,13 @@
             <div class="box" onclick="location.assign(`<%=request.getContextPath()%>/mypage/recboard`)">
                 <i class="bi bi-hand-thumbs-up-fill icon"></i>
                 <h4>내가 추천한 글</h4>
-                <p><%= request
-                        .
-                        getAttribute
-                                (
-                                        "recommendedCount"
-                                ) %>
+                <p><%= request.getAttribute("recommendedCount") %>
                 </p>
             </div>
             <div class="box" onclick="location.assign(`<%=request.getContextPath()%>/mypage/mystudy`)">
                 <i class="bi bi-people-fill icon"></i>
                 <h4>내 스터디</h4>
-                <p><%=request
-                        .
-                        getAttribute
-                                (
-                                        "myStudyTotalCount"
-                                ) %>
+                <p><%=request.getAttribute("myStudyTotalCount") %>
                 </p>
             </div>
         </div>
