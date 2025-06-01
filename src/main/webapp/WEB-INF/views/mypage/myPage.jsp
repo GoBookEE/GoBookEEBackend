@@ -267,9 +267,9 @@
 				<p><%= request.getAttribute("recommendedCount") %></p>
 			</div>
 			<div class="box">
-				<i class="bi bi-people-fill icon"></i>
+				<i class="bi bi-people-fill icon" onclick="location.assign(`<%=request.getContextPath()%>/mypage/mystudy`)"></i>
 				<h4>내 스터디</h4>
-				<p></p>
+				<p><%=request.getAttribute("myStudyTotalCount") %></p>
 			</div>
 		</div>
 	</section>

@@ -14,6 +14,7 @@ import javax.servlet.http.*;
 
 import com.gobookee.review.service.ReviewService;
 import com.gobookee.review.service.CommentsService;
+import com.gobookee.mypage.model.dto.MyStudy;
 import com.gobookee.mypage.service.RecStudyService;
 import com.gobookee.place.service.PlaceService;
 import com.gobookee.users.model.dto.UserType;
@@ -73,6 +74,22 @@ public class MyPageServlet extends HttpServlet {
 			request.setAttribute("recommendedCount", recommendedCount);
 			
 			
+			String tab = request.getParameter("tab"); // applied | created
+			String status = request.getParameter("status"); // upcoming | completed
+			if (status == null || (!status.equals("upcoming") && !status.equals("completed"))) {
+				status = "upcoming";
+			}
+
+			MyStudy mystudy = MyStudy.builder()
+				.userSeq(userSeq)
+				.status(status)
+				.build();
+
+			int appliedCount = studyService.countAppliedByStatus(mystudy);
+			int createdCount = studyService.countCreatedByStatus(mystudy);
+			int myStudyTotalCount = appliedCount + createdCount;
+
+			request.setAttribute("myStudyTotalCount", myStudyTotalCount);
 			
 		
 		request.getRequestDispatcher("/WEB-INF/views/mypage/myPage.jsp").forward(request, response);

@@ -39,6 +39,8 @@ public class CommentsDAO {
 	}
 
 	public List<CommentsViewResponse> getReviewComments(Connection conn, Long seq) {
+		pstmt = null;
+		rs = null;
 		List<CommentsViewResponse> comments = new ArrayList<>();
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("getReviewComments"));
@@ -57,6 +59,8 @@ public class CommentsDAO {
 	}
 
 	public List<CommentsViewResponse> getAllCommentsByUser(Connection conn, Long userSeq, int cPage, int numPerPage) {
+		pstmt = null;
+		rs = null;
 		List<CommentsViewResponse> comments = new ArrayList<>();
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllCommentsByUser"));
@@ -77,6 +81,8 @@ public class CommentsDAO {
 	}
 
 	public int countByUser(Connection conn, Long userSeq) {
+		pstmt = null;
+		rs = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("commentsCountByUser"));
@@ -95,6 +101,8 @@ public class CommentsDAO {
 
 	public List<CommentsViewResponse> getAllCommentsRecByUser(Connection conn, Long userSeq, int cPage,
 			int numPerPage) {
+		pstmt = null;
+		rs = null;
 		List<CommentsViewResponse> comments = new ArrayList<>();
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("getAllCommentsRecByUser"));
@@ -115,6 +123,8 @@ public class CommentsDAO {
 	}
 
 	public int countCommentsRecByUser(Connection conn, Long userSeq) {
+		pstmt = null;
+		rs = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("countCommentsRecByUser"));
@@ -132,6 +142,7 @@ public class CommentsDAO {
 	}
 
 	public int insertComment(Connection conn, Comments dto) {
+		pstmt = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("insertComment"));
@@ -149,6 +160,7 @@ public class CommentsDAO {
 	}
 
 	public int updateComment(Connection conn, long commentSeq, long userSeq, String newContent) {
+		pstmt = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("updateComment"));
@@ -165,6 +177,7 @@ public class CommentsDAO {
 	}
 
 	public int deleteComment(Connection conn, long commentSeq, long userSeq) {
+		pstmt = null;
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(sqlProp.getProperty("deleteComment"));
