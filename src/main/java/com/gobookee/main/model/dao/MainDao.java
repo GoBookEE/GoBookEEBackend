@@ -2,12 +2,8 @@ package com.gobookee.main.model.dao;
 
 import com.gobookee.book.model.dto.Book;
 import com.gobookee.main.model.dto.ReviewTopResponse;
-import com.gobookee.place.model.dto.Place;
 import com.gobookee.place.model.dto.PlaceViewResponse;
-import com.gobookee.review.model.dto.Review;
 import com.gobookee.review.model.dto.ReviewListResponse;
-import com.gobookee.study.model.dto.SearchStudyResponse;
-import com.gobookee.study.model.dto.Study;
 import com.gobookee.study.model.dto.StudyList;
 import com.gobookee.users.model.dto.User;
 
@@ -152,7 +148,6 @@ public class MainDao {
     }
 
     public Book getBook(ResultSet rs) throws SQLException {
-        new Book();
         return Book.builder()
                 .bookSeq(rs.getLong("BOOK_SEQ"))
                 .bookID(rs.getLong("BOOK_ID"))
