@@ -31,15 +31,14 @@ public class User {
     private UserType userType;
 
     private String userEmail;
-    
+
     private Long userSpeed;
-    
+
     private String userAddress;
 
     private Timestamp userCreateTime;
 
-    private Timestamp UserDeleteTime;
+    private Timestamp userDeleteTime;
 
-    private Integer UserSpeed;
 }
 
