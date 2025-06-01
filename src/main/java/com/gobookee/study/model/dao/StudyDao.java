@@ -268,7 +268,6 @@ public class StudyDao {
         rs = null;
         List<StudyView> list = new ArrayList<>();
         try {
-        	System.out.println(sql.getProperty("studyNotConfirmedUsers"));
         	pstmt = conn.prepareStatement(sql.getProperty("studyNotConfirmedUsers"));
         	pstmt.setLong(1, studySeq);
         	rs = pstmt.executeQuery();
@@ -358,4 +357,20 @@ public class StudyDao {
         return result;
     }
     
+    public int deleteStudy(Connection conn, Long studySeq) {
+        int result = 0;
+        PreparedStatement pstmt = null;
+        System.out.println("스터디시퀀스 :"+studySeq);
+        try {
+        	pstmt = conn.prepareStatement(sql.getProperty("deleteStudy"));
+            pstmt.setLong(1, studySeq);
+            result = pstmt.executeUpdate();
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try { if (pstmt != null) pstmt.close(); } catch (SQLException e) {}
+        }
+        return result;
+    }
 }
