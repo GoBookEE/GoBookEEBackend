@@ -23,21 +23,13 @@ public class MainServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        System.out.println("doGet");
-        List<ReviewListResponse> top3review = new ArrayList<>();
-        top3review = MainService.mainService().getTop3review();
-        List<ReviewListResponse> recent10review = new ArrayList<>();
-        recent10review = MainService.mainService().getRecent10review();
-        List<Book> hot5book = new ArrayList<>();
-        hot5book = MainService.mainService().getHot5book();
-        List<Book> top9book = new ArrayList<>();
-        top9book = MainService.mainService().getTop9book();
-        List<StudyList> top9study = new ArrayList<>();
-        top9study = MainService.mainService().getTop9study();
-        List<PlaceViewResponse> ran5place = new ArrayList<>();
-        ran5place = MainService.mainService().getRan5place();
-        List<User> top3user = new ArrayList<>();
-        top3user = MainService.mainService().getTop3user();
+        List<ReviewListResponse> top3review = MainService.mainService().getTop3review();
+        List<ReviewListResponse> recent10review = MainService.mainService().getRecent10review();
+        List<Book> hot5book = MainService.mainService().getHot5book();
+        List<Book> top9book = MainService.mainService().getTop9book();
+        List<StudyList> top9study = MainService.mainService().getTop9study();
+        List<PlaceViewResponse> ran5place = MainService.mainService().getRan5place();
+        List<User> top3user = MainService.mainService().getTop3user();
 
         request.setAttribute("top3review", top3review);
         request.setAttribute("recent10review", recent10review);

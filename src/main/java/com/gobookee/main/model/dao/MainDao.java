@@ -33,13 +33,6 @@ public class MainDao {
     }
 
     private MainDao() {
-        String reviewPath = MainDao.class.getClassLoader().getResource("/config/review-sql.properties").getPath();
-        try (FileReader fr = new FileReader(reviewPath)){
-            reviewProp.load(fr);
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
-
         String mainPath = MainDao.class.getClassLoader().getResource("/config/main-sql.properties").getPath();
         try (FileReader fr = new FileReader(mainPath)){
             mainProp.load(fr);
@@ -51,7 +44,7 @@ public class MainDao {
     public List<ReviewListResponse> getTop3review (Connection conn) {
         List<ReviewListResponse> list = new ArrayList<>();
         try{
-            pstmt = conn.prepareStatement(reviewProp.getProperty("getBestReviews"));
+            pstmt = conn.prepareStatement(mainProp.getProperty("getBestReviewsTop3"));
             rs=pstmt.executeQuery();
             while (rs.next()){
                 list.add(getReviewListResponse(rs));

@@ -37,6 +37,9 @@ header {
     margin: 0 auto;
     z-index: 1000;
     background-color: white;
+    transition: box-shadow 0.3s ease; /* 애니메이션 효과 */
+}
+header.scrolled {
     box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px;
 }
 

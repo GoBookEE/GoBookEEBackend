@@ -43,33 +43,42 @@ User u = (User)session.getAttribute("loginUser");
 
     if (loginUser != null) {}
 %>
-    <h5 class="mb-3 fw-bold">리뷰 랭킹 TOP3 👑</h5>
-    <% for (ReviewListResponse b : top3review) { %>
-    <div class="list-group-item list-group-item-action d-flex gap-3 py-3 align-items-start position-relative"
+    <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
+        <div style="font-size: 20px;color: #50A65D">리뷰 랭킹 TOP3 👑</div>
+        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i></div>
+    </div>
+    <%
+        int rank = 1;
+        for (ReviewListResponse b : top3review) {
+    %>
+
+    <div class="book-card" style="box-shadow: none"
          onclick="location.assign('<%=request.getContextPath()%>/review/view?seq=<%=b.getReviewSeq()%>')">
-        <div style="flex-shrink: 0; width: 120px; height: 150px;">
-            <img src='<%=b.getBookCover()%>' alt='book cover' class='rounded w-100 h-100 object-fit-cover'>
-        </div>
-
-
-        <div class="d-flex flex-column flex-grow-1">
-            <strong class="mb-1"><%=b.getReviewTitle()%></strong>
-            <small class="text-muted line-clamp mb-1"><%=b.getReviewContents()%></small>
-            <br>
-            <small class="text-muted"><%=b.getBookTitle()%></small>
-        </div>
-
-
-        <div class="position-absolute bottom-0 end-0 me-2 mb-2 d-flex align-items-center gap-3">
-            <div class="d-flex align-items-center gap-1 text-muted">
-                <i class="bi bi-heart" style="font-size: 0.9rem;"></i> <%=b.getRecommendCount()%>
+        <div class="row book-card-row">
+            <div class="book-card-img col col-4" style="overflow: hidden; padding: 20px ;">
+                <img src='<%=b.getBookCover()%>' alt='book cover' >
             </div>
-            <div class="d-flex align-items-center gap-1 text-muted">
-                <i class="bi bi-chat" style="font-size: 0.9rem;"></i> <%=b.getCommentsCount()%>
+            <div class="book-card-content col col-7">
+                <div class="d-flex flex-column flex-grow-1">
+                    <strong class="mb-1"><%=b.getReviewTitle()%></strong>
+                    <small class="text-muted line-clamp mb-1"><%=b.getReviewContents()%></small>
+                    <br>
+                    <small class="text-muted"><%=b.getBookTitle()%></small>
+                </div>
+                <div class="position-absolute bottom-0 end-0 me-2 mb-2 d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center gap-1 text-muted">
+                        <i class="bi bi-heart" style="font-size: 0.9rem;"></i> <%=b.getRecommendCount()%>
+                    </div>
+                    <div class="d-flex align-items-center gap-1 text-muted">
+                        <i class="bi bi-chat" style="font-size: 0.9rem;"></i> <%=b.getCommentsCount()%>
+                    </div>
+                </div>
             </div>
+
         </div>
     </div>
-    <% } %>
+    <% rank++;
+    } %>
 
     <h5 class="mb-3 fw-bold">따끈따끈한 리뷰! 🔥</h5>
     <div class="scroll-container mb-5">
