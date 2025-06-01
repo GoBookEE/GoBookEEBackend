@@ -1,6 +1,7 @@
 package com.gobookee.main.model.dao;
 
 import com.gobookee.book.model.dto.Book;
+import com.gobookee.main.model.dto.ReviewTopResponse;
 import com.gobookee.place.model.dto.Place;
 import com.gobookee.place.model.dto.PlaceViewResponse;
 import com.gobookee.review.model.dto.Review;
@@ -41,13 +42,13 @@ public class MainDao {
         }
     }
 
-    public List<ReviewListResponse> getTop3review (Connection conn) {
-        List<ReviewListResponse> list = new ArrayList<>();
+    public List<ReviewTopResponse> getTop3review (Connection conn) {
+        List<ReviewTopResponse> list = new ArrayList<>();
         try{
             pstmt = conn.prepareStatement(mainProp.getProperty("getBestReviewsTop3"));
             rs=pstmt.executeQuery();
             while (rs.next()){
-                list.add(getReviewListResponse(rs));
+                list.add(getReviewTopResponse(rs));
             };
         }catch(SQLException e){
             e.printStackTrace();
@@ -133,8 +134,8 @@ public class MainDao {
         return list;
     }
 
-    public ReviewListResponse getReviewListResponse(ResultSet rs) throws SQLException {
-        return ReviewListResponse.builder()
+    public ReviewTopResponse getReviewTopResponse(ResultSet rs) throws SQLException {
+        return ReviewTopResponse.builder()
                 .reviewSeq(rs.getLong("REVIEW_SEQ"))
                 .reviewTitle(rs.getString("REVIEW_TITLE"))
                 .reviewContents(rs.getString("REVIEW_CONTENTS"))
@@ -143,6 +144,9 @@ public class MainDao {
                 .reviewEditTime(rs.getTimestamp("REVIEW_EDIT_TIME"))
                 .bookTitle(rs.getString("BOOK_TITLE"))
                 .bookCover(rs.getString("BOOK_COVER"))
+                .bookAuthor(rs.getString("BOOK_AUTHOR"))
+                .bookPublisher(rs.getString("BOOK_PUBLISHER"))
+                .bookPubdate(rs.getDate("BOOK_PUBDATE"))
                 .recommendCount(rs.getInt("RECOMMEND_COUNT"))
                 .commentsCount(rs.getInt("COMMENTS_COUNT")).build();
     }
@@ -181,15 +185,16 @@ public class MainDao {
 
     private User getUser(ResultSet rs) throws SQLException {
         return User.builder()
-                .UserNickName(rs.getString("user_nickname"))
-                .UserProfile(rs.getString("user_profile"))
-                .UserSpeed(rs.getInt("user_speed"))
+                .userNickName(rs.getString("user_nickname"))
+                .userProfile(rs.getString("user_profile"))
+                .userSpeed(rs.getLong("user_speed"))
                 .build();
     }
 
     private ReviewListResponse getRecentReview(ResultSet rs) throws SQLException {
         return ReviewListResponse.builder()
                 .bookCover(rs.getString("BOOK_COVER"))
+                .bookTitle(rs.getString("BOOK_TITLE"))
                 .reviewTitle(rs.getString("REVIEW_TITLE"))
                 .reviewContents(rs.getString("REVIEW_CONTENTS"))
                 .reviewRate(rs.getInt("REVIEW_RATE"))
@@ -202,6 +207,7 @@ public class MainDao {
                 .bookSeq(rs.getLong("BOOK_SEQ"))
                 .bookCover(rs.getString("BOOK_COVER"))
                 .bookTitle(rs.getString("BOOK_TITLE"))
+                .bookDescription(rs.getString("BOOK_DESCRIPTION"))
                 .bookAuthor(rs.getString("BOOK_AUTHOR"))
                 .bookPublisher(rs.getString("BOOK_PUBLISHER"))
                 .bookPubdate(rs.getDate("BOOK_PUBDATE"))
@@ -216,6 +222,8 @@ public class MainDao {
                 .placeTitle(rs.getString("PLACE_TITLE"))
                 .placeContents(rs.getString("PLACE_CONTENTS"))
                 .photoNames(Collections.singletonList(rs.getString("PHOTO_RENAMED_NAME")))
+                .placeRecCount(rs.getLong("RECOMMEND_COUNT"))
+                .placeNonRecCount(rs.getLong("NON_RECOMMEND_COUNT"))
                 .build();
     }
     private StudyList getTopStudy(ResultSet rs) throws SQLException {

@@ -1,77 +1,95 @@
 <%@ page pageEncoding="UTF-8" language="java" %>
 <%@include file="WEB-INF/views/common/header.jsp" %>
-<%@ page import="com.gobookee.users.model.dto.User"  %>
+<%@ page import="com.gobookee.users.model.dto.User" %>
 <%@ page import="java.util.List" %>
+<%@ page import="com.gobookee.main.model.dto.ReviewTopResponse" %>
 <%@ page import="com.gobookee.review.model.dto.ReviewListResponse" %>
 <%@ page import="com.gobookee.book.model.dto.Book" %>
 <%@ page import="com.gobookee.study.model.dto.StudyList" %>
 <%@ page import="com.gobookee.place.model.dto.PlaceViewResponse" %>
+<%@ page import="com.gobookee.study.model.dto.Study" %>
 <%
-User u = (User)session.getAttribute("loginUser");
+    User u = (User) session.getAttribute("loginUser");
 
-    List<ReviewListResponse> top3review =  (List<ReviewListResponse>)request.getAttribute("top3review");
-    List<ReviewListResponse> recent10review =  (List<ReviewListResponse>)request.getAttribute("recent10review");
-    List<Book> hot5book =  (List<Book>)request.getAttribute("hot5book");
-    List<Book> top9book =  (List<Book>)request.getAttribute("top9book");
-    List<StudyList> top9study =  (List<StudyList>)request.getAttribute("top9study");
-    List<PlaceViewResponse> ran5place =  (List<PlaceViewResponse>)request.getAttribute("ran5place");
-    List<User> top3user =  (List<User>)request.getAttribute("top3user");
+    List<ReviewTopResponse> top3review = (List<ReviewTopResponse>) request.getAttribute("top3review");
+    List<ReviewListResponse> recent10review = (List<ReviewListResponse>) request.getAttribute("recent10review");
+    List<Book> hot5book = (List<Book>) request.getAttribute("hot5book");
+    List<Book> top9book = (List<Book>) request.getAttribute("top9book");
+    List<StudyList> top9study = (List<StudyList>) request.getAttribute("top9study");
+    List<PlaceViewResponse> ran5place = (List<PlaceViewResponse>) request.getAttribute("ran5place");
+    List<User> top3user = (List<User>) request.getAttribute("top3user");
 
 %>
 <style>
-    .scroll-container {
-        display: flex;
-        overflow-x: auto;
-        gap: 1rem;
-        padding-bottom: 1rem;
-        scroll-snap-type: x mandatory;
-    }
 
-    .scroll-container::-webkit-scrollbar {
-        display: none;
-    }
-
-    .scroll-item {
-        flex: 0 0 auto;
-        scroll-snap-align: start;
-        width: 250px; /* 카드 하나의 너비 */
-    }
 </style>
+<script src="https://unpkg.com/fast-average-color/dist/index.browser.min.js"></script>
 <main>
     <%
-    Object loginUser = session.getAttribute("loginUser");
+        Object loginUser = session.getAttribute("loginUser");
 
-    if (loginUser != null) {}
-%>
+        if (loginUser != null) {
+        }
+    %>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">리뷰 랭킹 TOP3 👑</div>
-        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i></div>
+        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        </div>
     </div>
     <%
         int rank = 1;
-        for (ReviewListResponse b : top3review) {
+        String rkIcon = "";
+        for (ReviewTopResponse b : top3review) {
     %>
 
     <div class="book-card" style="box-shadow: none"
          onclick="location.assign('<%=request.getContextPath()%>/review/view?seq=<%=b.getReviewSeq()%>')">
         <div class="row book-card-row">
-            <div class="book-card-img col col-4" style="overflow: hidden; padding: 20px ;">
-                <img src='<%=b.getBookCover()%>' alt='book cover' >
+            <div class="book-card-img2 col col-3" style="overflow: hidden; padding: 20px ;height: 147px">
+                <%
+                    switch (rank) {
+                        case 1:
+                            rkIcon = "🏅";
+                            break;
+                        case 2:
+                            rkIcon = "🥈";
+                            break;
+                        case 3:
+                            rkIcon = "🥉";
+                            break;
+                    }
+                %>
+                <i class="medal-icon"><%=rkIcon%>
+                </i>
+                <img src='<%=b.getBookCover()%>' alt='book cover'>
             </div>
-            <div class="book-card-content col col-7">
+            <div class="book-card-content col col-8">
                 <div class="d-flex flex-column flex-grow-1">
-                    <strong class="mb-1"><%=b.getReviewTitle()%></strong>
-                    <small class="text-muted line-clamp mb-1"><%=b.getReviewContents()%></small>
-                    <br>
-                    <small class="text-muted"><%=b.getBookTitle()%></small>
+                    <div class="book-card-t2"><%=b.getReviewTitle()%>
+                    </div>
+                    <div class="book-card-c2"><%=b.getReviewContents()%>
+                    </div>
+                    <div class="book-card-c3"><%=b.getBookTitle()%>
+                    </div>
+                    <div class="book-card-c2" style="color: #AFAFAF"><%=b.getBookAuthor()%> | <%=b.getBookPublisher()%>
+                        | <%=b.getBookPubdate()%>
+                    </div>
                 </div>
-                <div class="position-absolute bottom-0 end-0 me-2 mb-2 d-flex align-items-center gap-3">
-                    <div class="d-flex align-items-center gap-1 text-muted">
-                        <i class="bi bi-heart" style="font-size: 0.9rem;"></i> <%=b.getRecommendCount()%>
+                <div class="book-card-c4">
+                    <div>
+                        <div><i class="bi bi-star-fill"
+                                style="font-size: 0.9rem; margin-right: 5px; color: #50A65D"></i><%=b.getReviewRate()%>
+                        </div>
                     </div>
-                    <div class="d-flex align-items-center gap-1 text-muted">
-                        <i class="bi bi-chat" style="font-size: 0.9rem;"></i> <%=b.getCommentsCount()%>
+                    <div class="d-flex">
+                        <div class="d-flex align-items-center text-muted">
+                            <i class="bi bi-heart" style="font-size: 0.9rem; margin: 0;"></i> <%=b.getRecommendCount()%>
+                        </div>
+                        <div class="d-flex align-items-center text-muted">
+                            <i class="bi bi-chat" style="font-size: 0.9rem; margin: 0;"></i> <%=b.getCommentsCount()%>
+                        </div>
                     </div>
+
                 </div>
             </div>
 
@@ -79,79 +97,283 @@ User u = (User)session.getAttribute("loginUser");
     </div>
     <% rank++;
     } %>
-
-    <h5 class="mb-3 fw-bold">따끈따끈한 리뷰! 🔥</h5>
-    <div class="scroll-container mb-5">
-    <% for (ReviewListResponse b : recent10review) { %>
-    <div class="card h-100 review-card scroll-item" onclick="location.assign('<%=request.getContextPath()%>/review/view?seq=<%=b.getReviewSeq() %>')">
-        <div class="card-img-wrapper mb-2 d-flex justify-content-center">
-            <img src="<%=b.getBookCover() %>" class="card-img-top" alt="book1"
-                 style="width: 100px; height: 130px;">
-        </div>
-        <div class="card-body">
-            <h6 class="card-title"><%=b.getReviewTitle() %></h6>
-            <p class="card-text small line-clamp"><%=b.getReviewContents()%></p>
-        </div>
-        <div class="card-footer bg-white border-top-0">
-            <small class="review-meta"><i class="bi bi-heart" style="font-size: 0.9rem;"></i>
-                <%=b.getRecommendCount()%> | <i class="bi bi-chat"></i> <%=b.getCommentsCount()%>
-            </small>
+    <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
+        <div style="font-size: 20px;color: #50A65D">따끈따끈한 리뷰! 🔥</div>
+        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
-    <% } %>
-    </div>
-
-    <h5 class="mb-3 fw-bold">리뷰가 많은 도서 랭킹 📝</h5>
-    <div class="scroll-container mb-5">
-        <% for (Book b : top9book) { %>
+    <div class="scroll-container book-card-scroll">
+        <% for (ReviewListResponse b : recent10review) { %>
         <div class="card h-100 review-card scroll-item"
-             onclick="location.assign('<%=request.getContextPath()%>/books/bookdetail?bookSeq=<%=b.getBookSeq()%>')">
-            <div class="card-img-wrapper mb-2 d-flex justify-content-center">
-                <img src="<%=b.getBookCover() %>" class="card-img-top" alt="book1"
-                     style="width: 100px; height: 130px;">
+             onclick="location.assign('<%=request.getContextPath()%>/review/view?seq=<%=b.getReviewSeq() %>')">
+            <div style="height: 170px;overflow: hidden;" class="book-card-img2">
+                <img style="height: 90%;" src="<%=b.getBookCover() %>" alt="book1">
+            </div>
+            <div class="card-body" style="height: 120px">
+                <h6 class="book-card-t2"><%=b.getReviewTitle() %>
+                </h6>
+                <p class="book-card-c2"><%=b.getReviewContents()%>
+                </p>
+                <div class="book-card-c3"><%=b.getBookTitle()%>
+                </div>
+            </div>
+            <div class="card-footer bg-white border-top-0">
+                <small class="review-meta">
+                    <div><i class="bi bi-star-fill"
+                            style="font-size: 0.9rem; margin-right: 5px; color: #50A65D"></i><%=b.getReviewRate()%>
+                    </div>
+                    <div><i class="bi bi-chat"
+                            style="font-size: 0.9rem;margin-right: 4px"></i> <%=b.getCommentsCount()%>
+                    </div>
+                </small>
             </div>
         </div>
         <% } %>
     </div>
-    <div class="form-container" style="padding: 70px 0">
-        <%for(Book b : top9book){%>
-        <a href="<%=request.getContextPath()%>/books/bookdetail?bookSeq=<%=b.getBookSeq()%>">
-            <div class="p-4 book-card">
+    <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
+        <div style="font-size: 20px;color: #50A65D">지금 뜨는 교육도서! 📚</div>
+        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        </div>
+    </div>
+    <div class="scroll-container book-card-scroll">
+        <% for (Book b : hot5book) { %>
+        <div class="card h-100 review-card scroll-item" style=" width: 200px;"
+             onclick="location.assign('<%=request.getContextPath()%>/books/bookdetail?bookSeq=<%=b.getBookSeq()%>')">
+            <div style="height: 250px;overflow: hidden;" class="book-card-img2">
+                <img style="height: 80%;" src="<%=b.getBookCover() %>" alt="book1">
+            </div>
+
+        </div>
+        <% } %>
+    </div>
+    <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
+        <div style="font-size: 20px;color: #50A65D">리뷰가 많은 도서 랭킹 📝</div>
+        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        </div>
+    </div>
+    <div class="scroll-container2">
+        <%
+            int count = 1;
+            for (Book b : top9book) {
+        %>
+        <%if (count == 1 || count == 4 || count == 7) {%>
+        <div class="book-group"><%}%>
+            <div class="p-4 book-card" style="margin:0;"
+                 onclick="location.assign('<%=request.getContextPath()%>/books/bookdetail?bookSeq=<%=b.getBookSeq()%>')">
                 <div class="row book-card-row">
-                    <div class="book-card-img col col-5">
-                        <img src="<%=b.getBookCover().replace("coversum","cover500")%>">
-                        <i class="bi bi-bookmark-fill"></i>
+                    <div class="book-card-img2 col col-4" style="overflow: hidden; padding: 20px ;height: 180px">
+                        <img src='<%=b.getBookCover()%>' alt='book cover'>
                     </div>
-                    <div class="book-card-content col col-7" >
-                        <div class="book-card-title"><%=b.getBookTitle()%></div>
-                        <div class="book-card-desc"><%=b.getBookDescription()%></div>
-                        <div>
+                    <div class="book-card-content col col-8">
+                        <div class="book-card-title"><%=b.getBookTitle()%>
+                        </div>
+                        <div class="book-card-c2" style="font-size: 15px !important;">
                             <%
                                 List aut = List.of(b.getBookAuthor().split(", "));
-                                for(Object a : aut){
+                                for (Object a : aut) {
                             %>
                             <span><%=a.toString().split(" ")[0]%></span>
                             <%}%>
                         </div>
-                        <div><%=b.getBookPublisher()%> | <%=b.getBookPubdate()%></div>
-                        <div class="book-card-review">리뷰 <span><%=b.getReviewCount()%>개</span> <i class="bi bi-star-fill"> </i><%=Math.ceil(b.getReviewRateAvg()*100)/100%></div>
+                        <div class="book-card-c2" style="font-size: 15px !important;">
+                            <%=b.getBookPublisher()%> | <%=b.getBookPubdate()%>
+                        </div>
+                        <div class="book-card-c2" style="font-size: 15px !important;">
+
+                            리뷰 <span><%=b.getReviewCount()%>개</span> <i class="bi bi-star-fill"
+                                                                        style="color:#50A65D; font-size: 15px !important;"> </i><%=Math.ceil(b.getReviewRateAvg() * 100) / 100%>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <%if (count == 3 || count == 6 || count == 9) {%></div>
+        <%
+                }
+                count++;
+            }
+            if ((count - 1) % 3 != 0) {
+        %></div>
+    <%}%>
+    </div>
+    <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
+        <div style="font-size: 20px;color: #50A65D">지금 뜨는 스터디 ✏️</div>
+        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        </div>
+    </div>
+    <div class="scroll-container2">
+        <%
+            count = 1;
+            for (StudyList s : top9study) {
+        %>
+        <%if (count == 1 || count == 4 || count == 7) {%>
+        <div class="book-group"><%}%>
+            <div class="p-4 book-card" style="margin:0;"
+                 onclick="location.assign('<%=request.getContextPath()%>/study/view?seq=<%=s.getStudySeq()%>')">
+                <div class="row book-card-row">
+                    <%
+                        String img = s.getPhotoRenamedName();
+                        if (img == null || img.isBlank()) {
+                    %>
+                    <div class="study-card-img2 col col-4" style="overflow: hidden; padding: 20px ;height: 180px">
+                        <img src="<%=request.getContextPath()%>/resources/images/default.png">
+                    </div>
+                    <%} else {%>
+                    <div class="study-card-img2 col col-4" style="overflow: hidden; padding: 20px ;height: 180px">
+                        <img src="<%=request.getContextPath()%>/resources/upload/study/<%=img%>"
+                             onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
+                    </div>
+                    <%}%>
+
+                    <div class="book-card-content col col-8">
+                        <div class="book-card-title"><%=s.getStudyTitle()%>
+                        </div>
+                        <div class="book-card-c2" style="font-size: 15px !important;">
+                            <i class="bi bi-calendar-date me-1" style="font-size: 0.9rem; color: #50A65D"></i>
+                            <span><%=s.getStudyDate()%></span>
+                        </div>
+
+                        <div class="book-card-c2" style="font-size: 15px !important;">
+                            <i class="bi bi-people-fill me-1" style="font-size: 0.9rem; color: #50A65D"></i>
+                            <%=s.getConfirmedCount() + 1%> / <%=s.getStudyMemberLimit()%>
+                        </div>
+                        <div class="book-card-c2" style="font-size: 15px !important;">
+                            <i class="bi bi-geo-alt-fill me-1" style="font-size: 0.9rem; color: #50A65D"></i>
+                            <span><%=s.getStudyAddress() != null ? s.getStudyAddress() : "주소미입력"%></span>
+                        </div>
+                        <div class="book-card-c2" style="font-size: 15px !important;">
+                            <i class="bi bi-hand-thumbs-up-fill me-1" style="font-size: 0.9rem; color: #50A65D"></i>
+                            <span style="margin-right: 10px"><%=s.getLikeCount()%>개</span>
+                            <i class="bi bi-hand-thumbs-down me-1" style="font-size: 0.9rem; color: #50A65D"></i>
+                            <span><%=s.getDislikeCount()%>개</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </a>
-        <%}%>
+            <%if (count == 3 || count == 6 || count == 9) {%></div>
+        <%
+                }
+                count++;
+            }
+            if ((count - 1) % 3 != 0) {
+        %></div>
+    <%}%>
     </div>
-    <br>
-    top9study<br>
-    ran5place<br>
-    top3user<br>
+    <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
+        <div style="font-size: 20px;color: #50A65D"> 스터디 여기 어때? 🧐</div>
+        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        </div>
 
+    </div>
+    <div class="scroll-container book-card-scroll">
+            <% for (PlaceViewResponse p: ran5place) { %>
+        <div class="card h-100 review-card scroll-item"
+             onclick="location.assign('<%=request.getContextPath()%>/place/view?placeSeq=<%=p.getPlaceSeq() %>')">
+            <%
+                List imglist = p.getPhotoNames();
+                if (imglist == null || imglist.size() == 0) {
+            %>
+            <div class="study-card-img2" style="overflow: hidden; padding: 20px ;height: 180px">
+                <img style="width: 100%;" src="<%=request.getContextPath()%>/resources/images/default.png">
+            </div>
+            <%} else {%>
+            <div class="study-card-img2" style="overflow: hidden; padding: 20px ;height: 180px">
+                <img style="width: 100%;height: auto"
+                     src="<%=request.getContextPath()%>/resources/upload/study/<%=imglist.get(0)%>"
+                     onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
+            </div>
+            <%}%>
+            <div class="card-body" style="height: 120px">
+                <h6 class="book-card-t2"><%=p.getPlaceTitle() %>
+                </h6>
+                <p class="book-card-c2"><%=p.getPlaceContents()%>
+                </p>
+            </div>
+            <div class="card-footer bg-white border-top-0">
+                <div class="book-card-c2" style="font-size: 15px !important;">
+                    <i class="bi bi-hand-thumbs-up-fill me-1" style="font-size: 0.9rem; color: #50A65D"></i>
+                    <span style="margin-right: 10px"><%=p.getPlaceRecCount()%>개</span>
+                    <i class="bi bi-hand-thumbs-down me-1" style="font-size: 0.9rem; color: #50A65D"></i>
+                    <span><%=p.getPlaceNonRecCount()%>개</span>
+                </div>
+
+            </div>
+        </div>
+            <% } %>
+    </div>
+
+        <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
+            <div style="font-size: 20px;color: #50A65D">재미로 보는 고북이 랭킹 🐢</div>
+            <div style="font-size: 14px">
+                더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+            </div>
+        </div>
+    <%
+    rank = 1;
+    rkIcon = "";
+    for (User ur : top3user) {
+    %>
+        <div class="book-card" style="box-shadow: none">
+            <div class="row book-card-row">
+                <div class="book-card-img2 col col-3" style="overflow: hidden; padding: 20px ;height: 147px">
+                    <%
+                        switch (rank) {
+                            case 1:
+                                rkIcon = "🏅";
+                                break;
+                            case 2:
+                                rkIcon = "🥈";
+                                break;
+                            case 3:
+                                rkIcon = "🥉";
+                                break;
+                        }
+                    %>
+                    <i class="medal-icon"><%=rkIcon%>
+                    </i>
+                    <img src='<%=ur.getUserProfile()%>' alt='book cover'>
+                </div>
+                <%--<div class="book-card-content col col-8">
+                    <div class="d-flex flex-column flex-grow-1">
+                        <div class="book-card-t2"><%=b.getReviewTitle()%>
+                        </div>
+                        <div class="book-card-c2"><%=b.getReviewContents()%>
+                        </div>
+                        <div class="book-card-c3"><%=b.getBookTitle()%>
+                        </div>
+                        <div class="book-card-c2" style="color: #AFAFAF"><%=b.getBookAuthor()%>
+                            | <%=b.getBookPublisher()%>
+                            | <%=b.getBookPubdate()%>
+                        </div>
+                    </div>
+                    <div class="book-card-c4">
+                        <div>
+                            <div><i class="bi bi-star-fill"
+                                    style="font-size: 0.9rem; margin-right: 5px; color: #50A65D"></i><%=b.getReviewRate()%>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="d-flex align-items-center text-muted">
+                                <i class="bi bi-heart"
+                                   style="font-size: 0.9rem; margin: 0;"></i> <%=b.getRecommendCount()%>
+                            </div>
+                            <div class="d-flex align-items-center text-muted">
+                                <i class="bi bi-chat"
+                                   style="font-size: 0.9rem; margin: 0;"></i> <%=b.getCommentsCount()%>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>--%>
+
+            </div>
+        </div>
+    <% rank++;} %>
 </main>
-<script src="https://unpkg.com/fast-average-color/dist/index.browser.min.js"></script>
 <script>
     const fac = new FastAverageColor();
 
-    document.querySelectorAll('.book-card-img > img').forEach(img => {
+    document.querySelectorAll('.book-card-img2 > img').forEach(img => {
         // CORS 허용 안 되는 경우 자동 처리 시도
         img.crossOrigin = 'anonymous';
 
@@ -170,6 +392,29 @@ User u = (User)session.getAttribute("loginUser");
             .catch(err => {
                 console.warn('색상 추출 실패:', err);
             });
+    }
+
+    function formatReviewTime(dateString) {
+        const reviewDate = new Date(dateString); // e.g., "May 3, 2025, 10:24:22 AM"
+        const now = new Date();
+        const diffMs = now - reviewDate;
+
+        const diffMinutes = Math.floor(diffMs / 60000);
+        const diffHours = Math.floor(diffMs / 3600000);
+
+        if (diffMinutes < 60) {
+            return diffMinutes + '분 전';
+        } else if (diffHours < 24) {
+            return diffHours + '시간 전';
+        } else {
+            const yyyy = reviewDate.getFullYear();
+            const mm = String(reviewDate.getMonth() + 1).padStart(2, '0');
+            const dd = String(reviewDate.getDate()).padStart(2, '0');
+            const hh = String(reviewDate.getHours()).padStart(2, '0');
+            const min = String(reviewDate.getMinutes()).padStart(2, '0');
+            const sec = String(reviewDate.getSeconds()).padStart(2, '0');
+            return yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + min + ':' + sec;
+        }
     }
 </script>
 <%@include file="WEB-INF/views/common/footer.jsp" %>
