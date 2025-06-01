@@ -19,6 +19,9 @@
     justify-content: center;
 }
 
+.book-card-scroll{
+    margin: 35px 20px;
+}
 .book-card-img{
     display: flex;
     justify-content: center;
@@ -33,7 +36,6 @@
     max-width: 130px;
     box-shadow: rgba(0, 0, 0, 0.5) 10px 10px 20px;
 }
-
 .book-card-img > i {
     color: rgba(255, 255, 255, 0.8);
     position: absolute;
@@ -42,6 +44,91 @@
     font-size: 24px;
 }
 
+.scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
+}
+
+.scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+.scroll-item {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    width: 150px; /* 카드 하나의 너비 */
+    height: 350px !important;
+    border: 0 !important;
+}
+.book-card-img2{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 30px;
+    transition: background-color 0.5s ease;
+    position: relative;
+}
+
+.book-card-img2>img{
+    height: 90%;
+    max-width: 130px;
+    box-shadow: rgba(0, 0, 0, 0.5) 10px 10px 20px;
+}
+.study-card-img2>img{
+    height: 100%;
+}
+.book-card-img2 .medal-icon {
+    position: absolute;
+    top:-10px;
+    left: 5px;
+    font-size: 24px; /* 아이콘 크기 조절 */
+    z-index: 10; /* 이미지보다 위에 위치 */
+}
+
+.book-card-t2 {
+    font-size: 16px !important;
+    font-weight: bold;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.book-card-c2 {
+    font-size: 12px !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* 2줄 제한 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    color: #333333 !important;
+    text-overflow: ellipsis;
+    font-weight: lighter !important;
+    line-height: 1.4em;
+    max-height: 2.8em; /* 2줄 x 줄높이 */
+}
+
+.book-card-c3 {
+    color: #50A65D !important;
+    font-size: 14px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.book-card-c4 {
+    font-size: 14px !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.book-card-c4>i{
+    font-size: 15px !important;
+}
 .book-card-content div{
     padding: 0 15px;
     font-size: clamp(14px, 2vw, 16px);
@@ -144,6 +231,9 @@
     font-size: 12px;
     color: #AFAFAF;
     margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .review-content{
     padding: 15px 35px;
@@ -224,4 +314,33 @@
     justify-content: center;
     width: 250px;
     height: 60px;
+}
+
+.scroll-container2 {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 1rem; /* 묶음 간 간격 */
+    padding: 1rem;
+    scroll-snap-type: x mandatory; /* 선택적: 스냅 스크롤 */
+}
+
+.book-group {
+    flex: 0 0 auto;
+    width: 490px; /* 카드 하나가 300px일 경우 3개 = 900px (여백 포함해서 조절 가능) */
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    scroll-snap-align: start; /* 선택적: 스냅 시작점 */
+    text-decoration: none;
+    padding: 10px;
+}
+
+/* 선택적: 스크롤바 꾸미기 */
+.scroll-container2::-webkit-scrollbar {
+    height: 8px;
+}
+.scroll-container2::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
 }

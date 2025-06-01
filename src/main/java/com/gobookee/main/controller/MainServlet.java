@@ -1,5 +1,6 @@
 package com.gobookee.main.controller;
 import com.gobookee.book.model.dto.Book;
+import com.gobookee.main.model.dto.ReviewTopResponse;
 import com.gobookee.main.service.MainService;
 import com.gobookee.place.model.dto.Place;
 import com.gobookee.place.model.dto.PlaceViewResponse;
@@ -23,7 +24,7 @@ public class MainServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        List<ReviewListResponse> top3review = MainService.mainService().getTop3review();
+        List<ReviewTopResponse> top3review = MainService.mainService().getTop3review();
         List<ReviewListResponse> recent10review = MainService.mainService().getRecent10review();
         List<Book> hot5book = MainService.mainService().getHot5book();
         List<Book> top9book = MainService.mainService().getTop9book();

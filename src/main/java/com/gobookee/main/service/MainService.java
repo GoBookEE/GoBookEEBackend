@@ -3,6 +3,7 @@ package com.gobookee.main.service;
 import com.gobookee.book.model.dao.BookDao;
 import com.gobookee.book.model.dto.Book;
 import com.gobookee.main.model.dao.MainDao;
+import com.gobookee.main.model.dto.ReviewTopResponse;
 import com.gobookee.place.model.dto.Place;
 import com.gobookee.place.model.dto.PlaceViewResponse;
 import com.gobookee.review.model.dto.Review;
@@ -25,9 +26,9 @@ public class MainService {
     public static MainService mainService() {return SERVICE;}
     private MainDao dao = mainDao();
 
-    public List<ReviewListResponse>  getTop3review (){
+    public List<ReviewTopResponse>  getTop3review (){
         Connection conn = getConnection();
-        List<ReviewListResponse> list = new ArrayList<>();
+        List<ReviewTopResponse> list = new ArrayList<>();
         list = dao.getTop3review(conn);
         close(conn);
         return list;
