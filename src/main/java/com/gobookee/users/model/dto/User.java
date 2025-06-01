@@ -9,35 +9,35 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User {
-    private Long UserSeq;
+    private Long userSeq;
 
-    private String UserId;
+    private String userId;
 
-    private String UserPwd;
+    private String userPwd;
 
-    private String UserNickName;
+    private String userNickName;
 
     //Gender는 MALE, FEMALE로 구분
-    private Gender UserGender;
+    private Gender userGender;
 
-    private String UserPhone;
+    private String userPhone;
 
     //프로필 사진은 PresignedUrl 방식을 사용해서 url 주소만 DB에 저장
-    private String UserProfile;
+    private String userProfile;
 
-    private String UserIntro;
+    private String userIntro;
 
     //UserType은 USER, ADMIN, OWNER로 구분
-    private UserType UserType;
+    private UserType userType;
 
-    private String UserEmail;
+    private String userEmail;
     
-    private Long UserSpeed;
+    private Long userSpeed;
     
-    private String UserAddress;
+    private String userAddress;
 
-    private Timestamp UserCreateTime;
+    private Timestamp userCreateTime;
 
-    private Timestamp UserDeleteTime;
+    private Timestamp userDeleteTime;
 }
 

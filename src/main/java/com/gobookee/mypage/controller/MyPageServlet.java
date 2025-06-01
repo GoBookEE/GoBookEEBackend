@@ -1,23 +1,19 @@
 package com.gobookee.mypage.controller;
 
-import java.io.IOException;
+import com.gobookee.mypage.model.dto.MyStudy;
+import com.gobookee.mypage.service.RecStudyService;
+import com.gobookee.place.service.PlaceService;
+import com.gobookee.review.service.CommentsService;
+import com.gobookee.review.service.ReviewService;
+import com.gobookee.users.model.dto.User;
+import com.gobookee.users.model.dto.UserType;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.gobookee.users.model.dto.User;
-import com.gobookee.users.model.dto.UserType;
-
-import javax.servlet.http.*;
-
-import com.gobookee.review.service.ReviewService;
-import com.gobookee.review.service.CommentsService;
-import com.gobookee.mypage.model.dto.MyStudy;
-import com.gobookee.mypage.service.RecStudyService;
-import com.gobookee.place.service.PlaceService;
-import com.gobookee.users.model.dto.UserType;
+import java.io.IOException;
 
 /**
  * Servlet implementation class MyPageServlet

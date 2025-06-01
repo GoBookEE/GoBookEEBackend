@@ -3,6 +3,7 @@ package com.gobookee.users.model.dao;
 import com.gobookee.users.model.dto.Gender;
 import com.gobookee.users.model.dto.User;
 import com.gobookee.users.model.dto.UserType;
+import com.gobookee.users.model.dto.UserUpdateProfile;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -172,22 +173,40 @@ public class UserDAO {
         return result;
     }
 
+    public int updateProfile(Connection conn, UserUpdateProfile user) {
+        int result = 0;
+        pstmt = null;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("updateProfile"));
+            pstmt.setString(1, user.getUserNickname());
+            pstmt.setString(2, user.getUserPwd());
+            pstmt.setString(3, user.getUserPhone());
+            pstmt.setLong(4, user.getUserSeq());
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
+
     //resultset의 결과를 유저DTO로 변환해주는 기능
     private User getUser(ResultSet rs) throws SQLException {
         return User.builder()
-                .UserSeq(rs.getLong("user_seq"))
-                .UserId(rs.getString("user_id"))
-                .UserPwd(rs.getString("user_pwd"))
-                .UserNickName(rs.getString("user_nickname"))
-                .UserGender(parseGender(rs.getString("user_gender")))
-                .UserPhone(rs.getString("user_phone"))
-                .UserProfile(rs.getString("user_profile"))
-                .UserIntro(rs.getString("user_intro"))
-                .UserType(parseUserType(rs.getString("user_type")))
-                .UserEmail(rs.getString("user_email"))
-                .UserCreateTime(rs.getTimestamp("user_create_time"))
-                .UserDeleteTime(rs.getTimestamp("user_delete_time"))
-                .UserSpeed(rs.getLong("user_speed"))
+                .userSeq(rs.getLong("user_seq"))
+                .userId(rs.getString("user_id"))
+                .userPwd(rs.getString("user_pwd"))
+                .userNickName(rs.getString("user_nickname"))
+                .userGender(parseGender(rs.getString("user_gender")))
+                .userPhone(rs.getString("user_phone"))
+                .userProfile(rs.getString("user_profile"))
+                .userIntro(rs.getString("user_intro"))
+                .userType(parseUserType(rs.getString("user_type")))
+                .userEmail(rs.getString("user_email"))
+                .userCreateTime(rs.getTimestamp("user_create_time"))
+                .userDeleteTime(rs.getTimestamp("user_delete_time"))
+                .userSpeed(rs.getLong("user_speed"))
                 .build();
     }
 
@@ -214,5 +233,4 @@ public class UserDAO {
                 throw new IllegalArgumentException("TYPE : " + value);
         }
     }
-
 }
