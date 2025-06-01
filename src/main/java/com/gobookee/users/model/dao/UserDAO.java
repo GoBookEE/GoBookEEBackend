@@ -3,6 +3,7 @@ package com.gobookee.users.model.dao;
 import com.gobookee.users.model.dto.Gender;
 import com.gobookee.users.model.dto.User;
 import com.gobookee.users.model.dto.UserType;
+import com.gobookee.users.model.dto.UserUpdateProfile;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -172,6 +173,24 @@ public class UserDAO {
         return result;
     }
 
+    public int updateProfile(Connection conn, UserUpdateProfile user) {
+        int result = 0;
+        pstmt = null;
+        try {
+            pstmt = conn.prepareStatement(sqlProp.getProperty("updateProfile"));
+            pstmt.setString(1, user.getUserNickname());
+            pstmt.setString(2, user.getUserPwd());
+            pstmt.setString(3, user.getUserPhone());
+            pstmt.setLong(4, user.getUserSeq());
+            result = pstmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            close(pstmt);
+        }
+        return result;
+    }
+
     //resultset의 결과를 유저DTO로 변환해주는 기능
     private User getUser(ResultSet rs) throws SQLException {
         return User.builder()
@@ -214,5 +233,4 @@ public class UserDAO {
                 throw new IllegalArgumentException("TYPE : " + value);
         }
     }
-
 }
