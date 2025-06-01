@@ -47,7 +47,7 @@
 <!-- 내 순위 하단 고정 -->
 <div class="fixed-bottom bg-light p-2 border-top text-center">
   👤 <strong>내 순위: 15위</strong> / <strong>속도 점수: 355점</strong>
-</div> -->
+</div>
 
 
 </section>
