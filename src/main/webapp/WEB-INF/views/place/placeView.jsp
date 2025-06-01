@@ -281,6 +281,9 @@
         calendarInstance = new FullCalendar.Calendar(calendarEl, {
             initialView: 'dayGridMonth',
             selectable: true,
+            validRange: {
+                start: new Date().toISOString().split('T')[0]  // 오늘 날짜부터 가능
+            },
             dateClick: function (info) {
                 selectedDate = info.dateStr;
                 document.getElementById('selectedDateTitle').innerText = `\${info.dateStr} 예약 현황`;
