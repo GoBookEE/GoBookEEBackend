@@ -384,10 +384,21 @@
 
     $(document).on('click', '.group-item', function () {
         selectedGroupId = $(this).data('id');
-        $('#formStudySeq').val(selectedGroupId);
-        $('#confirmInfo').html(`<p>\${selectedDate}에<br><strong>\${$(this).text()}</strong> 그룹으로 예약합니다.</p>`);
-        $('#step-study-select').hide();
-        $('#step-confirm').show();
+
+        // 중복 예약 확인 Ajax
+        $.get(`<%=request.getContextPath()%>/schedule/searchreservation?date=\${selectedDate}&placeSeq=\${placeSeq}`, function (list) {
+            const isDuplicate = list.some(item => item.studySeq === selectedGroupId);
+            if (isDuplicate) {
+                alert("이미 해당 스터디로 이 날짜에 장소를 예약하셨습니다.");
+                return;
+            }
+
+            // 중복 아님 → 예약 확인단계로 이동
+            $('#formStudySeq').val(selectedGroupId);
+            $('#confirmInfo').html(`<p>\${selectedDate}에<br><strong>\${$(this).text()}</strong> 그룹으로 예약합니다.</p>`);
+            $('#step-study-select').hide();
+            $('#step-confirm').show();
+        });
     });
 
     function goBackToCalendar() {
