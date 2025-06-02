@@ -1,5 +1,6 @@
 package com.gobookee.mypage.controller;
 
+import com.gobookee.book.service.BookService;
 import com.gobookee.mypage.model.dto.MyStudy;
 import com.gobookee.mypage.service.RecStudyService;
 import com.gobookee.place.service.PlaceService;
@@ -25,7 +26,7 @@ public class MyPageServlet extends HttpServlet {
 	private CommentsService commentsService = CommentsService.commentsService();
 	private PlaceService placeService = PlaceService.placeService();
 	private RecStudyService studyService = RecStudyService.recStudyService();
-       
+	private BookService bookService = BookService.bookService();
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -64,11 +65,13 @@ public class MyPageServlet extends HttpServlet {
 			int comment = commentsService.countCommentsRecByUser(userSeq);
 			int place = placeService.placeCountRecByUser(userSeq);
 			int study = studyService.countStudiesRecByUser(userSeq);
+			int wish = bookService.bookWishCountByUser(userSeq);
 			
 			int recommendedCount = review + comment + place + study;
 			
 			request.setAttribute("recommendedCount", recommendedCount);
-			
+			request.setAttribute("wishCount", wish);
+
 			
 			String tab = request.getParameter("tab"); // applied | created
 			String status = request.getParameter("status"); // upcoming | completed
