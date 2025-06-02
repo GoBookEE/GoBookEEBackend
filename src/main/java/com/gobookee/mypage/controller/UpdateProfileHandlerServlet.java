@@ -64,11 +64,13 @@ public class UpdateProfileHandlerServlet extends HttpServlet {
                             .userId(updateUser.getUserId())
                             .userEmail(updateUser.getUserEmail())
                             .userType(loginUser.getUserType())
+                            .userSpeed(loginUser.getUserSpeed())
+                            .rnum(loginUser.getRnum())
                             .build());
             MessageRedirectTemplate.builder()
                     .request(request)
                     .msg("프로필 수정에 성공했습니다.")
-                    .loc("/mypage/updateprofilepage")
+                    .loc("/mypage")
                     .response(response)
                     .build().forward();
         } else {

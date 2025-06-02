@@ -82,7 +82,7 @@
 
         <div class="d-flex">
             <img
-                    src="<%=CommonPathTemplate.getUploadPath(request, FileType.USER, studyview.getUserProfile())%>"
+                    src="<%=request.getContextPath()%>/resources/upload/user/<%=studyview.getUserProfile()%>"
                     class="rounded-circle me-2" alt="user" width="50" height="50"
                     onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
 
@@ -147,7 +147,7 @@
     <div id="study-member-list">
         <% for (StudyView s : studyviewuser) { %>
         <div>
-            <img src="<%=request.getContextPath()%>/resources/upload/user/<%=Optional.ofNullable(s.getUserProfile()).orElse("default.png") %>"
+            <img src="<%=request.getContextPath()%>/resources/upload/user/<%=s.getUserProfile()%>"
                  onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png';" width="50"
                  height="50">
             <div class="fw-semibold"><%=s.getUserNickName()%>

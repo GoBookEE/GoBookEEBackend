@@ -146,7 +146,7 @@
 					container.append(`
 						  <div class="rank-box">
 							<div class="rank-label">\${user.rnum}등</div>
-							<img class="profile" src="<%=request.getContextPath()%>/upload/user/\${user.userProfile || 'default.png'}"
+							<img class="profile" src="<%=request.getContextPath()%>/resources/upload/user/\${user.userProfile || 'default.png'}"
 								 onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'" style="margin-right: 10px">
 							<div style="flex: 1;">
 							  <div><strong>\${user.userNickName}</strong> 님 고북이</div>

@@ -372,7 +372,7 @@
             <div class="rank-label col col-1"><i class="medal-icon-profile"><%=rkIcon%>
             </i></div>
             <div class="profile-img col col-2" style="margin-right: 10px">
-                <img src="<%=request.getContextPath()%>/upload/user/<%=ur.getUserProfile()%> || 'default.png'}"
+                <img src="<%=request.getContextPath()%>/resources/upload/user/<%=ur.getUserProfile()%>"
                      onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
             </div>
             <div style="flex: 1;">

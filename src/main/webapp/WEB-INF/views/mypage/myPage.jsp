@@ -156,7 +156,7 @@
     .profile-img p {
         font-size: 16px;
         font-weight: 400;
-        margin-top: 20px;
+        margin-top: 10px;
     }
 
     .progress {

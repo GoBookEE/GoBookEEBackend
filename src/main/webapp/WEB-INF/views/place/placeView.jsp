@@ -133,7 +133,7 @@
 
         <!-- 👤 작성자 정보 -->
         <div class="d-flex align-items-center mb-3">
-            <img src="<%=CommonPathTemplate.getUploadPath(request,FileType.USER,place.getUserProfileImage())%>"
+            <img src="<%=request.getContextPath()%>/resources/upload/user/<%=place.getUserProfileImage()%>"
                  class="rounded-circle me-3"
                  width="50" height="50" alt="프로필"
                  onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">

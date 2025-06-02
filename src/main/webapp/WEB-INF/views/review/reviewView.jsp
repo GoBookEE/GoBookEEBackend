@@ -92,7 +92,7 @@
             <div class="d-flex align-items-start justify-content-between mb-3">
                 <div class="d-flex">
                     <img
-                            src="<%=CommonPathTemplate.getUploadPath(request, FileType.USER, review.getUserProfile())%>"
+                            src="<%=request.getContextPath()%>/resources/upload/user/<%=review.getUserProfile()%>"
                             class="rounded-circle me-2" alt="user" width="50" height="50"
                             onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
 
