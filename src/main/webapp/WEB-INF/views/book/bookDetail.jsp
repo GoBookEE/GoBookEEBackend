@@ -154,7 +154,7 @@
                     html += '</div>';
                     html += '</div>';
                     html += '</div>';
-                    html += '<a href="<%=request.getContextPath()%>/review/reviewseq?seq='+r.reviewSeq+'"><div class="review-content">';
+                    html += '<a href="<%=request.getContextPath()%>/review/view?seq='+r.reviewSeq+'"><div class="review-content">';
                     html += r.reviewContents;
                     html += '</div></a>';
                     html += '<div class="review-stats d-flex justify-content-between">';

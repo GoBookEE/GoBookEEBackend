@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "AuthorityFilter", urlPatterns = {"/place/insert","/place/insertpage"})
+@WebFilter(filterName = "AuthorityFilter", urlPatterns = {"/place/insert", "/place/insertpage"})
 public class AuthorityFilter implements Filter {
     public void init(FilterConfig config) throws ServletException {
     }
@@ -26,7 +26,7 @@ public class AuthorityFilter implements Filter {
         HttpSession session = req.getSession(false);
         User loginUser = (User) session.getAttribute("loginUser");
 
-        if (loginUser.getUserType().equals(UserType.OWNER)) {
+        if (loginUser != null && loginUser.getUserType().equals(UserType.OWNER)) {
             chain.doFilter(request, response);
         } else {
             // 사장님이 아니면 메인 페이지로 리다이렉트
