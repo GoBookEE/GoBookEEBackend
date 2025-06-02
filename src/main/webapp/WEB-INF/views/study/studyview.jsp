@@ -1,18 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.gobookee.study.model.dto.StudyView, java.util.*" %>
 <%@ page import="com.gobookee.users.model.dto.User" %>
+
+<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2d59386dd09d43d5d2ad8f433a1eb0e3&libraries=services"></script>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
     StudyView studyview = (StudyView) request.getAttribute("studyView");
     List<StudyView> studyviewuser = (List<StudyView>) request.getAttribute("studyViewUser");
     List<StudyView> studynotconfirmeduser = (List<StudyView>) request.getAttribute("studyNotConfirmedUser");
-    User loginUser = (User) request.getSession().getAttribute("loginUser");
     Long userseq = loginUser.getUserSeq();
     Long host = studyview.getUserSeq();
     boolean isHost = userseq.equals(host);
     boolean isFull = studyview.getConfirmedCount()+1 >= studyview.getStudyMemberLimit();
 %>
-<script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2d59386dd09d43d5d2ad8f433a1eb0e3&libraries=services"></script>
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <style>
     .center-button {
         display: flex;
@@ -88,7 +88,7 @@
 </div>
 <div><span style="color: #999999"><%= studyview.getStudyCategory() %></span></div>
 <div><strong><%= studyview.getStudyTitle() %></strong></div>
-<div><%= studyview.getStudyContent()%></div>
+<div style="width:600px; display:block; word-wrap: break-word; white-space: normal;"><%= studyview.getStudyContent()%></div>
 <div><i class="bi bi-calendar-date" style="color: #50A65D"></i> <%= studyview.getStudyDate()%></div>
 <div><i class="bi bi-people-fill" style="color: #50A65D"></i> <%= studyview.getConfirmedCount() + 1%>/<%= studyview.getStudyMemberLimit()%></div>
 <div><span>스터디 장소</span> <span><%= studyview.getStudyAddress() %></span></div>
@@ -184,5 +184,38 @@
     new kakao.maps.Marker({
         position: new kakao.maps.LatLng(<%= studyview.getStudyLatitude()%>, <%= studyview.getStudyLongitude()%>)
     }).setMap(map);
+    
+    
+    $(document).on("click", ".btn-recommend-action", function () {
+        const $btn = $(this);
+        const targetType = $btn.data("type"); // "REVIEW" or "COMMENT"
+        const targetSeq = $btn.data("seq");
+        const recType = $btn.data("rec");     // 0: 추천, 1: 비추천
+        $.ajax({
+            url: "<%=request.getContextPath()%>/recommend/insert",
+            type: "POST",
+            data: {
+              boardSeq: targetSeq,
+              recType: recType
+            },
+            success: function (data) {
+              if (data.success) {
+                // 추천
+                $(`.btn-recommend-action[data-type='\${targetType}'][data-seq='\${targetSeq}'][data-rec='0']`)
+                  .find(".count")
+                  .text(data.recommendCount);
+                // 비추천
+                $(`.btn-recommend-action[data-type='\${targetType}'][data-seq='\${targetSeq}'][data-rec='1']`)
+                  .find(".count")
+                  .text(data.nonRecommendCount);
+              } else {
+                alert(data.message || "이미 처리된 항목입니다.");
+              }
+            },
+            error: function () {
+              alert("추천/비추천 처리 중 오류 발생!");
+            }
+          });
+        });
 </script>
 </html>

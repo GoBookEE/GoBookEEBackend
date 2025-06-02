@@ -67,7 +67,10 @@
 							                 alt="스터디 이미지">
 							          </div>
 							                <div class="book-card-content col col-7" >
-							                    <div class="book-card-title">\${b.studyTitle}</div>
+							                <div class="book-card-title"
+							                    style="width:300px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+							                 \${b.studyTitle}
+							               </div>
 							                    <div class="book-card-desc">\${b.studyDate ? b.studyDate : "날짜 미입력"}</div>
 							                    <div>
 							                    	<i class="bi bi-people-fill"></i>
