@@ -255,6 +255,9 @@
 }
 .review-content{
     padding: 15px 35px;
+    white-space: normal; /* 텍스트 줄바꿈 허용 */
+    word-wrap: break-word; /* 긴 단어 줄바꿈 */
+    overflow-wrap: break-word; /* 최신 브라우저용 줄바꿈 */
 }
 .review-stats{
     padding: 20px 0;
