@@ -19,6 +19,22 @@
 
 %>
 <style>
+    .number {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        height: 14px;
+    }
+
+    .progress {
+        border-radius: 50px;
+        background-color: #C1DFC6;
+    }
+
+    .progress-bar.bg-success {
+        background: linear-gradient(90deg, #3D6C44 0%, #50A65D 100%);
+        border-radius: 30px;
+    }
 
     .rank-progress {
         position: relative;
@@ -45,7 +61,8 @@
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">리뷰 랭킹 TOP3 👑</div>
         <div style="font-size: 14px; cursor: pointer;"
-             onclick="location.assign('<%=request.getContextPath()%>/review/listpage')">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+             onclick="location.assign('<%=request.getContextPath()%>/review/listpage')">더보기<i
+                style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
     <%
@@ -111,7 +128,9 @@
     } %>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">따끈따끈한 리뷰! 🔥</div>
-        <div style="font-size: 14px; cursor: pointer;" onclick="location.assign('<%=request.getContextPath()%>/review/listpage')">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        <div style="font-size: 14px; cursor: pointer;"
+             onclick="location.assign('<%=request.getContextPath()%>/review/listpage')">더보기<i
+                style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
     <div class="scroll-container book-card-scroll">
@@ -144,7 +163,8 @@
     </div>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">지금 뜨는 교육도서! 📚</div>
-        <div style="font-size: 14px; cursor: pointer;" onclick="location.assign('<%=request.getContextPath()%>/books/booklist')">더보기
+        <div style="font-size: 14px; cursor: pointer;"
+             onclick="location.assign('<%=request.getContextPath()%>/books/booklist')">더보기
             <i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
@@ -161,7 +181,8 @@
     </div>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">리뷰가 많은 도서 랭킹 📝</div>
-        <div style="font-size: 14px; cursor: pointer;" onclick="location.assign('<%=request.getContextPath()%>/books/booklist')">더보기
+        <div style="font-size: 14px; cursor: pointer;"
+             onclick="location.assign('<%=request.getContextPath()%>/books/booklist')">더보기
             <i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
@@ -212,7 +233,8 @@
     </div>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">지금 뜨는 스터디 ✏️</div>
-        <div style="font-size: 14px; cursor: pointer;" onclick="location.assign('<%=request.getContextPath()%>/study/listpage')">더보기
+        <div style="font-size: 14px; cursor: pointer;"
+             onclick="location.assign('<%=request.getContextPath()%>/study/listpage')">더보기
             <i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
@@ -245,7 +267,7 @@
                         </div>
                         <div class="book-card-c2" style="font-size: 15px !important;">
                             <i class="bi bi-calendar-date me-1" style="font-size: 0.9rem; color: #50A65D"></i>
-                            <span><%=s.getStudyDate()!= null ? s.getStudyDate() : "날짜 미입력"%></span>
+                            <span><%=s.getStudyDate() != null ? s.getStudyDate() : "날짜 미입력"%></span>
                         </div>
 
                         <div class="book-card-c2" style="font-size: 15px !important;">
@@ -276,13 +298,14 @@
     </div>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D"> 스터디 여기 어때? 🧐</div>
-        <div style="font-size: 14px; cursor: pointer;" onclick="location.assign('<%=request.getContextPath()%>/place/listpage')">더보기
+        <div style="font-size: 14px; cursor: pointer;"
+             onclick="location.assign('<%=request.getContextPath()%>/place/listpage')">더보기
             <i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
 
     </div>
     <div class="scroll-container book-card-scroll">
-            <% for (PlaceViewResponse p: ran5place) { %>
+        <% for (PlaceViewResponse p : ran5place) { %>
         <div class="card h-100 review-card scroll-item"
              onclick="location.assign('<%=request.getContextPath()%>/place/view?placeSeq=<%=p.getPlaceSeq() %>')">
             <%
@@ -315,58 +338,112 @@
 
             </div>
         </div>
-            <% } %>
+        <% } %>
     </div>
 
-        <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
-            <div style="font-size: 20px;color: #50A65D">재미로 보는 고북이 랭킹 🐢</div>
-            <div style="font-size: 14px; cursor: pointer;" onclick="location.assign('<%=request.getContextPath()%>/ranking/speed')">
-                더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
-            </div>
+    <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
+        <div style="font-size: 20px;color: #50A65D">재미로 보는 고북이 랭킹 🐢</div>
+        <div style="font-size: 14px; cursor: pointer;"
+             onclick="location.assign('<%=request.getContextPath()%>/ranking/speed')">
+            더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
+    </div>
     <%
-    rank = 1;
-    rkIcon = "";
-    for (User ur : top3user) {
+        rank = 1;
+        rkIcon = "";
+        for (User ur : top3user) {
     %>
-        <div class="book-card" style="box-shadow: none;border-radius: 0;">
-            <div class="row profile-card-row">
+    <div class="book-card" style="box-shadow: none;border-radius: 0;">
+        <div class="row profile-card-row">
+            <%
+                switch (rank) {
+                    case 1:
+                        rkIcon = "\uD83E\uDD47";
+                        break;
+                    case 2:
+                        rkIcon = "🥈";
+                        break;
+                    case 3:
+                        rkIcon = "🥉";
+                        break;
+                }
+            %>
+            <div style="display: flex; flex-direction: row">
+            <div class="rank-label col col-1"><i class="medal-icon-profile"><%=rkIcon%>
+            </i></div>
+            <div class="profile-img col col-2" style="margin-right: 10px">
+                <img src="<%=request.getContextPath()%>/upload/user/<%=ur.getUserProfile()%> || 'default.png'}"
+                     onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
+            </div>
+            <div style="flex: 1;">
+                <div><strong><%=ur.getUserNickName()%>
+                </strong> 님 고북이
+                </div>
+                <div><%=ur.getUserSpeed()%>km/h로 달리는 중!</div>
                 <%
-                    switch (rank) {
-                        case 1:
-                            rkIcon = "\uD83E\uDD47";
-                            break;
-                        case 2:
-                            rkIcon = "🥈";
-                            break;
-                        case 3:
-                            rkIcon = "🥉";
-                            break;
+                    long speed = ur.getUserSpeed();
+                    int progressPercent = 0;
+                    double logoLeftPercent = 0;
+                    String speedIconPath = "";
+
+                    if (speed >= 0) {
+                        if (speed >= 1000) {
+                            speedIconPath = request.getContextPath() + "/resources/images/rocket.png";
+                        } else if (speed >= 500) {
+                            speedIconPath = request.getContextPath() + "/resources/images/airplane.png";
+                        } else if (speed >= 300) {
+                            speedIconPath = request.getContextPath() + "/resources/images/train.png";
+                        } else if (speed >= 50) {
+                            speedIconPath = request.getContextPath() + "/resources/images/car.png";
+                        } else if (speed >= 10) {
+                            speedIconPath = request.getContextPath() + "/resources/images/bike.png";
+                        } else {
+                            speedIconPath = request.getContextPath() + "/resources/images/walk.png";
+                        }
+
+                        double ratio = Math.min(speed, 1000) / 1000.0;
+                        progressPercent = (int) (ratio * 100);
+                        logoLeftPercent = ratio * 100;
+                    } else {
+                        speed = 0L;
+                        progressPercent = 0;
+                        logoLeftPercent = 0;
+                        speedIconPath = request.getContextPath() + "/resources/images/sad.png";
                     }
+
+                    double adjustedLeftPercent = logoLeftPercent - 3;
                 %>
-                <div class="rank-label col col-1"><i class="medal-icon-profile"><%=rkIcon%></i></div>
-                <div class="profile-img col col-2">
-                    <img src="<%=request.getContextPath()%>/upload/user/<%=ur.getUserProfile()%> || 'default.png'}"
-                         onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
-                </div>
-                <div style="flex: 1;">
-                    <div><strong><%=ur.getUserNickName()%></strong> 님 고북이</div>
-                    <div><%=ur.getUserSpeed()%>km/h로 달리는 중!</div>
-                    <div class="rank-progress">
-                        <%
-                            long speed = ur.getUserSpeed();
-                            int percent = 0;
-                            if (speed > 0) {
-                                percent = (int)((speed >= 1000 ? 100 : (speed / 1000.0) * 100));
-                            }
-                        %>
-                        <div class="rank-bar" style="width:<%=percent%>%"></div>
+                <div class="progress" style="height: 25px; width: 400px; position: relative; overflow: visible; border-radius: 50px;">
+                    <div class="progress-bar bg-success"
+                         role="progressbar"
+                         style="width: <%=progressPercent%>% ; border-radius: 30px;"
+                         aria-valuenow="<%=speed%>"
+                         aria-valuemin="0" aria-valuemax="1000">
                     </div>
-                </div>
+
+                    <!-- 속도 아이콘 -->
+                    <span style="
+                            position: absolute;
+                            top: -20px; /* 바깥으로 띄움 */
+                            left: <%=adjustedLeftPercent%>%;
+                            transform: translateX(-50%);
+                            z-index: 10;">
+    <img src="<%=speedIconPath%>"
+         style="width: 50px; height: 50px; object-fit: contain;">
+  </span>
                 </div>
 
+                <!-- 숫자 라벨 -->
+                <div class="d-flex justify-content-between" style="width: 400px;">
+                    <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+                </div>
+                </div>
             </div>
-    <% rank++;} %>
+        </div>
+    </div>
+    </div>
+    <% rank++;
+    } %>
 </main>
 <script>
     const fac = new FastAverageColor();
