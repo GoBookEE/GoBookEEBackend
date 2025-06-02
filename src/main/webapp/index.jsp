@@ -44,7 +44,8 @@
     %>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">리뷰 랭킹 TOP3 👑</div>
-        <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/review/listpage')">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        <div style="font-size: 14px; cursor: pointer;"
+             onclick="location.assign('<%=request.getContextPath()%>/review/listpage')">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
     <%
@@ -110,7 +111,7 @@
     } %>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">따끈따끈한 리뷰! 🔥</div>
-        <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/review/listpage')">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        <div style="font-size: 14px; cursor: pointer;" onclick="location.assign('<%=request.getContextPath()%>/review/listpage')">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
     <div class="scroll-container book-card-scroll">
@@ -143,7 +144,7 @@
     </div>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">지금 뜨는 교육도서! 📚</div>
-        <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/books/booklist')">더보기
+        <div style="font-size: 14px; cursor: pointer;" onclick="location.assign('<%=request.getContextPath()%>/books/booklist')">더보기
             <i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
@@ -160,7 +161,7 @@
     </div>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">리뷰가 많은 도서 랭킹 📝</div>
-        <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/books/booklist')">더보기
+        <div style="font-size: 14px; cursor: pointer;" onclick="location.assign('<%=request.getContextPath()%>/books/booklist')">더보기
             <i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
@@ -211,7 +212,7 @@
     </div>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">지금 뜨는 스터디 ✏️</div>
-        <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/study/listpage')">더보기
+        <div style="font-size: 14px; cursor: pointer;" onclick="location.assign('<%=request.getContextPath()%>/study/listpage')">더보기
             <i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
@@ -275,7 +276,7 @@
     </div>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D"> 스터디 여기 어때? 🧐</div>
-        <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/place/listpage')">더보기
+        <div style="font-size: 14px; cursor: pointer;" onclick="location.assign('<%=request.getContextPath()%>/place/listpage')">더보기
             <i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
 
@@ -319,7 +320,7 @@
 
         <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
             <div style="font-size: 20px;color: #50A65D">재미로 보는 고북이 랭킹 🐢</div>
-            <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/ranking/speed')">
+            <div style="font-size: 14px; cursor: pointer;" onclick="location.assign('<%=request.getContextPath()%>/ranking/speed')">
                 더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
             </div>
         </div>
