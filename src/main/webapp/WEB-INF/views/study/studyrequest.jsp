@@ -2,12 +2,22 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <main>
     <div class="container mt-5">
-        <h3>신청자 목록</h3>
         <div id="requestListContainer"></div>
     </div>
 </main>
 
 <script>
+
+	$(document).ready(function () {
+	    $("header").html(`
+	        <div style="height: 4rem"class="container d-flex justify-content-between align-items-center text-center small position-relative">
+	    		<a class="col-1" style="color:black" href="<%=request.getContextPath()%>/study/view?seq=<%= request.getParameter("studySeq") %>">
+	    		 <i class="bi bi-chevron-left"></i>
+	    		</a>
+	        </div>
+	    `);
+	});
+
     const studySeq = new URLSearchParams(window.location.search).get("studySeq");
 
     $(document).ready(function () {
@@ -111,5 +121,4 @@
     });
 </script>
 
-
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+</html>

@@ -89,15 +89,24 @@
     <div><span style="color: #999999"><%= studyview.getStudyCategory() %></span></div>
     <div><strong><%= studyview.getStudyTitle() %>
     </strong></div>
-    <div><%= studyview.getStudyContent()%>
+    <div style="word-wrap: break-word;"><%= studyview.getStudyContent()%>
     </div>
-    <div><i class="bi bi-calendar-date" style="color: #50A65D"></i> <%= studyview.getStudyDate()%>
+    <div>
+	    <i class="bi bi-calendar-date" style="color: #50A65D"></i>
+	    <%= (studyview.getStudyDate() == null || studyview.getStudyDate().toString().trim().isEmpty()) 
+	        ? " 날짜 미등록" 
+	        : studyview.getStudyDate().toString() %>
+	</div>
     </div>
     <div><i class="bi bi-people-fill" style="color: #50A65D"></i> <%= studyview.getConfirmedCount() + 1%>
         /<%= studyview.getStudyMemberLimit()%>
     </div>
-    <div><span>스터디 장소</span> <span><%= studyview.getStudyAddress() %></span></div>
-    <div id="map" style="width:100%; height:300px;"></div>
+    <% if (studyview.getStudyAddress() == null || studyview.getStudyAddress().trim().isEmpty()) { %>
+    <div><span>스터디 장소 미등록</span></div>
+	<% } else { %>
+	    <div><span>스터디 장소</span> <span><%= studyview.getStudyAddress() %></span></div>
+	    <div id="map" style="width:100%; height:300px;"></div>
+	<% } %>
     <div style="display: flex;">
         <% if (isHost) { %>
         <button class="d-flex align-items-center p-0 border-0 bg-transparent" data-type="STUDY"

@@ -2,6 +2,18 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2d59386dd09d43d5d2ad8f433a1eb0e3&libraries=services"></script>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
+<<script >
+	$(document).ready(function () {
+	    $("header").html(`
+	        <div style="height: 4rem"class="container d-flex justify-content-between align-items-center text-center small position-relative">
+	            <a class="col-1" style="color:black" href="<%=request.getContextPath()%>/study/listpage">
+	                <i class="bi bi-x fs-1"></i>
+	            </a>
+	        </div>
+	    `);
+	});
+</script>
+
 <main>
 	<form action="<%=request.getContextPath()%>/study/upload" method="post" enctype="multipart/form-data">
 	  <h2>스터디 등록 페이지</h2>
@@ -380,4 +392,4 @@
   }
 </style>
 
-<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+</html>
