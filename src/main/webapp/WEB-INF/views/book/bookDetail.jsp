@@ -150,7 +150,7 @@
                     if(r.userProfile !== undefined){
                         html += '<img src="'+r.userProfile+'">';
                     }else{
-                        html += '<i class="bi bi-person-circle"></i>';
+                        html += '<img src="<%=request.getContextPath()%>/resources/images/default.png">';
                     }
                     html += '<div class="review-meta">';
                     html += '<div class="review-meta-nick">';
