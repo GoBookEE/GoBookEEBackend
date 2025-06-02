@@ -19,6 +19,11 @@
     justify-content: center;
 }
 
+.profile-card-row{
+    justify-content: center;
+    align-items: center;
+}
+
 .book-card-scroll{
     margin: 35px 20px;
 }
@@ -80,6 +85,7 @@
 .study-card-img2>img{
     height: 100%;
 }
+
 .book-card-img2 .medal-icon {
     position: absolute;
     top:-10px;
@@ -87,6 +93,18 @@
     font-size: 24px; /* 아이콘 크기 조절 */
     z-index: 10; /* 이미지보다 위에 위치 */
 }
+
+
+.profile-img{
+    border-radius: 30px;
+    position: relative;
+}
+
+.profile-img>img{
+    width: 100%;
+    max-width: 130px;
+}
+
 
 .book-card-t2 {
     font-size: 16px !important;

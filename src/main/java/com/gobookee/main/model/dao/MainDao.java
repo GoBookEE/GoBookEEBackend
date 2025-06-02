@@ -188,6 +188,7 @@ public class MainDao {
 
     private ReviewListResponse getRecentReview(ResultSet rs) throws SQLException {
         return ReviewListResponse.builder()
+                .reviewSeq(rs.getLong("REVIEW_SEQ"))
                 .bookCover(rs.getString("BOOK_COVER"))
                 .bookTitle(rs.getString("BOOK_TITLE"))
                 .reviewTitle(rs.getString("REVIEW_TITLE"))
