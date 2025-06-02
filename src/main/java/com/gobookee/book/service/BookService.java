@@ -1,8 +1,7 @@
 package com.gobookee.book.service;
 
 import static com.gobookee.book.model.dao.BookDao.bookDao;
-import static com.gobookee.common.JDBCTemplate.close;
-import static com.gobookee.common.JDBCTemplate.getConnection;
+import static com.gobookee.common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -76,4 +75,18 @@ public class BookService {
 		return book;
 	}
 
+	public int wishCheck(long userSeq, long bookSeq){
+		Connection conn = getConnection();
+		int result = dao.wishCheck(conn, userSeq, bookSeq);
+		commit(conn);
+		close(conn);
+		return result;
+	}
+	public int wishUncheck(long userSeq, long bookSeq){
+		Connection conn = getConnection();
+		int result = dao.wishUncheck(conn, userSeq, bookSeq);
+		commit(conn);
+		close(conn);
+		return result;
+	}
 }

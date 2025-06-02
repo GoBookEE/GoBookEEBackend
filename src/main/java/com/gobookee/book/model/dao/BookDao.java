@@ -92,6 +92,7 @@ public class BookDao {
 				book = getBook(rs);
 				book.setReviewCount(rs.getInt("REVIEW_COUNT"));
 				book.setReviewRateAvg(rs.getDouble("REVIEW_RATE_AVG"));
+				book.setWishCount(rs.getInt("WISH_CHECK"));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -218,6 +219,39 @@ public class BookDao {
 		}
 		return book;
 	}
+
+
+	public int wishCheck(Connection conn, long userSeq, long bookSeq){
+		int result = 0;
+		try{
+			String sql = sqlProp.getProperty("wishCheck");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1,userSeq);
+			pstmt.setLong(2,bookSeq);
+			result = pstmt.executeUpdate();
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	public int wishUncheck(Connection conn, long userSeq, long bookSeq){
+		int result = 0;
+		try{
+			String sql = sqlProp.getProperty("wishUncheck");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1,userSeq);
+			pstmt.setLong(2,bookSeq);
+			result = pstmt.executeUpdate();
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
 
 	public ReviewBookSeqResponse getReviewBookSeqResponse(ResultSet rs) throws SQLException {
 
