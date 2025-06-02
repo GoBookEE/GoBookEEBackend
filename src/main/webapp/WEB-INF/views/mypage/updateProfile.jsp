@@ -2,9 +2,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page pageEncoding="utf-8" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<%
-    User loginUser = (User) request.getSession().getAttribute("loginUser");
-%>
 <style>
     body {
         background-color: #f5f5f5;

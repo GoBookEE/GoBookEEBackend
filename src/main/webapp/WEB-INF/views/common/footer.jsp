@@ -96,7 +96,9 @@
     }
 
 </style>
-
+<%
+    if (loginUser != null) {
+%>
 <div class="fab-container">
     <button class="fab-main" id="fabToggle">
         <i class="bi bi-plus-lg"></i>
@@ -107,13 +109,20 @@
         </a> <a href="<%=request.getContextPath()%>/books/searchaladin"
                 class="fab-item"> <i class="bi bi-book"></i> 책 등록하기
     </a>
-        </a>
+        <%
+            if (loginUser.getUserType().equals("1")) {
+        %>
         <a href="<%=request.getContextPath()%>/place/insertpage" class="fab-item">
             <i class="bi bi-geo-alt-fill"></i> 장소 등록하기
         </a>
-
+        <%
+            }
+        %>
     </div>
 </div>
+<%
+    }
+%>
 </body>
 <footer class="py-2">
     <div class="container d-flex justify-content-around text-center small">
@@ -162,6 +171,17 @@
         <li><a href="<%=request.getContextPath()%>/study/listpage">스터디 목록</a></li>
         <li><a href="<%=request.getContextPath()%>/place/listpage">장소 목록</a></li>
         <li><a href="<%=request.getContextPath()%>/ranking/speed">고북이 속도 랭킹</a></li>
+        <%
+            if (loginUser == null) {
+        %>
+        <li><a href="<%=request.getContextPath()%>/loginpage">로그인</a></li>
+        <%
+        } else {
+        %>
+        <li><a href="<%=request.getContextPath()%>/logout">로그아웃</a></li>
+        <%
+            }
+        %>
     </ul>
 </div>
 <script>

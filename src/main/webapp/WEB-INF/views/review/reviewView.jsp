@@ -8,7 +8,6 @@
 <%@ page import="com.gobookee.common.enums.FileType"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
-User loginUser = (User) session.getAttribute("loginUser");
 ReviewViewResponse review = (ReviewViewResponse) request.getAttribute("review");
 List<CommentsViewResponse> comments = review.getComments();
 %>

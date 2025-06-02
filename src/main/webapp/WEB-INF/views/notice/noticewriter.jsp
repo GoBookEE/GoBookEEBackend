@@ -4,8 +4,7 @@
 	import="com.gobookee.notice.model.dto.Notice, com.gobookee.users.model.dto.*"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
-User loginUser = (User)session.getAttribute("loginUser");
-String mode = (String) request.getAttribute("mode"); //write / update 
+String mode = (String) request.getAttribute("mode"); //write / update
 boolean isUpdate = "update".equals(mode);
 Notice notice = (Notice) request.getAttribute("notice");
 %>

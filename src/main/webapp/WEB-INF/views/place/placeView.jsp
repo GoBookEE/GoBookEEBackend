@@ -58,7 +58,6 @@
 </style>
 <%
     PlaceViewResponse place = (PlaceViewResponse) request.getAttribute("place");
-    User loginUser = (User) session.getAttribute("loginUser");
     boolean isOwner = loginUser.getUserSeq().equals(place.getUserSeq());
 %>
 

@@ -223,7 +223,7 @@
             </div>
             <div class="profile-2">
                 <h3>고북이 속도</h3>
-                <p style="margin-bottom: 40px;">현재 <%=loginUser.getUserSpeed()%>km/s로 달리는 중</p>
+                <p style="margin-bottom: 26px;">현재 <%=loginUser.getUserSpeed()%>km/s로 달리는 중</p>
                 <div class="progress" style="height: 25px; width: 500px; position: relative; overflow: visible;">
                     <!-- 게이지 바 -->
                     <div class="progress-bar bg-success" role="progressbar"
@@ -236,7 +236,7 @@
                     <span class="speed-logo"
                           style="z-index: 101; position: absolute; top: 50%; left: <%=adjustedLeftPercent%>%;
                                   transform: translate(-50%, -50%);">
-    <img src="<%=speedIconPath%>" style="width: 100px; height: 100px; object-fit: contain;">
+    <img src="<%=speedIconPath%>" style="width: 60px; height: 60px; object-fit: contain;">
 </span>
 
                 </div>

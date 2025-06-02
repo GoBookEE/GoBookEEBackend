@@ -9,8 +9,6 @@
 <%@ page import="com.gobookee.place.model.dto.PlaceViewResponse" %>
 <%@ page import="com.gobookee.study.model.dto.Study" %>
 <%
-    User u = (User) session.getAttribute("loginUser");
-
     List<ReviewTopResponse> top3review = (List<ReviewTopResponse>) request.getAttribute("top3review");
     List<ReviewListResponse> recent10review = (List<ReviewListResponse>) request.getAttribute("recent10review");
     List<Book> hot5book = (List<Book>) request.getAttribute("hot5book");
@@ -26,8 +24,6 @@
 <script src="https://unpkg.com/fast-average-color/dist/index.browser.min.js"></script>
 <main>
     <%
-        Object loginUser = session.getAttribute("loginUser");
-
         if (loginUser != null) {
         }
     %>

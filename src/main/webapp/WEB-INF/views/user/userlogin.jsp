@@ -3,7 +3,6 @@
 <%@ page import="com.gobookee.users.model.dto.User" %>
 
 <%
-    User loginUser = (User) session.getAttribute("loginUser");
     Cookie[] cookies = request.getCookies();
     String saveId = null;
     if (cookies != null) {

@@ -4,7 +4,6 @@
 	import="java.util.List,java.text.SimpleDateFormat,com.gobookee.notice.model.dto.Notice,com.gobookee.users.model.dto.User"%>
 <%
 List<Notice> notices = (List<Notice>) request.getAttribute("notices");
-User loginUser = (User) session.getAttribute("loginUser");
 StringBuffer pageBar = (StringBuffer) request.getAttribute("pageBar");
 %>
 

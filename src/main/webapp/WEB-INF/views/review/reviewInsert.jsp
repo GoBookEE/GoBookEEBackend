@@ -5,7 +5,6 @@
 <%@ page import="com.gobookee.book.model.dto.BookReviewResponse"%>
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 <%
-User loginUser = (User)session.getAttribute("loginUser");
 ReviewViewResponse review = (ReviewViewResponse) request.getAttribute("review");
 String mode = (String) request.getAttribute("mode");
 boolean isUpdate = "update".equals(mode);
