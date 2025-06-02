@@ -202,5 +202,38 @@
     new kakao.maps.Marker({
         position: new kakao.maps.LatLng(<%= studyview.getStudyLatitude()%>, <%= studyview.getStudyLongitude()%>)
     }).setMap(map);
+    
+    
+    $(document).on("click", ".btn-recommend-action", function () {
+        const $btn = $(this);
+        const targetType = $btn.data("type"); // "REVIEW" or "COMMENT"
+        const targetSeq = $btn.data("seq");
+        const recType = $btn.data("rec");     // 0: 추천, 1: 비추천
+        $.ajax({
+            url: "<%=request.getContextPath()%>/recommend/insert",
+            type: "POST",
+            data: {
+              boardSeq: targetSeq,
+              recType: recType
+            },
+            success: function (data) {
+              if (data.success) {
+                // 추천
+                $(`.btn-recommend-action[data-type='\${targetType}'][data-seq='\${targetSeq}'][data-rec='0']`)
+                  .find(".count")
+                  .text(data.recommendCount);
+                // 비추천
+                $(`.btn-recommend-action[data-type='\${targetType}'][data-seq='\${targetSeq}'][data-rec='1']`)
+                  .find(".count")
+                  .text(data.nonRecommendCount);
+              } else {
+                alert(data.message || "이미 처리된 항목입니다.");
+              }
+            },
+            error: function () {
+              alert("추천/비추천 처리 중 오류 발생!");
+            }
+          });
+        });
 </script>
 </html>
