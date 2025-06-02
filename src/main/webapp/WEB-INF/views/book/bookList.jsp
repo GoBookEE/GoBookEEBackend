@@ -8,8 +8,8 @@
   StringBuffer pageBar = (StringBuffer) request.getAttribute("pageBar");
 
 %>
-<main class="flex-fill">
 
+<main class="flex-fill">
   <div class="form-container" style="padding: 70px 0">
     <%for(Book b : bookList){%>
     <a href="<%=request.getContextPath()%>/books/bookdetail?bookSeq=<%=b.getBookSeq()%>">
@@ -17,7 +17,11 @@
         <div class="row book-card-row">
           <div class="book-card-img col col-5">
             <img src="<%=b.getBookCover().replace("coversum","cover500")%>">
-            <i class="bi bi-bookmark-fill"></i>
+              <% if(b.getWishCount() != 0){%>
+              <i class="bi bi-bookmark-fill" style="color: #50A65D"></i>
+              <%}else{%>
+              <i class="bi bi-bookmark-fill"></i>
+              <%}%>
           </div>
           <div class="book-card-content col col-7" >
             <div class="book-card-title"><%=b.getBookTitle()%></div>

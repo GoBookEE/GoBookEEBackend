@@ -31,9 +31,15 @@
                             <div><i class="bi bi-star-fill"> </i><%=Math.ceil(b.getReviewRateAvg()*100)/100%></div>
                         </div>
                         <div class="book-detail-icon d-flex justify-content-between align-items-center">
-                            <div>
+                            <%if(b.getWishCount() != 0){%>
+                            <div class="wish-mark" id="wish-check">
+                                <i class="bi bi-bookmark-fill"></i>
+                            </div>
+                            <%}else{%>
+                            <div class="wish-mark" id="wish-uncheck">
                                 <i class="bi bi-bookmark"></i>
                             </div>
+                            <%}%>
                             <div>
                                 <i class="bi bi-share-fill"></i>
                             </div>
@@ -110,8 +116,9 @@
 </script>
 
 <script>
-    const reviewCount = '<%=b.getReviewCount()%>'
-    console.log(reviewCount)
+    const reviewCount = '<%=b.getReviewCount()%>';
+    const bookSeq = '<%=b.getBookSeq()%>';
+    const userSeq = '<%=loginUser.getUserSeq()%>';
     // 문서 전체에 위임하지 말고, 항상 존재하는 부모에 위임
     jQuery(document).on("click", "a.go-page-link", function (e) {
         e.preventDefault();
@@ -187,6 +194,37 @@
         })
     }
 
+    $(".wish-mark").on("click", function (){
+        let mode = '';
+        if ($(this).attr('id') === 'wish-check') {
+            $(this).attr('id', 'wish-uncheck').html('<i class="bi bi-bookmark"></i>');
+            mode = 'uncheck';
+        } else if ($(this).attr('id') === 'wish-uncheck') {
+            $(this).attr('id', 'wish-check').html('<i class="bi bi-bookmark-fill"></i>');
+            mode = 'check';
+        }
+
+        $.ajax({
+            url: "<%=request.getContextPath()%>/books/wishcheck",
+            type: "POST",
+            data: {mode:mode, userSeq:userSeq, bookSeq:bookSeq},
+            success:(response)=>{
+                if(response == 1){
+                    if(mode == "uncheck"){
+                        alert("찜목록에서 삭제했습니다.");
+                    }else if(mode == "check"){
+                        alert("찜목록에 추가했습니다.");
+                    }
+                }else{
+                    alert("오류가 발생했습니다. 다시 시도해주세요.");
+                }
+            },
+            error: (response)=>{
+                alert("오류가 발생했습니다. 다시 시도해주세요.");
+            }
+
+        })
+    })
 
 
     function formatReviewTime(dateString) {

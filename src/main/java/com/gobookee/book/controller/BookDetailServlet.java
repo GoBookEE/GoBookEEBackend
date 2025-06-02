@@ -3,6 +3,7 @@ package com.gobookee.book.controller;
 import com.gobookee.book.model.dto.Book;
 import com.gobookee.book.service.BookService;
 import com.gobookee.common.CommonPathTemplate;
+import com.gobookee.users.model.dto.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +17,9 @@ public class BookDetailServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int bookSeq = Integer.parseInt(request.getParameter("bookSeq"));
-        int userSeq = 0;
+        long us = ((User) request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자 확인
+        int  userSeq= Integer.parseInt(String.valueOf(us));
+
         Book book = BookService.bookService().getBookDetailBySeq(bookSeq,userSeq);
         request.setAttribute("book", book);
         request.getRequestDispatcher(CommonPathTemplate.getViewPath("/book/bookDetail")).forward(request, response);

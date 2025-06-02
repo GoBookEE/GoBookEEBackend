@@ -3,6 +3,7 @@ import com.gobookee.book.model.dto.Book;
 import com.gobookee.book.service.BookService;
 import com.gobookee.common.CommonPathTemplate;
 import com.gobookee.common.PageBarTemplate;
+import com.gobookee.users.model.dto.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -23,7 +24,9 @@ public class BookListServlet extends HttpServlet {
         }catch(NumberFormatException e) {
             cPage = 1;
         }
-        int userSeq = 0;
+        long us = ((User) request.getSession().getAttribute("loginUser")).getUserSeq(); // 로그인 사용자 확인
+        int  userSeq= Integer.parseInt(String.valueOf(us));
+
         int numPerpage = 5;
         List<Book> bookList = BookService.bookService().getAllBookList(cPage,numPerpage,userSeq);
         int totalData=BookService.bookService().getAllBookCount();
