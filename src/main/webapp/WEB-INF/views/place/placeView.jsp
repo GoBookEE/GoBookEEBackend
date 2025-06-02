@@ -143,6 +143,7 @@
                 <div class="progress mt-1" style="height: 8px; width: 150px;">
                     <div class="progress-bar bg-success" style="width: <%=place.getUserSpeed()%>%"></div>
                 </div>
+                <div style="font-size: 0.8rem;"><%=place.getUserSpeed()%>km/h로 달리는 중!</div>
             </div>
         </div>
 

@@ -1,6 +1,8 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.gobookee.study.model.dto.StudyView, java.util.*" %>
 <%@ page import="com.gobookee.users.model.dto.User" %>
+<%@ page import="com.gobookee.common.enums.FileType" %>
+<%@ page import="com.gobookee.common.CommonPathTemplate" %>
 <script src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=2d59386dd09d43d5d2ad8f433a1eb0e3&libraries=services"></script>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
@@ -77,14 +79,23 @@
              alt="스터디 이미지">
     </div>
     <div class="d-flex align-items-center">
-    <span style="width:10%;">
-        <img src="<%=request.getContextPath()%>/resources/upload/study/<%=Optional.ofNullable(studyview.getUserProfile()).orElse("default.png") %>"
-             onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png';"
-             width="50" height="50">
-    </span>
-        <small style="width:30%;"><%= studyview.getUserNickName() %>
-        </small>
-        <span class="ms-auto">거북이 속도 <%= studyview.getUserSpeed() %></span>
+
+        <div class="d-flex">
+            <img
+                    src="<%=CommonPathTemplate.getUploadPath(request, FileType.USER, studyview.getUserProfile())%>"
+                    class="rounded-circle me-2" alt="user" width="50" height="50"
+                    onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
+
+            <div>
+                <div class="fw-semibold"><%=studyview.getUserNickName()%>
+                </div>
+                <div class="progress mt-1" style="height: 8px; width: 150px;">
+                    <div class="progress-bar bg-success"
+                         style="width: <%=studyview.getUserSpeed()%>%"></div>
+                </div>
+                <div style="font-size: 0.8rem;"><%=studyview.getUserSpeed()%>km/h로 달리는 중!</div>
+            </div>
+        </div>
     </div>
     <div><span style="color: #999999"><%= studyview.getStudyCategory() %></span></div>
     <div><strong><%= studyview.getStudyTitle() %>
@@ -139,7 +150,13 @@
             <img src="<%=request.getContextPath()%>/resources/upload/study/<%=Optional.ofNullable(s.getUserProfile()).orElse("default.png") %>"
                  onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png';" width="50"
                  height="50">
-            <%= s.getUserNickName() %> <%= s.getUserSpeed() %>
+            <div class="fw-semibold"><%=s.getUserNickName()%>
+            </div>
+            <div class="progress mt-1" style="height: 8px; width: 150px;">
+                <div class="progress-bar bg-success"
+                     style="width: <%=s.getUserSpeed()%>%"></div>
+            </div>
+            <div style="font-size: 0.8rem;"><%=s.getUserSpeed()%>km/h로 달리는 중!</div>
         </div>
         <% } %>
     </div>

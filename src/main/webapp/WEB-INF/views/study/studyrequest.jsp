@@ -1,4 +1,6 @@
-<%@ page language="java" pageEncoding="UTF-8"%>
+<%@ page import="com.gobookee.common.enums.FileType" %>
+<%@ page import="com.gobookee.common.CommonPathTemplate" %>
+<%@ page language="java" pageEncoding="UTF-8" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <main>
     <div class="container mt-5">
@@ -8,15 +10,15 @@
 
 <script>
 
-	$(document).ready(function () {
-	    $("header").html(`
+    $(document).ready(function () {
+        $("header").html(`
 	        <div style="height: 4rem"class="container d-flex justify-content-between align-items-center text-center small position-relative">
 	    		<a class="col-1" style="color:black" href="<%=request.getContextPath()%>/study/view?seq=<%= request.getParameter("studySeq") %>">
 	    		 <i class="bi bi-chevron-left"></i>
 	    		</a>
 	        </div>
 	    `);
-	});
+    });
 
     const studySeq = new URLSearchParams(window.location.search).get("studySeq");
 
@@ -28,7 +30,7 @@
         $.ajax({
             url: "<%=request.getContextPath()%>/study/request/list",
             type: "GET",
-            data: { studySeq: studySeq },
+            data: {studySeq: studySeq},
             dataType: "json",
             success: function (data) {
                 const container = $("#requestListContainer");
@@ -36,7 +38,7 @@
 
                 if (!data || data.length === 0) {
                     container.append("<div class='text-center mt-3'>신청 내역이 없습니다.</div>");
-                } 
+                }
 
                 const confirmedCount = data.filter(r => r.requestConfirm === "Y").length;
                 const studyLimit = data[0].studyMemberLimit;
@@ -46,40 +48,48 @@
                     return;
                 }
 
-                
-                
-                    for (let i = 0; i < data.length; i++) {
-                        const req = data[i];
-                        let actionButtons = "";
 
-                        if (req.requestConfirm === "Y") {
-                            actionButtons = `<span class="btn btn-success btn-sm" disabled>승인됨</span>`;
-                        } else if (req.requestConfirm === "R") {
-                            actionButtons = `<span class="btn btn-danger btn-sm" disabled>거절됨</span>`;
-                        } else {
-                            actionButtons = `
+                for (let i = 0; i < data.length; i++) {
+                    const req = data[i];
+                    let actionButtons = "";
+
+                    if (req.requestConfirm === "Y") {
+                        actionButtons = `<span class="btn btn-success btn-sm" disabled>승인됨</span>`;
+                    } else if (req.requestConfirm === "R") {
+                        actionButtons = `<span class="btn btn-danger btn-sm" disabled>거절됨</span>`;
+                    } else {
+                        actionButtons = `
                                 <button class="btn btn-success btn-sm me-2 approve-btn">승인</button>
                                 <button class="btn btn-danger btn-sm reject-btn">거절</button>
                             `;
-                        }
+                    }
 
-                        const profileUrl = (req.userProfile && req.userProfile.trim() !== '' && req.userProfile !== 'null')
-                            ? '<%=request.getContextPath()%>/resources/upload/study/' + req.userProfile
-                            : '<%=request.getContextPath()%>/resources/images/default.png';
+                    const profileUrl = (req.userProfile && req.userProfile.trim() !== '' && req.userProfile !== 'null')
+                        ? '<%=request.getContextPath()%>/resources/upload/user/' + req.userProfile
+                        : '<%=request.getContextPath()%>/resources/images/default.png';
 
-                        const html = `
+                    const html = `
                             <div class="card mb-3">
                                 <div class="card-body" data-userseq="\${req.userSeq}">
-                                    <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <div class="d-flex align-items-center">
-                                            <img src="\${profileUrl}" class="rounded-circle me-3" width="40" height="40">
-                                            <div>
-                                                <strong>\${req.userNickName}</strong><br>
-                                                <small>\${req.requestMsg}</small>
+
+
+                                      <div class="d-flex">
+                                        <img
+                                                src="\${profileUrl}"
+                                                class="rounded-circle me-2" alt="user" width="50" height="50"
+                                                onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
+
+                                        <div>
+                                            <div class="fw-semibold">\${req.userNickName}
                                             </div>
+                                            <div class="progress mt-1" style="height: 8px; width: 150px;">
+                                                <div class="progress-bar bg-success"
+                                                     style="width: \${req.userSpeed}%"></div>
+                                            </div>
+                                            <div style="font-size: 0.8rem;">\${req.userSpeed}km/h로 달리는 중!</div>
                                         </div>
-                                        <div>거북이속도 \${req.userSpeed}</div>
                                     </div>
+                                    <div>\${req.requestMsg}</div>
                                     <div class="d-flex justify-content-end mt-3 gap-1">
                                     	\${actionButtons}
                                 	</div>
@@ -87,9 +97,9 @@
                                 </div>
                             </div>`;
 
-                        container.append(html);
-                    }
-                
+                    container.append(html);
+                }
+
             },
             error: function () {
                 alert("신청 목록 로딩 실패");

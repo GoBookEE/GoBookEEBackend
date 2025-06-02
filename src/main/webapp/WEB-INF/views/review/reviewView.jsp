@@ -93,7 +93,7 @@
                 <div class="d-flex">
                     <img
                             src="<%=CommonPathTemplate.getUploadPath(request, FileType.USER, review.getUserProfile())%>"
-                            class="rounded-circle me-2" alt="user" width="40" height="40"
+                            class="rounded-circle me-2" alt="user" width="50" height="50"
                             onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
 
                     <div>
@@ -103,6 +103,7 @@
                             <div class="progress-bar bg-success"
                                  style="width: <%=review.getUserSpeed()%>%"></div>
                         </div>
+                        <div style="font-size: 0.8rem;"><%=review.getUserSpeed()%>km/h로 달리는 중!</div>
                     </div>
                 </div>
 
