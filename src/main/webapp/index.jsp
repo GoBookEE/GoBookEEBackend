@@ -20,6 +20,21 @@
 %>
 <style>
 
+    .rank-progress {
+        position: relative;
+        height: 20px;
+        background: #d0ead0;
+        border-radius: 30px;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    .rank-bar {
+        height: 100%;
+        background: linear-gradient(to right, #198754, #40c870);
+        border-radius: 30px;
+    }
+
 </style>
 <script src="https://unpkg.com/fast-average-color/dist/index.browser.min.js"></script>
 <main>
@@ -29,7 +44,7 @@
     %>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">리뷰 랭킹 TOP3 👑</div>
-        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/review/listpage')">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
     <%
@@ -45,7 +60,7 @@
                 <%
                     switch (rank) {
                         case 1:
-                            rkIcon = "🏅";
+                            rkIcon = "\uD83E\uDD47";
                             break;
                         case 2:
                             rkIcon = "🥈";
@@ -95,7 +110,7 @@
     } %>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">따끈따끈한 리뷰! 🔥</div>
-        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/review/listpage')">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
     <div class="scroll-container book-card-scroll">
@@ -128,7 +143,8 @@
     </div>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">지금 뜨는 교육도서! 📚</div>
-        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/books/booklist')">더보기
+            <i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
     <div class="scroll-container book-card-scroll">
@@ -144,7 +160,8 @@
     </div>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">리뷰가 많은 도서 랭킹 📝</div>
-        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/books/booklist')">더보기
+            <i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
     <div class="scroll-container2">
@@ -194,7 +211,8 @@
     </div>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D">지금 뜨는 스터디 ✏️</div>
-        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/study/listpage')">더보기
+            <i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
     </div>
     <div class="scroll-container2">
@@ -226,7 +244,7 @@
                         </div>
                         <div class="book-card-c2" style="font-size: 15px !important;">
                             <i class="bi bi-calendar-date me-1" style="font-size: 0.9rem; color: #50A65D"></i>
-                            <span><%=s.getStudyDate()%></span>
+                            <span><%=s.getStudyDate()!= null ? s.getStudyDate() : "날짜 미입력"%></span>
                         </div>
 
                         <div class="book-card-c2" style="font-size: 15px !important;">
@@ -257,7 +275,8 @@
     </div>
     <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
         <div style="font-size: 20px;color: #50A65D"> 스터디 여기 어때? 🧐</div>
-        <div style="font-size: 14px">더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
+        <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/place/listpage')">더보기
+            <i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
         </div>
 
     </div>
@@ -300,7 +319,7 @@
 
         <div class="fw-bold d-flex justify-content-between align-items-center" style="padding: 20px 30px 0 20px;">
             <div style="font-size: 20px;color: #50A65D">재미로 보는 고북이 랭킹 🐢</div>
-            <div style="font-size: 14px">
+            <div style="font-size: 14px" onclick="location.assign('<%=request.getContextPath()%>/ranking/speed')">
                 더보기<i style="font-size: 14px;padding-left: 5px;" class="bi bi-chevron-right"></i>
             </div>
         </div>
@@ -309,61 +328,43 @@
     rkIcon = "";
     for (User ur : top3user) {
     %>
-        <div class="book-card" style="box-shadow: none">
-            <div class="row book-card-row">
-                <div class="book-card-img2 col col-3" style="overflow: hidden; padding: 20px ;height: 147px">
-                    <%
-                        switch (rank) {
-                            case 1:
-                                rkIcon = "🏅";
-                                break;
-                            case 2:
-                                rkIcon = "🥈";
-                                break;
-                            case 3:
-                                rkIcon = "🥉";
-                                break;
-                        }
-                    %>
-                    <i class="medal-icon"><%=rkIcon%>
-                    </i>
-                    <img src='<%=ur.getUserProfile()%>' alt='book cover'>
+        <div class="book-card" style="box-shadow: none;border-radius: 0;">
+            <div class="row profile-card-row">
+                <%
+                    switch (rank) {
+                        case 1:
+                            rkIcon = "\uD83E\uDD47";
+                            break;
+                        case 2:
+                            rkIcon = "🥈";
+                            break;
+                        case 3:
+                            rkIcon = "🥉";
+                            break;
+                    }
+                %>
+                <div class="rank-label col col-1"><i class="medal-icon-profile"><%=rkIcon%></i></div>
+                <div class="profile-img col col-2">
+                    <img src="<%=request.getContextPath()%>/upload/user/<%=ur.getUserProfile()%> || 'default.png'}"
+                         onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
                 </div>
-                <%--<div class="book-card-content col col-8">
-                    <div class="d-flex flex-column flex-grow-1">
-                        <div class="book-card-t2"><%=b.getReviewTitle()%>
-                        </div>
-                        <div class="book-card-c2"><%=b.getReviewContents()%>
-                        </div>
-                        <div class="book-card-c3"><%=b.getBookTitle()%>
-                        </div>
-                        <div class="book-card-c2" style="color: #AFAFAF"><%=b.getBookAuthor()%>
-                            | <%=b.getBookPublisher()%>
-                            | <%=b.getBookPubdate()%>
-                        </div>
+                <div style="flex: 1;">
+                    <div><strong><%=ur.getUserNickName()%></strong> 님 고북이</div>
+                    <div><%=ur.getUserSpeed()%>km/h로 달리는 중!</div>
+                    <div class="rank-progress">
+                        <%
+                            long speed = ur.getUserSpeed();
+                            int percent = 0;
+                            if (speed > 0) {
+                                percent = (int)((speed >= 1000 ? 100 : (speed / 1000.0) * 100));
+                            }
+                        %>
+                        <div class="rank-bar" style="width:<%=percent%>%"></div>
                     </div>
-                    <div class="book-card-c4">
-                        <div>
-                            <div><i class="bi bi-star-fill"
-                                    style="font-size: 0.9rem; margin-right: 5px; color: #50A65D"></i><%=b.getReviewRate()%>
-                            </div>
-                        </div>
-                        <div class="d-flex">
-                            <div class="d-flex align-items-center text-muted">
-                                <i class="bi bi-heart"
-                                   style="font-size: 0.9rem; margin: 0;"></i> <%=b.getRecommendCount()%>
-                            </div>
-                            <div class="d-flex align-items-center text-muted">
-                                <i class="bi bi-chat"
-                                   style="font-size: 0.9rem; margin: 0;"></i> <%=b.getCommentsCount()%>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>--%>
+                </div>
+                </div>
 
             </div>
-        </div>
     <% rank++;} %>
 </main>
 <script>
