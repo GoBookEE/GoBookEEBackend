@@ -97,35 +97,40 @@
 
     </div>
     <div id="wishListContainer" class="mt-4">
-        <%if(!bookList.isEmpty()){ for(Book b : bookList){%>
+        <%
+            if (!bookList.isEmpty()) {
+                for (Book b : bookList) {
+        %>
         <div onclick='location.assign("<%=request.getContextPath()%>/books/bookdetail?bookSeq=<%=b.getBookSeq()%>")'>
             <div class="p-4 book-card">
                 <div class="row book-card-row">
                     <div class="book-card-img col col-5">
                         <img src="<%=b.getBookCover().replace("coversum","cover500")%>">
                     </div>
-                    <div class="book-card-content col col-7" >
-                        <div class="book-card-title"><%=b.getBookTitle()%></div>
-                        <div class="book-card-desc"><%=b.getBookDescription()%></div>
+                    <div class="book-card-content col col-7">
+                        <div class="book-card-title"><%=b.getBookTitle()%>
+                        </div>
+                        <div class="book-card-desc"><%=b.getBookDescription()%>
+                        </div>
                         <div>
                             <%
                                 List aut = List.of(b.getBookAuthor().split(", "));
-                                for(Object a : aut){
+                                for (Object a : aut) {
                             %>
                             <span><%=a.toString().split(" ")[0]%></span>
                             <%}%>
                         </div>
-                        <div><%=b.getBookPublisher()%> | <%=b.getBookPubdate()%></div>
+                        <div><%=b.getBookPublisher()%> | <%=b.getBookPubdate()%>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
+        <%}%>
         <div id="pageBar" class="mt-3 text-center">
             <%=pageBar%>
         </div>
-        <%}
-        }else{%>
+        <%} else {%>
         <div class="mt-3 text-center" style="color:#AFAFAF">
             찜한 목록이 없습니다.
         </div>

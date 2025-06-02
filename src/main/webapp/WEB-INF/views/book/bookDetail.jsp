@@ -1,6 +1,8 @@
 <%@ page import="com.gobookee.book.model.dto.Book" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="com.gobookee.common.enums.FileType" %>
+<%@ page import="com.gobookee.common.CommonPathTemplate" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/WEB-INF/views/common/header.jsp" %>
 <%
@@ -15,11 +17,12 @@
             </div>
             <div class="book-detail-row">
                 <div class="book-detail-content">
-                    <div class="book-detail-title"><%=b.getBookTitle()%></div>
+                    <div class="book-detail-title"><%=b.getBookTitle()%>
+                    </div>
                     <div class="book-detail-info">
                         <%
                             List aut = List.of(b.getBookAuthor().split(", "));
-                            for(Object a : aut){
+                            for (Object a : aut) {
                         %>
                         <span class="author"><%=a.toString().split(" ")[0]%></span>
                         <%}%>
@@ -28,14 +31,15 @@
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="book-detail-info">
                             <div>리뷰 <span><%=b.getReviewCount()%></span></div>
-                            <div><i class="bi bi-star-fill"> </i><%=Math.ceil(b.getReviewRateAvg()*100)/100%></div>
+                            <div><i class="bi bi-star-fill"> </i><%=Math.ceil(b.getReviewRateAvg() * 100) / 100%>
+                            </div>
                         </div>
                         <div class="book-detail-icon d-flex justify-content-between align-items-center">
-                            <%if(b.getWishCount() != 0){%>
+                            <%if (b.getWishCount() != 0) {%>
                             <div class="wish-mark" id="wish-check">
                                 <i class="bi bi-bookmark-fill"></i>
                             </div>
-                            <%}else{%>
+                            <%} else {%>
                             <div class="wish-mark" id="wish-uncheck">
                                 <i class="bi bi-bookmark"></i>
                             </div>
@@ -54,16 +58,20 @@
                 <hr style="height: 1px">
                 <div class="book-detail-sub-content">
                     <div class="fw-bold">저자</div>
-                    <div class="book-detail-desc d-flex align-items-center"><i class="bi bi-person-circle fs-4" style="margin-right: 10px"></i><%=b.getBookAuthor()%></div>
+                    <div class="book-detail-desc d-flex align-items-center"><i class="bi bi-person-circle fs-4"
+                                                                               style="margin-right: 10px"></i><%=b.getBookAuthor()%>
+                    </div>
                 </div>
                 <div class="book-detail-sub-content">
                     <div class="fw-bold">책 정보</div>
                     <div class="book-detail-desc">
                         <div>
-                            <span style="margin-right: 10px; font-size: clamp(12px, 2vw, 14px)">분야</span><span style="font-size: clamp(14px, 2vw, 16px)"><%=b.getBookCategoryName()%></span>
+                            <span style="margin-right: 10px; font-size: clamp(12px, 2vw, 14px)">분야</span><span
+                                style="font-size: clamp(14px, 2vw, 16px)"><%=b.getBookCategoryName()%></span>
                         </div>
                         <div>
-                            <span style="margin-right: 10px; font-size: clamp(12px, 2vw, 14px)">출판사</span><span style="font-size: clamp(14px, 2vw, 16px)"><%=b.getBookPublisher()%></span>
+                            <span style="margin-right: 10px; font-size: clamp(12px, 2vw, 14px)">출판사</span><span
+                                style="font-size: clamp(14px, 2vw, 16px)"><%=b.getBookPublisher()%></span>
                         </div>
                         <div id="review-move-focus">
                             <span style="font-size: clamp(14px, 2vw, 16px)"><%=b.getBookDescription()%></span>
@@ -82,7 +90,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="book-detail-review" >
+                <div class="book-detail-review">
                 </div>
             </div>
         </div>
@@ -129,58 +137,59 @@
         }
     });
     jQuery(document).ready(function () {
-        getSortReview("CREATD",1);
+        getSortReview("CREATD", 1);
     });
-    $("#order-by").on("change",function (e){
-        getSortReview($(e.target).val(),1);  // 오타 수정
+    $("#order-by").on("change", function (e) {
+        getSortReview($(e.target).val(), 1);  // 오타 수정
     })
 
 
-    const getSortReview = (orderBy,cPage=null) =>{
+    const getSortReview = (orderBy, cPage = null) => {
         $.ajax({
             url: "<%=request.getContextPath()%>/review/ajax/reviewbookseq",
-            type : "GET",
-            data : {orderBy: orderBy, cPage : cPage, bookSeq:"<%=b.getBookSeq()%>"},
-            success:(response)=>{
-                const reviews =response.reviews;
+            type: "GET",
+            data: {orderBy: orderBy, cPage: cPage, bookSeq: "<%=b.getBookSeq()%>"},
+            success: (response) => {
+                const reviews = response.reviews;
                 let html = "";
-                if(reviewCount > 0){
-                reviews.forEach(r => {
-                    html += '<div class="review-profile d-flex align-items-center">';
-                    if(r.userProfile !== undefined){
-                        html += '<img src="'+r.userProfile+'">';
-                    }else{
-                        html += '<img src="<%=request.getContextPath()%>/resources/images/default.png">';
-                    }
-                    html += '<div class="review-meta">';
-                    html += '<div class="review-meta-nick">';
-                    html += r.userNickname
-                    html += '</div>';
-                    html += '<div>';
-                    html += formatReviewTime(r.reviewCreateTime);
-                    html += '</div>';
-                    html += '</div>';
-                    html += '</div>';
-                    html += '<a href="<%=request.getContextPath()%>/review/view?seq='+r.reviewSeq+'"><div class="review-content">';
-                    html += r.reviewContents;
-                    html += '</div></a>';
-                    html += '<div class="review-stats d-flex justify-content-between">';
-                    html += '<div >';
-                    html += '<i class="bi bi-hand-thumbs-up"></i><span>'+r.recommendCount+'</span>';
-                    html += '<i class="bi bi-hand-thumbs-down"></i><span>'+r.nonRecommendCount+'</span>';
-                    html += '</div>';
-                    html += '<div >';
-                    html += '<i class="bi bi-share-fill"></i>';
-                    html += '</div>';
-                    html += '</div>';
-                    html += '<hr/>';
-                });
-                const pb = (response.pageBar).replaceAll("href='#'","href='#review-move-focus'");
-                html += pb;
-                }else {
+                if (reviewCount > 0) {
+                    reviews.forEach(r => {
+                        html += '<div class="review-profile d-flex align-items-center">';
+                        if (r.userProfile !== undefined) {
+                            console.log(r.userProfile);
+                            html += `<img src="<%=request.getContextPath()%>/resources/upload/user/\${r.userProfile}">`;
+                        } else {
+                            html += '<img src="<%=request.getContextPath()%>/resources/images/default.png">';
+                        }
+                        html += '<div class="review-meta">';
+                        html += '<div class="review-meta-nick">';
+                        html += r.userNickname
+                        html += '</div>';
+                        html += '<div>';
+                        html += formatReviewTime(r.reviewCreateTime);
+                        html += '</div>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '<a href="<%=request.getContextPath()%>/review/view?seq=' + r.reviewSeq + '"><div class="review-content">';
+                        html += r.reviewContents;
+                        html += '</div></a>';
+                        html += '<div class="review-stats d-flex justify-content-between">';
+                        html += '<div >';
+                        html += '<i class="bi bi-hand-thumbs-up"></i><span>' + r.recommendCount + '</span>';
+                        html += '<i class="bi bi-hand-thumbs-down"></i><span>' + r.nonRecommendCount + '</span>';
+                        html += '</div>';
+                        html += '<div >';
+                        html += '<i class="bi bi-share-fill"></i>';
+                        html += '</div>';
+                        html += '</div>';
+                        html += '<hr/>';
+                    });
+                    const pb = (response.pageBar).replaceAll("href='#'", "href='#review-move-focus'");
+                    html += pb;
+                } else {
                     html += '<div class="review-empty text-center">';
                     html += '<div>리뷰가 없습니다. 새로운 리뷰를 등록해 보세요!</div>'
-                    html += '<div><button onclick="reviewInsert()">리뷰등록하기</button></div>'
+                    html += `<div><button onclick="location.assign('<%=request.getContextPath()%>/review/insertpage?bookSeq=<%=b.getBookSeq()%>')">리뷰등록하기</button></div>`
                     html += '</div>'
                 }
 
@@ -194,7 +203,7 @@
         })
     }
 
-    $(".wish-mark").on("click", function (){
+    $(".wish-mark").on("click", function () {
         let mode = '';
         if ($(this).attr('id') === 'wish-check') {
             $(this).attr('id', 'wish-uncheck').html('<i class="bi bi-bookmark"></i>');
@@ -207,19 +216,19 @@
         $.ajax({
             url: "<%=request.getContextPath()%>/books/wishcheck",
             type: "POST",
-            data: {mode:mode, userSeq:userSeq, bookSeq:bookSeq},
-            success:(response)=>{
-                if(response == 1){
-                    if(mode == "uncheck"){
+            data: {mode: mode, userSeq: userSeq, bookSeq: bookSeq},
+            success: (response) => {
+                if (response == 1) {
+                    if (mode == "uncheck") {
                         alert("찜목록에서 삭제했습니다.");
-                    }else if(mode == "check"){
+                    } else if (mode == "check") {
                         alert("찜목록에 추가했습니다.");
                     }
-                }else{
+                } else {
                     alert("오류가 발생했습니다. 다시 시도해주세요.");
                 }
             },
-            error: (response)=>{
+            error: (response) => {
                 alert("오류가 발생했습니다. 다시 시도해주세요.");
             }
 
@@ -236,9 +245,9 @@
         const diffHours = Math.floor(diffMs / 3600000);
 
         if (diffMinutes < 60) {
-            return diffMinutes+'분 전';
+            return diffMinutes + '분 전';
         } else if (diffHours < 24) {
-            return diffHours+'시간 전';
+            return diffHours + '시간 전';
         } else {
             const yyyy = reviewDate.getFullYear();
             const mm = String(reviewDate.getMonth() + 1).padStart(2, '0');
@@ -246,7 +255,7 @@
             const hh = String(reviewDate.getHours()).padStart(2, '0');
             const min = String(reviewDate.getMinutes()).padStart(2, '0');
             const sec = String(reviewDate.getSeconds()).padStart(2, '0');
-            return yyyy+'-'+mm+'-'+dd+' '+hh+':'+min+':'+sec;
+            return yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + min + ':' + sec;
         }
     }
 </script>

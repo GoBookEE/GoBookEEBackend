@@ -318,7 +318,7 @@
             <%} else {%>
             <div class="study-card-img2" style="overflow: hidden; padding: 20px ;height: 180px">
                 <img style="width: 100%;height: auto"
-                     src="<%=request.getContextPath()%>/resources/upload/study/<%=imglist.get(0)%>"
+                     src="<%=request.getContextPath()%>/resources/upload/place/<%=imglist.get(0)%>"
                      onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'">
             </div>
             <%}%>

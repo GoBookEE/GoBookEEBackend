@@ -306,7 +306,7 @@
                              onclick="location.assign('<%=request.getContextPath()%>/study/view?seq=\${item.seq}')">
                             <div class="row g-0">
                             <div class="col-4 d-flex align-items-center justify-content-center p-3">
-                              <img src="<%=request.getContextPath()%>/upload/photo/\${item.photoName}"
+                              <img src="<%=request.getContextPath()%>/upload/study/\${item.photoName}"
                                    class="img-fluid rounded shadow-sm" alt="스터디 썸네일"
                                    style="max-height: 160px; object-fit: cover;"
                                    onerror="this.src='<%=request.getContextPath()%>/resources/images/default.png'; this.style.width='100px !important'; this.style.height='100px !important';">
