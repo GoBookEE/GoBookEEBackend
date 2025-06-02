@@ -256,4 +256,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <%@ include file="/WEB-INF/views/review/bookSearchModal.jsp"%>
 
-<%@ include file="/WEB-INF/views/common/footer.jsp"%>

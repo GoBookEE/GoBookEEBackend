@@ -77,6 +77,19 @@ body {
 .search-result .text-muted {
 	color: #6c757d !important;
 }
+
+.line-clamp {
+	display: -webkit-box;
+	-webkit-line-clamp: 1; /* 보이는 줄 수 조절 */
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	/* 추가: 긴 단어 줄바꿈 처리 */
+	word-break: break-word;
+	overflow-wrap: break-word;
+	line-height: 1.4;
+	max-height: calc(1.4em * 1); /* line-height × 줄 수 */
+}
 </style>
 
 
@@ -160,7 +173,7 @@ function loadMyPosts(tab, cPage = 1) {
                	    <strong class="mb-1">\${item.reviewTitle}</strong>
                	    <small class="text-muted line-clamp mb-1">\${item.reviewContents}</small>
                	    <br>
-               	    <small class="text-muted">\${item.bookTitle}</small>
+               	    <small class="text-muted line-clamp">\${item.bookTitle}</small>
                	  </div>
 					
                	 
