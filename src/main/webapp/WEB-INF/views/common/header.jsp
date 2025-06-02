@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="com.gobookee.users.model.dto.User" %>
 <!DOCTYPE html>
 <%
     User loginUser = (User) request.getSession().getAttribute("loginUser");
