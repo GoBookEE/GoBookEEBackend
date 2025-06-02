@@ -261,5 +261,33 @@
             }
           });
         });
+    
+    function reportPost(reviewSeq, boardType) {
+        const reason = prompt("신고 사유를 입력해주세요.");
+        if (reason === null || reason.trim() === "") {
+            alert("신고 사유가 필요합니다.");
+            return;
+        }
+
+        $.ajax({
+            url: "<%=request.getContextPath()%>/reports/insert",
+            method: "POST",
+            data: {
+                boardSeq: reviewSeq,
+                boardType: boardType,
+                reason: reason
+            },
+            success: function (res) {
+                if (res.success) {
+                    alert("신고가 접수되었습니다.");
+                } else {
+                    alert(res.message || "이미 신고하셨습니다.");
+                }
+            },
+            error: function () {
+                alert("신고 처리 중 오류 발생.");
+            }
+        });
+    }
 </script>
 </html>
