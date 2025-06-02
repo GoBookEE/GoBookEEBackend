@@ -36,7 +36,7 @@ header, footer {
 			<div class="book-card-img col-5">
 				<img id="selectedBookImg"
 					src="<%= isUpdate ? review.getBookCover() : isInsertWithBook ? selectedBook.getBookCover() : "" %>"
-					alt="book" width="40"> <i class="bi bi-bookmark-fill"></i>
+					alt="book" width="40">
 			</div>
 			<div class="book-card-content col-7">
 				<div id="selectedBookTitle" class="book-card-title fw-bold">
@@ -147,7 +147,6 @@ function searchBooks() {
 						<div class="row book-card-row">
 							<div class="book-card-img col-5">
 								<img src="\${book.bookCover}" alt="book" width="50">
-								<i class="bi bi-bookmark-fill"></i>
 							</div>
 							<div class="book-card-content col-7">
 								<div class="book-card-title fw-bold">\${book.bookTitle}</div>
