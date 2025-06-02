@@ -89,4 +89,25 @@ public class BookService {
 		close(conn);
 		return result;
 	}
+
+	public int bookWishCountByUser(long userSeq){
+		Connection conn = getConnection();
+		int result = dao.bookWishCountByUser(conn, userSeq);
+		close(conn);
+		return result;
+	}
+
+	public List<Book> getWishListByUserSeq(long userSeq, int cPage, int numPerPage){
+		Connection conn = getConnection();
+		List<Book> result = dao.getWishListByUserSeq(conn, userSeq,cPage,numPerPage);
+		close(conn);
+		return result;
+	}
+
+	public int getWishCountByUserSeq(long userSeq){
+		Connection conn = getConnection();
+		int result = dao.getWishCountByUserSeq(conn, userSeq);
+		close(conn);
+		return result;
+	}
 }

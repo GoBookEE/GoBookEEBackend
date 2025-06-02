@@ -253,6 +253,62 @@ public class BookDao {
 	}
 
 
+	public int bookWishCountByUser(Connection conn, long userSeq){
+		int result = 0;
+		try{
+			String sql = sqlProp.getProperty("bookWishCountByUser");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1,userSeq);
+			rs = pstmt.executeQuery();
+			if (rs.next()) result = rs.getInt(1);
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+
+
+	public List<Book> getWishListByUserSeq(Connection conn, long userSeq,int cPage, int numPerPage){
+		List<Book> bookList = new ArrayList<>();
+		try{
+			String sql = sqlProp.getProperty("getWishListByUserSeq");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1,userSeq);
+
+			pstmt.setInt(2, (cPage - 1) * numPerPage + 1);
+			pstmt.setInt(3, cPage * numPerPage);
+			rs = pstmt.executeQuery();
+			while (rs.next()) bookList.add(getBook(rs));
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return bookList;
+	}
+
+
+
+	public int getWishCountByUserSeq(Connection conn, long userSeq){
+		int result = 0;
+		try{
+			String sql = sqlProp.getProperty("getWishCountByUserSeq");
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setLong(1,userSeq);
+			rs = pstmt.executeQuery();
+			if (rs.next()) result = rs.getInt(1);
+		}catch (SQLException e){
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+
 	public ReviewBookSeqResponse getReviewBookSeqResponse(ResultSet rs) throws SQLException {
 
 		return ReviewBookSeqResponse.builder().reviewSeq(rs.getLong("REVIEW_SEQ"))
