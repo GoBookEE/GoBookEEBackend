@@ -1,11 +1,5 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ include file="/WEB-INF/views/common/header.jsp"%>
-<style>
-header, footer {
-	display: none !important;
-}
-</style>
 <!-- 📘 책 검색 모달 -->
 <div class="modal fade" id="bookSearchModal" tabindex="-1"
 	aria-hidden="true">
@@ -51,5 +45,3 @@ document.querySelectorAll('.book-card-img > img').forEach(img => {
 	}
 });
 </script>
-
-<%@ include file="/WEB-INF/views/common/footer.jsp"%>
