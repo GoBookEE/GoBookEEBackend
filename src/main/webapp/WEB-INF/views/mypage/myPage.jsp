@@ -254,10 +254,10 @@
     </section>
     <section class="mypage-menulist">
         <div class="menulist">
-            <div class="box">
+            <div class="box" onclick="location.assign(`<%=request.getContextPath()%>/mypage/mywish`)">
                 <i class="bi bi-bookmark-fill icon"></i>
                 <h4>찜 목록</h4>
-                <p></p>
+                <p><%= request.getAttribute("wishCount") != null ? request.getAttribute("wishCount") : 0 %></p>
             </div>
             <div class="box" onclick="location.assign(`<%=request.getContextPath()%>/mypage/myboard`)">
                 <i class="bi bi-book-fill icon"></i>
