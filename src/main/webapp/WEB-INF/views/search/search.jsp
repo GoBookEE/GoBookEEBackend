@@ -444,4 +444,3 @@
         vertical-align: middle;
     }
 </style>
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
