@@ -32,7 +32,7 @@ public class ReportsService {
                 speedChange = -5;
             }
             if (speedChange != 0) {
-                userDAO.updateUserSpeed(conn, userSeq, speedChange);
+            	userDAO.updateUserSpeed(conn, dao.getUserSeq(conn, boardSeq, boardType), speedChange);
             }
             commit(conn);
         } else {

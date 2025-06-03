@@ -89,17 +89,6 @@ public class StudyInsertPageServlet extends HttpServlet {
             studyDate = Date.valueOf(dateStr);
         }
 
-        System.out.println("[검증 로그]");
-        System.out.println("studyTitle = " + studyTitle);
-        System.out.println("studyContent = " + studyContent);
-        System.out.println("studyMemberLimit = " + studyMemberLimit);
-        System.out.println("studyCategory = " + studyCategory);
-        System.out.println("studyAddress = " + studyAddress);
-        System.out.println("studyLatitude = " + studyLatitude);
-        System.out.println("studyLongitude = " + studyLongitude);
-        System.out.println("studyDate = " + studyDate);
-        System.out.println("userSeq = " + userseq);
-
         StudyInsert studyinsert = StudyInsert.builder()
                 .studyTitle(studyTitle)
                 .studyContent(studyContent)
