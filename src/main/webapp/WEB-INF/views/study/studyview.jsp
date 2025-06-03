@@ -240,7 +240,8 @@
             type: "POST",
             data: {
               boardSeq: targetSeq,
-              recType: recType
+              recType: recType,
+              boardType: targetType
             },
             success: function (data) {
               if (data.success) {
