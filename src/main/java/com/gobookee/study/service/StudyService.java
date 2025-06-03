@@ -18,11 +18,13 @@ import com.gobookee.study.model.dto.StudyInsert;
 import com.gobookee.study.model.dto.StudyList;
 import com.gobookee.study.model.dto.StudyRequest;
 import com.gobookee.study.model.dto.StudyView;
+import com.gobookee.users.model.dao.UserDAO;
 
 public class StudyService {
 
     private StudyDao dao = StudyDao.studyDao();
     private PhotoDao photodao = PhotoDao.photoDao();
+    private UserDAO userdao = UserDAO.userDao();
     private Connection conn;
 
     private static final StudyService SERVICE = new StudyService();
@@ -84,6 +86,9 @@ public class StudyService {
                 rollback(conn);
                 return false;
             }
+            
+            userdao.updateUserSpeed(conn, studyinsert.getUserSeq(), 3);
+            
             isSuccess = true;
             commit(conn);
         } catch (Exception e) {
