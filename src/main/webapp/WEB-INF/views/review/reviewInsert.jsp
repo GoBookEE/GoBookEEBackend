@@ -136,7 +136,7 @@ function searchBooks() {
 				  <div class="text-center py-5">
 					<i class="bi bi-book fs-1 text-muted"></i>
 					<p class="text-muted">등록된 책이 없습니다</p>
-					<a href="<%=request.getContextPath()%>/book/insert" class="btn btn-dark">책 등록하기</a>
+					<a href="<%=request.getContextPath()%>/books/searchaladin" class="btn btn-dark">책 등록하기</a>
 				  </div>`;
 			} else {
 				books.forEach(book => {

@@ -62,6 +62,7 @@ public class ReportsDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+        	JDBCTemplate.close(rs);
             JDBCTemplate.close(pstmt);
         }
         return result;
@@ -101,6 +102,46 @@ public class ReportsDAO {
             JDBCTemplate.close(pstmt);
         }
     }
+    
+    public Long getUserSeq(Connection conn, Long boardSeq, String boardType) {
+    	Long userSeq=null;
+    	try {
+            String key = "";
+            switch (boardType) {
+                case "REVIEW":
+                    key = "getUserReview";
+                    break;
+                case "COMMENTS":
+                    key = "getUserComment";
+                    break;
+                case "STUDY":
+                    key = "getUserStudy";
+                    break;
+                case "PLACE":
+                    key = "getUserPlace";
+                    break;
+                default:
+                    throw new IllegalArgumentException("유효하지 않은 boardType: " + boardType);
+            }
+            
+            String sql = sqlProp.getProperty(key);
+            if (sql == null || sql.trim().isEmpty()) {
+                throw new RuntimeException("SQL 정의가 없습니다: " + key);
+            }
+            pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, boardSeq);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                userSeq = rs.getLong(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+        	JDBCTemplate.close(rs);
+            JDBCTemplate.close(pstmt);
+        }
+        return userSeq;
+    }
 
     public boolean exists(Connection conn, Long userSeq, Long boardSeq) {
         boolean result = false;
@@ -113,6 +154,7 @@ public class ReportsDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
+        	JDBCTemplate.close(rs);
             JDBCTemplate.close(pstmt);
         }
         return result;
