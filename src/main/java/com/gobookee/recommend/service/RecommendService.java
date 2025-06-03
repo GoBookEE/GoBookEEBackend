@@ -49,7 +49,6 @@ public class RecommendService {
             // 점수 업데이트
             if (speedChange != 0) {
             	userDAO.updateUserSpeed(conn, rdao.getUserSeq(conn, boardSeq, boardType), speedChange);
-                //userDAO.updateUserSpeed(conn, userSeq, speedChange);
             }
 
             result.put("recommendCount", dao.countByType(conn, boardSeq, "0"));
