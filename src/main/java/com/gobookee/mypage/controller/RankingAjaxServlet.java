@@ -41,7 +41,7 @@ public class RankingAjaxServlet extends HttpServlet {
         User user = userService.searchUserById(loginUser.getUserId());
         request.getSession().setAttribute("loginUser", user);
 
-        int myRank = userService.getUserRank(loginUser.getUserSeq());
+        int myRank = userService.getUserRank(user.getUserSeq());
 
         Gson gson = new Gson();
         response.setContentType("application/json;charset=UTF-8");
@@ -50,7 +50,7 @@ public class RankingAjaxServlet extends HttpServlet {
         result.put("list", list);
         result.put("pageBar", pb.makePageBar(request));
         result.put("myRank", myRank);
-        result.put("mySpeed", loginUser.getUserSpeed());
+        result.put("mySpeed", user.getUserSpeed());
 
         gson.toJson(result, response.getWriter());
 

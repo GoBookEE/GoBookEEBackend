@@ -17,6 +17,13 @@
     }
 </script>
 <style>
+    .error-msg {
+        color: red;
+        font-size: 14px;
+        margin-top: 4px;
+        margin-left: 12px;
+    }
+
     .insert-logo {
         display: flex;
         align-items: center;
@@ -436,6 +443,7 @@
 
             const nickNameInput = document.getElementById("userNickname");
             if (Validator.isEmpty(userNickname)) {
+                nickNameInput.focus();
                 nickNameInput.placeholder = "닉네임을 입력하세요";
                 nickNameInput.value = "";
                 nickNameInput.classList.add("border-danger", "wrong-type");
@@ -591,6 +599,28 @@
                     emailInput.removeEventListener("click", Msg2);
                 }
                 emailInput.addEventListener("click", Msg2)
+                validateFlag = false;
+            }
+
+            // 이메일 인증 여부 검사
+            const emailVerifiedInput = document.getElementById("emailVerified");
+            const emailVerifiedValue = emailVerifiedInput.value;
+            const emailCheckNumInput = document.getElementById("userEmailCheckNum");
+
+            if (emailVerifiedValue !== "true") {
+                emailCheckNumInput.focus();
+                emailCheckNumInput.placeholder = "이메일 인증을 완료해주세요.";
+                emailCheckNumInput.value = "";
+                emailCheckNumInput.classList.add("border-danger", "wrong-type");
+
+                const Msg = () => {
+                    emailCheckNumInput.placeholder = "인증번호를 입력하세요";
+                    emailCheckNumInput.value = "";
+                    emailCheckNumInput.classList.remove("border-danger", "wrong-type");
+                    emailCheckNumInput.removeEventListener("click", Msg);
+                };
+
+                emailCheckNumInput.addEventListener("click", Msg);
                 validateFlag = false;
             }
 

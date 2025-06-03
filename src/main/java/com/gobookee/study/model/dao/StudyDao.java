@@ -360,7 +360,6 @@ public class StudyDao {
     public int deleteStudy(Connection conn, Long studySeq) {
         int result = 0;
         PreparedStatement pstmt = null;
-        System.out.println("스터디시퀀스 :"+studySeq);
         try {
         	pstmt = conn.prepareStatement(sql.getProperty("deleteStudy"));
             pstmt.setLong(1, studySeq);

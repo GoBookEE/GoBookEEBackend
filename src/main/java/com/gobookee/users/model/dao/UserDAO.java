@@ -57,7 +57,6 @@ public class UserDAO {
 			pstmt.setString(9, u.getUserType().toString());
 			pstmt.setString(10, u.getUserEmail());
 			result = pstmt.executeUpdate();
-			System.out.println(result);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
