@@ -212,7 +212,7 @@
                             <!-- 댓글 추천 버튼 -->
                             <button
                                     class="btn-recommend-action btn-sm d-flex align-items-center p-0 border-0 bg-transparent"
-                                    data-type="COMMENT" data-seq="<%=c.getCommentsSeq()%>"
+                                    data-type="COMMENTS" data-seq="<%=c.getCommentsSeq()%>"
                                     data-rec="0">
                                 <i class="bi bi-hand-thumbs-up me-1" style="font-size: 0.9rem;"></i>
                                 <span class="count"><%=c.getRecommendCount()%></span>
@@ -221,7 +221,7 @@
                             <!-- 댓글 비추천 버튼 -->
                             <button
                                     class="btn-recommend-action btn-sm d-flex align-items-center p-0 border-0 bg-transparent"
-                                    data-type="COMMENT" data-seq="<%=c.getCommentsSeq()%>"
+                                    data-type="COMMENTS" data-seq="<%=c.getCommentsSeq()%>"
                                     data-rec="1">
                                 <i class="bi bi-hand-thumbs-down me-1"
                                    style="font-size: 0.9rem;"></i> <span
@@ -318,7 +318,7 @@
                                     <!-- 댓글 추천 버튼 -->
                                     <button
                                             class="btn-recommend-action btn-sm d-flex align-items-center p-0 border-0 bg-transparent"
-                                            data-type="COMMENT" data-seq="<%=child.getCommentsSeq()%>"
+                                            data-type="COMMENTS" data-seq="<%=child.getCommentsSeq()%>"
                                             data-rec="0">
                                         <i class="bi bi-hand-thumbs-up me-1"
                                            style="font-size: 0.9rem;"></i> <span
@@ -328,7 +328,7 @@
                                     <!-- 댓글 비추천 버튼 -->
                                     <button
                                             class="btn-recommend-action btn-sm d-flex align-items-center p-0 border-0 bg-transparent"
-                                            data-type="COMMENT" data-seq="<%=child.getCommentsSeq()%>"
+                                            data-type="COMMENTS" data-seq="<%=child.getCommentsSeq()%>"
                                             data-rec="1">
                                         <i class="bi bi-hand-thumbs-down me-1"
                                            style="font-size: 0.9rem;"></i> <span
@@ -455,7 +455,7 @@
 <script>
     $(document).on("click", ".btn-recommend-action", function () {
         const $btn = $(this);
-        const targetType = $btn.data("type"); // "REVIEW" or "COMMENT"
+        const targetType = $btn.data("type"); // "REVIEW" or "COMMENTS"
         const targetSeq = $btn.data("seq");
         const recType = $btn.data("rec");     // 0: 추천, 1: 비추천
 
