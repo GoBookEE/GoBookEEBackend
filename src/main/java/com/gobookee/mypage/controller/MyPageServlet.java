@@ -16,17 +16,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.gobookee.users.service.UserService.userService;
+
 /**
  * Servlet implementation class MyPageServlet
  */
 @WebServlet("/mypage")
 public class MyPageServlet extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-	private ReviewService reviewService = ReviewService.reviewService();
-	private CommentsService commentsService = CommentsService.commentsService();
-	private PlaceService placeService = PlaceService.placeService();
-	private RecStudyService studyService = RecStudyService.recStudyService();
-	private BookService bookService = BookService.bookService();
+    private static final long serialVersionUID = 1L;
+    private ReviewService reviewService = ReviewService.reviewService();
+    private CommentsService commentsService = CommentsService.commentsService();
+    private PlaceService placeService = PlaceService.placeService();
+    private RecStudyService studyService = RecStudyService.recStudyService();
+    private BookService bookService = BookService.bookService();
+
     /**
      * @see HttpServlet#HttpServlet()
      */
@@ -35,71 +38,74 @@ public class MyPageServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		   User loginUser = (User) request.getSession().getAttribute("loginUser");
+    /**
+     * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        User loginUser = (User) request.getSession().getAttribute("loginUser");
 
-		    if (loginUser == null) {
-		        response.sendRedirect(request.getContextPath() + "/login");
-		        return;
-		    }
+        if (loginUser == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
 
-		    Long userSeq = loginUser.getUserSeq();
-		    UserType userType = loginUser.getUserType(); 
+        Long userSeq = loginUser.getUserSeq();
+        User user = userService().searchUserById(loginUser.getUserId());
+        request.getSession().setAttribute("loginUser", user);
 
-		    int reviewCount = reviewService.countByUser(userSeq);
-		    int commentCount = commentsService.countByUser(userSeq);
-		    int placeCount = 0;
+        UserType userType = loginUser.getUserType();
 
-		    if (userType == UserType.OWNER) {
-		        placeCount = placeService.countByUser(userSeq);
-		    }
+        int reviewCount = reviewService.countByUser(userSeq);
+        int commentCount = commentsService.countByUser(userSeq);
+        int placeCount = 0;
 
-		    int totalWriteCount = reviewCount + commentCount + placeCount;
+        if (userType == UserType.OWNER) {
+            placeCount = placeService.countByUser(userSeq);
+        }
 
-		    request.setAttribute("totalWriteCount", totalWriteCount);
-		    
-		    int review = reviewService.countReviewsRecByUser(userSeq);
-			int comment = commentsService.countCommentsRecByUser(userSeq);
-			int place = placeService.placeCountRecByUser(userSeq);
-			int study = studyService.countStudiesRecByUser(userSeq);
-			int wish = bookService.bookWishCountByUser(userSeq);
-			
-			int recommendedCount = review + comment + place + study;
-			
-			request.setAttribute("recommendedCount", recommendedCount);
-			request.setAttribute("wishCount", wish);
+        int totalWriteCount = reviewCount + commentCount + placeCount;
 
-			
-			String tab = request.getParameter("tab"); // applied | created
-			String status = request.getParameter("status"); // upcoming | completed
-			if (status == null || (!status.equals("upcoming") && !status.equals("completed"))) {
-				status = "upcoming";
-			}
+        request.setAttribute("totalWriteCount", totalWriteCount);
 
-			MyStudy mystudy = MyStudy.builder()
-				.userSeq(userSeq)
-				.status(status)
-				.build();
+        int review = reviewService.countReviewsRecByUser(userSeq);
+        int comment = commentsService.countCommentsRecByUser(userSeq);
+        int place = placeService.placeCountRecByUser(userSeq);
+        int study = studyService.countStudiesRecByUser(userSeq);
+        int wish = bookService.bookWishCountByUser(userSeq);
 
-			int appliedCount = studyService.countAppliedByStatus(mystudy);
-			int createdCount = studyService.countCreatedByStatus(mystudy);
-			int myStudyTotalCount = appliedCount + createdCount;
+        int recommendedCount = review + comment + place + study;
 
-			request.setAttribute("myStudyTotalCount", myStudyTotalCount);
-			
-		
-		request.getRequestDispatcher("/WEB-INF/views/mypage/myPage.jsp").forward(request, response);
-	}
+        request.setAttribute("recommendedCount", recommendedCount);
+        request.setAttribute("wishCount", wish);
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+
+        String tab = request.getParameter("tab"); // applied | created
+        String status = request.getParameter("status"); // upcoming | completed
+        if (status == null || (!status.equals("upcoming") && !status.equals("completed"))) {
+            status = "upcoming";
+        }
+
+        MyStudy mystudy = MyStudy.builder()
+                .userSeq(userSeq)
+                .status(status)
+                .build();
+
+        int appliedCount = studyService.countAppliedByStatus(mystudy);
+        int createdCount = studyService.countCreatedByStatus(mystudy);
+        int myStudyTotalCount = appliedCount + createdCount;
+
+        request.setAttribute("myStudyTotalCount", myStudyTotalCount);
+
+
+        request.getRequestDispatcher("/WEB-INF/views/mypage/myPage.jsp").forward(request, response);
+    }
+
+    /**
+     * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+     */
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // TODO Auto-generated method stub
+        doGet(request, response);
+    }
 
 }

@@ -1,15 +1,13 @@
 package com.gobookee.review.controller;
 
-import java.io.IOException;
+import com.gobookee.review.service.ReviewService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.gobookee.common.PageBarTemplate;
-import com.gobookee.review.service.ReviewService;
+import java.io.IOException;
 
 @WebServlet("/review/listpage")
 public class ReviewListPageServlet extends HttpServlet {

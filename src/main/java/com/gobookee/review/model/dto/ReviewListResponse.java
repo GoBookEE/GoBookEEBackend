@@ -1,13 +1,8 @@
 package com.gobookee.review.model.dto;
 
-import java.sql.Timestamp;
-import java.util.List;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.sql.Timestamp;
 
 @AllArgsConstructor
 @NoArgsConstructor

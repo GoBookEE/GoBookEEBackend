@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.gobookee.book.model.dao.BookCategoryDao.bookCategoryDao;
-import static com.gobookee.book.model.dao.BookDao.bookDao;
 import static com.gobookee.common.JDBCTemplate.getConnection;
 
 public class BookCategoryService {

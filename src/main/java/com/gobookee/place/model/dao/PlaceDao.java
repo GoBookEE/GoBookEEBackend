@@ -1,6 +1,5 @@
 package com.gobookee.place.model.dao;
 
-import com.gobookee.common.JDBCTemplate;
 import com.gobookee.place.model.dto.Place;
 import com.gobookee.place.model.dto.PlaceAddress;
 import com.gobookee.place.model.dto.PlaceListResponse;
