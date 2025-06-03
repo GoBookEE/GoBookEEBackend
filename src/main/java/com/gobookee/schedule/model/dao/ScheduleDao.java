@@ -80,10 +80,13 @@ public class ScheduleDao {
 
     public boolean confirmSchedule(Connection conn, ScheduleConfirm scheduleConfirm, PlaceAddress placeAddress) {
         int scheduleResult = updateSchedule(conn, scheduleConfirm);
-        int scheduleCount = getSchedulesByStudySeq(conn, scheduleConfirm);
-        int deleteCount = deleteSchedulesByStudySeq(conn, scheduleConfirm);
-        int studyResult = updateStudy(conn, scheduleConfirm, placeAddress);
-        return scheduleResult == 1 && studyResult == 1 && (deleteCount == scheduleCount);
+        if (scheduleConfirm.getStatus() == 'Y') {
+            int scheduleCount = getSchedulesByStudySeq(conn, scheduleConfirm);
+            int deleteCount = deleteSchedulesByStudySeq(conn, scheduleConfirm);
+            int studyResult = updateStudy(conn, scheduleConfirm, placeAddress);
+            return scheduleResult == 1 && studyResult == 1 && (deleteCount == scheduleCount);
+        }
+        return scheduleResult == 1;
     }
 
     private int updateSchedule(Connection conn, ScheduleConfirm scheduleConfirm) {
