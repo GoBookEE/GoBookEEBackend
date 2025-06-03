@@ -104,7 +104,7 @@
                     </div>
                     <div class="card-footer bg-white border-top-0">
                         <small class="review-meta">
-                            <i class="bi bi-hand-thumbs-up me-1"></i> <%=b.getRecommendCount()%> |
+                            <i class="bi bi-hand-thumbs-up me-1"></i> <%=b.getRecommendCount()%>
                             <i class="bi bi-chat"></i> <%=b.getCommentsCount()%>
                         </small>
                     </div>
