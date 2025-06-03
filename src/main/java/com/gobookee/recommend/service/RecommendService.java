@@ -2,6 +2,7 @@ package com.gobookee.recommend.service;
 
 import com.gobookee.recommend.model.dao.RecommendDAO;
 import com.gobookee.recommend.model.dto.Recommend;
+import com.gobookee.reports.model.dao.ReportsDAO;
 import com.gobookee.users.model.dao.UserDAO;
 
 import java.sql.Connection;
@@ -17,6 +18,7 @@ public class RecommendService {
 
     private RecommendDAO dao = recommendDao();
     private UserDAO userDAO = UserDAO.userDao();
+    private ReportsDAO rdao= ReportsDAO.reportsDao();
 
     private RecommendService() {
     }
@@ -25,7 +27,7 @@ public class RecommendService {
         return SERVICE;
     }
 
-    public Map<String, Object> toggleRecommend(Long userSeq, Long boardSeq, String newType) {
+    public Map<String, Object> toggleRecommend(Long userSeq, Long boardSeq, String newType, String boardType) {
         Connection conn = getConnection();
         Map<String, Object> result = new HashMap<>();
         try {
@@ -46,7 +48,8 @@ public class RecommendService {
 
             // 점수 업데이트
             if (speedChange != 0) {
-                userDAO.updateUserSpeed(conn, userSeq, speedChange);
+            	userDAO.updateUserSpeed(conn, rdao.getUserSeq(conn, boardSeq, boardType), speedChange);
+                //userDAO.updateUserSpeed(conn, userSeq, speedChange);
             }
 
             result.put("recommendCount", dao.countByType(conn, boardSeq, "0"));
