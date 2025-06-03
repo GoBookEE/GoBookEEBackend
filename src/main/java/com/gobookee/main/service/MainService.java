@@ -1,14 +1,10 @@
 package com.gobookee.main.service;
 
-import com.gobookee.book.model.dao.BookDao;
 import com.gobookee.book.model.dto.Book;
 import com.gobookee.main.model.dao.MainDao;
 import com.gobookee.main.model.dto.ReviewTopResponse;
-import com.gobookee.place.model.dto.Place;
 import com.gobookee.place.model.dto.PlaceViewResponse;
-import com.gobookee.review.model.dto.Review;
 import com.gobookee.review.model.dto.ReviewListResponse;
-import com.gobookee.study.model.dto.Study;
 import com.gobookee.study.model.dto.StudyList;
 import com.gobookee.users.model.dto.User;
 

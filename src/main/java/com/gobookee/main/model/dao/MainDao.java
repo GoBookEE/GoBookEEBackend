@@ -45,7 +45,7 @@ public class MainDao {
             rs=pstmt.executeQuery();
             while (rs.next()){
                 list.add(getReviewTopResponse(rs));
-            };
+            }
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -58,7 +58,7 @@ public class MainDao {
             rs=pstmt.executeQuery();
             while (rs.next()){
                 list.add(getRecentReview(rs));
-            };
+            }
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -71,7 +71,7 @@ public class MainDao {
             rs=pstmt.executeQuery();
             while (rs.next()){
                 list.add(getBook(rs));
-            };
+            }
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -84,7 +84,7 @@ public class MainDao {
             rs=pstmt.executeQuery();
             while (rs.next()){
                 list.add(getTopbook(rs));
-            };
+            }
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -97,7 +97,7 @@ public class MainDao {
             rs=pstmt.executeQuery();
             while (rs.next()){
                 list.add(getTopStudy(rs));
-            };
+            }
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -110,7 +110,7 @@ public class MainDao {
             rs=pstmt.executeQuery();
             while (rs.next()){
                 list.add(getRanPlace(rs));
-            };
+            }
         }catch(SQLException e){
             e.printStackTrace();
         }
@@ -123,7 +123,7 @@ public class MainDao {
             rs=pstmt.executeQuery();
             while (rs.next()){
                 list.add(getUser(rs));
-            };
+            }
         }catch(SQLException e){
             e.printStackTrace();
         }

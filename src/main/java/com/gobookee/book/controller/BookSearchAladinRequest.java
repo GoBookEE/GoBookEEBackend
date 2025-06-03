@@ -1,7 +1,6 @@
 package com.gobookee.book.controller;
 
 import com.gobookee.book.model.dto.Book;
-import com.gobookee.book.service.BookService;
 import com.gobookee.common.CommonPathTemplate;
 import com.gobookee.common.PageBarTemplate;
 import org.json.JSONArray;
@@ -19,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.gobookee.book.external.AladinApiClient.aladinApiClient;
-import static com.gobookee.book.service.AladinService.aladinService;
 
 @WebServlet("/books/searchaladinrequest")
 public class BookSearchAladinRequest extends HttpServlet {

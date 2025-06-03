@@ -1,15 +1,14 @@
 package com.gobookee.notice.controller;
 
-import java.io.IOException;
+import com.gobookee.notice.model.dto.Notice;
+import com.gobookee.notice.model.service.NoticeService;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.gobookee.notice.model.dao.NoticeDAO;
-import com.gobookee.notice.model.dto.Notice;
-import com.gobookee.notice.model.service.NoticeService;
+import java.io.IOException;
 
 /**
  * Servlet implementation class NoticeUpdateServlet

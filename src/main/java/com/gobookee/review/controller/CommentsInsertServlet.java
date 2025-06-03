@@ -1,17 +1,16 @@
 package com.gobookee.review.controller;
 
-import java.io.IOException;
+import com.gobookee.common.CommonPathTemplate;
+import com.gobookee.review.model.dto.Comments;
+import com.gobookee.review.service.CommentsService;
+import com.gobookee.users.model.dto.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import com.gobookee.common.CommonPathTemplate;
-import com.gobookee.review.model.dto.Comments;
-import com.gobookee.review.service.CommentsService;
-import com.gobookee.users.model.dto.User;
+import java.io.IOException;
 
 @WebServlet("/review/insertcomment")
 public class CommentsInsertServlet extends HttpServlet {
@@ -38,7 +37,7 @@ public class CommentsInsertServlet extends HttpServlet {
 		}
 
 		Comments dto = Comments.builder().commentsContents(content).commentsParentSeq(parentSeq).userSeq(userSeq)
-				.reviewSeq(reviewSeq).build();
+				.reviewSeq(reviewSeq).commentsIsPublic('Y').build();
 
 		int result = service.insertComment(dto);
 		String msg, loc;
